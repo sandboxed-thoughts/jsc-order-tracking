@@ -25,13 +25,13 @@ SECRET_KEY = 'django-insecure-&a7xvx@g)yll4ss%agr&nvz@)^l8#f8pz%+gi$%z2pg&m!r_jd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','10.5.7.2','localhost']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'localflavor',
     'phonenumber_field',
     # project apps
+    'tracker.apps.JSCAdminConfig', # replaces 'django.contrib.admin'
     'accounts',
-    'gravel',
-    'concrete',
+    # 'gravel',
+    # 'concrete',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -64,7 +66,7 @@ ROOT_URLCONF = 'tracker.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,7 +130,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

@@ -1,15 +1,22 @@
 from django.contrib import admin
 from django.utils.html import format_html as fh
 from simple_history.admin import SimpleHistoryAdmin as SHA
-from .models import GravelOrder
+from orders.models import Gravel
 
 
-@admin.register(GravelOrder)
+@admin.register(Gravel)
 class GravelAdmin(SHA):
     
+    class Media:
+        # extra javascript
+        js = [
+            "admin/js/vendor/jquery/jquery.js",
+            "core/scripts/list_filter_collapse.js",
+        ]
+    
+    @admin.display(description='history')
     def get_history(self, obj):
         return fh("<a href='/gravel/gravelorder/{}/history'>view history</a>".format(obj.pk))
-    get_history.short_description = "history"
     
     def changed(self, obj):
         if obj.prev_record:
@@ -24,10 +31,10 @@ class GravelAdmin(SHA):
         return None
 
     list_display = [
+        'po',
         'job_site',
         'lot',
         'n_date',
-        'po',
         'priority',
         'supplier',
         'stone',

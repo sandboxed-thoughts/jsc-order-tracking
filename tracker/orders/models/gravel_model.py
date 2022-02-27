@@ -3,7 +3,7 @@ from django.forms import ChoiceField
 from django.utils.translation import gettext_lazy as _
 from simple_history.models import HistoricalRecords as HR
 
-class GravelOrder(models.Model):
+class Gravel(models.Model):
     """Gravel order log for tracking and managing gravel orders
     """
     
