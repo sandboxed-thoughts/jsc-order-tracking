@@ -8,3 +8,4 @@ phonenumbers~=8.12.44
 phonenumberslite~=8.12.44
 python-stdnum~=1.17
 sqlparse~=0.4.2
+python-decouple~=3.6
