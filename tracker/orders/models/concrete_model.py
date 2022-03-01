@@ -87,7 +87,7 @@ class Concrete(models.Model):
     atot = models.PositiveIntegerField(_("Actual Total"), blank=True, null=True)
     ctype = models.CharField(_("Mix/Slump"), max_length=4, choices=C_TYPE_CHOICES)
     pump = models.BooleanField(_("Pump"), default=False)
-    pinfo = models.CharField(_("Pump Info"), max_length=150, blank=True, null=True)
+    pinfo = models.TextField(_("Pump Info"), max_length=150, blank=True, null=True)
     iagt = models.CharField(
         _("Inspection Agency"), max_length=50, blank=True, null=True
     )
@@ -101,21 +101,12 @@ class Concrete(models.Model):
         _("Pour Progress"), max_length=8, choices=PROGRESS_CHOICES, default=WILL_CALL
     )
     history = HR()
-    garage = models.CharField(
-        _("Garage Height"),
-        max_length=3,
-        default="n/a",
+    garage = models.PositiveSmallIntegerField(_("Garage Height (ft)"),blank=True,null=True, help_text="only for footings")
+    wea =  models.PositiveSmallIntegerField(_("Walkout Egress Area (ft)"),blank=True,null=True, help_text="only for footings")
+    notes = models.TextField(
+        _("order notes"),
         blank=True,
         null=True,
-        help_text="only for footings",
-    )
-    wea = models.CharField(
-        _("Walkout Egress Area"),
-        max_length=50,
-        default="n/a",
-        blank=True,
-        null=True,
-        help_text="only for footings",
     )
 
     def get_lots(self):
@@ -131,29 +122,3 @@ class Concrete(models.Model):
         managed = True
         verbose_name = "Concrete Order"
         verbose_name_plural = "Concrete Orders"
-
-
-class ConcreteNote(models.Model):
-    order = models.ForeignKey(
-        Concrete,
-        verbose_name=_("Order Note"),
-        related_name="c_order",
-        on_delete=models.CASCADE,
-    )
-    note = models.TextField(_("Note"))
-    created_on = models.DateTimeField(
-        _("note added on"), auto_now=True, auto_now_add=False
-    )
-    updated_on = models.DateTimeField(
-        _("note last updated"), auto_now=False, auto_now_add=True
-    )
-    history = HR()
-
-    def __str__(self):
-        return "note for {}".format(self.order.__str__())
-
-    class Meta:
-        db_table = "c_order_notes"
-        managed = True
-        verbose_name = "Concrete Note"
-        verbose_name_plural = "Concrete Notes"

@@ -7,25 +7,24 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('auth', '0012_alter_user_first_name_max_length'),
-        ('accounts', '0002_alter_customuser_is_staff_and_more'),
+        ("auth", "0012_alter_user_first_name_max_length"),
+        ("accounts", "0002_alter_customuser_is_staff_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Group',
-            fields=[
-            ],
+            name="Group",
+            fields=[],
             options={
-                'verbose_name': 'group',
-                'verbose_name_plural': 'groups',
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "verbose_name": "group",
+                "verbose_name_plural": "groups",
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('auth.group',),
+            bases=("auth.group",),
             managers=[
-                ('objects', django.contrib.auth.models.GroupManager()),
+                ("objects", django.contrib.auth.models.GroupManager()),
             ],
         ),
     ]

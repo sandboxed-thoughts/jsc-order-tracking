@@ -1,13 +1,8 @@
 from django.contrib import admin
 from django.utils.html import format_html as fh
+from django.db import models
 from simple_history.admin import SimpleHistoryAdmin as SHA
-from orders.models import Concrete, ConcreteNote
-
-
-class CNoteInline(admin.StackedInline):
-    model = ConcreteNote
-    min_num = 1
-    max_num = 1
+from orders.models import Concrete
 
 
 @admin.register(Concrete)
@@ -40,27 +35,23 @@ class ConcreteAdmin(SHA):
             return fh(cfds)
         return "Added"
 
-    @admin.display(description="lots")
     def lots(self, obj):
         return obj.get_lots()
 
     list_display = [
-        "otype",
-        "pdate",
         "bldr",
         "job_site",
-        "get_lots",
+        "lots",
         "cpour",
         "supplier",
         "ono",
-        "itime",
-        "ctime",
-        "pprog",
+        "notes",
         "get_history",
     ]
     list_filter = [
-        "otype",
         "job_site",
+        "supplier",
+        "otype",
         "bldr",
         "cpour",
         "pdate",
@@ -74,14 +65,11 @@ class ConcreteAdmin(SHA):
         "bldr",
         "job_site",
         "supplier",
+        "notes",
         "dsph",
         "ono",
     ]
     history_list_display = ["changed"]
-
-    inlines = [
-        CNoteInline,
-    ]
 
     fieldsets = (
         (
@@ -91,6 +79,7 @@ class ConcreteAdmin(SHA):
                     (
                         "bldr",
                         "job_site",
+                        "lot",
                     ),
                 ),
             },
@@ -99,14 +88,9 @@ class ConcreteAdmin(SHA):
             "task info",
             {
                 "fields": (
-                    (
-                        "otype",
-                        "pdate",
-                    ),
-                    (
-                        "lot",
-                        "item",
-                    ),
+                    "pdate",
+                    "otype",
+                    "item",
                     (
                         "garage",
                         "wea",
@@ -119,10 +103,11 @@ class ConcreteAdmin(SHA):
             {
                 "fields": (
                     (
-                        "supplier",
-                        "dsph",
-                        "ono",
+                        "ctype",
+                        "ono"
                     ),
+                    "supplier",
+                    "dsph",
                 ),
             },
         ),
@@ -130,12 +115,7 @@ class ConcreteAdmin(SHA):
             "quantities",
             {
                 "fields": (
-                    (
-                        "etot",
-                        "qord",
-                        "atot",
-                    ),
-                    "ctype",
+                    ("etot","qord","atot",),
                 ),
             },
         ),
@@ -144,37 +124,37 @@ class ConcreteAdmin(SHA):
             {
                 "fields": (
                     "pump",
-                    (
-                        "pinfo",
-                        "cpour",
-                    ),
+                    "cpour",
+                    "pinfo",
                 ),
             },
         ),
         (
             "inspections",
             {
-                "fields": (
-                    (
-                        "itime",
-                        "iagt",
-                    ),
-                ),
+                "fields": ("itime","iagt"),
             },
         ),
         (
             "pour progress",
             {
                 "fields": (
-                    (
-                        "ctime",
-                        "pprog",
-                    ),
-                    (
-                        "incw",
-                        "temp",
-                    ),
+                    ("temp","incw",),
+                    "pprog","ctime",
+                    
                 ),
             },
         ),
+        (
+            "Additional Information", {
+                "fields": ("notes",)
+            }
+        ),
     )
+
+    radio_fields = {
+        "incw": admin.HORIZONTAL,
+        "temp": admin.HORIZONTAL,
+        "otype": admin.HORIZONTAL,
+        "ctype": admin.HORIZONTAL,
+    }

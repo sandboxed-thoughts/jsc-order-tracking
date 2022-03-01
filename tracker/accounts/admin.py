@@ -8,18 +8,15 @@ from simple_history.admin import SimpleHistoryAdmin
 from .models import CustomUser
 
 
-
-
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin, SimpleHistoryAdmin):
-    
     class Media:
         # extra javascript
         js = [
             "admin/js/vendor/jquery/jquery.js",
             "core/scripts/list_filter_collapse.js",
         ]
-    
+
     @admin.display(description="deactivate selected")
     def deactivate(self, request, queryset):
         queryset.update(is_active=False)
@@ -28,51 +25,72 @@ class CustomUserAdmin(UserAdmin, SimpleHistoryAdmin):
     def activate(self, request, queryset):
         queryset.update(is_active=True)
 
-    
     @admin.display(description="history")
     def get_history(self, obj):
-        return fh("<a href='/accounts/customuser/{}/history'>view history</a>".format(obj.pk))
-    
+        return fh(
+            "<a href='/accounts/customuser/{}/history'>view history</a>".format(obj.pk)
+        )
+
     def changed(self, obj):
         # adds the field and new data to the history list as "changed"
         if obj.prev_record:
             cfs = {}
             chg = obj.diff_against(obj.prev_record)
             for f in chg.changed_fields:
-                cfs[str(obj._meta.get_field(f).verbose_name)] = str(obj._meta.get_field(f).value_from_object(obj))
+                cfs[str(obj._meta.get_field(f).verbose_name)] = str(
+                    obj._meta.get_field(f).value_from_object(obj)
+                )
             cfds = ""
             for k, v in cfs.items():
                 cfds += "{0} to {1}<br>".format(k, v)
             return fh(cfds)
         return "Added"
 
-    actions = ['activate','deactivate']
-    ordering = ['email']
+    actions = ["activate", "deactivate"]
+    ordering = ["email"]
     list_display = [
-        'email',
-        'first_name',
-        'last_name',
-        'is_active',
-        'is_staff',
-        'get_history',
+        "email",
+        "first_name",
+        "last_name",
+        "is_active",
+        "is_staff",
+        "get_history",
     ]
     list_filter = [
-        'is_active',
-        'groups',
+        "is_active",
+        "groups",
     ]
-    history_list_display = ['changed']
+    history_list_display = ["changed"]
     fieldsets = (
-        (None, {'fields': ('email', 'password',('first_name','last_name')),}),
-        ('Permissions', {'fields': ('is_active','groups'),}),
-    )
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('email', ('password1', 'password2'), ('first_name','last_name'),'groups')}
+        (
+            None,
+            {
+                "fields": ("email", "password", ("first_name", "last_name")),
+            },
+        ),
+        (
+            "Permissions",
+            {
+                "fields": ("is_active", "groups"),
+            },
         ),
     )
-    
-    
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "email",
+                    ("password1", "password2"),
+                    ("first_name", "last_name"),
+                    "groups",
+                ),
+            },
+        ),
+    )
+
+
 class Group(DjangoGroup):
     """Instead of trying to get new user under existing `Aunthentication and Authorization`
     banner, create a proxy group model under our Accounts app label.
@@ -80,8 +98,8 @@ class Group(DjangoGroup):
     """
 
     class Meta:
-        verbose_name = _('group')
-        verbose_name_plural = _('groups')
+        verbose_name = _("group")
+        verbose_name_plural = _("groups")
         proxy = True
 
 

@@ -17,12 +17,12 @@ from django.contrib import admin
 from django.urls import path
 
 # Admin adjustments
-admin.site.site_header = 'JSC Order Tracking'
+admin.site.site_header = "JSC Order Tracking"
 admin.site.site_title = "JSC Order Tracking"
-admin.site.index_title = 'Home'
+admin.site.index_title = "Home"
 admin.site.enable_nav_sidebar = False
 
 # urls
 urlpatterns = [
-    path('', admin.site.urls),
+    path("", admin.site.urls),
 ]

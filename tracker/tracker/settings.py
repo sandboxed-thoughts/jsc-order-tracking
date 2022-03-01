@@ -27,7 +27,9 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=True, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
+ALLOWED_HOSTS = config(
+    "ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")]
+)
 
 
 # Application definition
@@ -42,8 +44,8 @@ INSTALLED_APPS = [
     "simple_history",
     # project apps
     "tracker.apps.JSCAdminConfig",  # replaces 'django.contrib.admin'
-    "accounts", # custom user model
-    "orders", 
+    "accounts",  # custom user model
+    "orders",
 ]
 
 MIDDLEWARE = [
@@ -132,9 +134,7 @@ STATIC_URL = "{}/".format(config("STATIC_URL"))
 STATIC_ROOT = config("STATIC_ROOT")
 
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-STATICFILES_DIRS = [
-    config("STATICFILES_DIRS", cast=Csv())
-]
+STATICFILES_DIRS = [config("STATICFILES_DIRS", cast=Csv())]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
