@@ -27,13 +27,12 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=True, cast=bool)
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    # 'django.contrib.admin',
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -43,10 +42,8 @@ INSTALLED_APPS = [
     "simple_history",
     # project apps
     "tracker.apps.JSCAdminConfig",  # replaces 'django.contrib.admin'
-    "accounts",
-    # 'gravel',
-    # 'concrete',
-    "orders",
+    "accounts", # custom user model
+    "orders", 
 ]
 
 MIDDLEWARE = [
@@ -87,14 +84,14 @@ WSGI_APPLICATION = "tracker.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": config("DB_ENGINE"),
+        "NAME": config("DB_NAME"),
     }
 }
 
 
 # User model
-AUTH_USER_MODEL = "accounts.CustomUser"
+AUTH_USER_MODEL = config("USER_MODEL")
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -120,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "America/New_York"
+TIME_ZONE = config("TIME_ZONE")
 
 USE_I18N = True
 
@@ -130,14 +127,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "{}/".format(config("STATIC_URL"))
 
-STATIC_ROOT = "/var/www/public/static"
+STATIC_ROOT = config("STATIC_ROOT")
 
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    # "/var/www/public/static",
+    config("STATICFILES_DIRS", cast=Csv())
 ]
 
 # Default primary key field type
