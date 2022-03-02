@@ -1,16 +1,16 @@
 from django.db import models
-from django.forms import ChoiceField
 from django.utils.translation import gettext_lazy as _
 from simple_history.models import HistoricalRecords as HR
 
 
 class Gravel(models.Model):
     """Gravel order log for tracking and managing gravel orders"""
-    B='B'
-    D='D'
+
+    B = "B"
+    D = "D"
     BD_CHOICES = [
-        (B, 'B/S'),
-        (D, 'D/T'),
+        (B, "B/S"),
+        (D, "D/T"),
     ]
 
     bldr = models.CharField(_("Builder"), max_length=50)
@@ -20,13 +20,11 @@ class Gravel(models.Model):
     r_loads = models.PositiveIntegerField(_("Loads Requested"))
     d_loads = models.PositiveIntegerField(_("Loads Delivered"), blank=True, null=True)
     stone = models.CharField(_("Stone Type"), max_length=50)
-    bsdt = models.CharField(_("B/S D/T"), max_length=2, choices=BD_CHOICES,default=B)
+    bsdt = models.CharField(_("B/S D/T"), max_length=2, choices=BD_CHOICES, default=B)
     supplier = models.CharField(_("Supplier"), max_length=50)
     driver = models.CharField(_("Driver"), max_length=50, blank=True, null=True)
     n_date = models.DateField(_("Date Needed"), auto_now=False, auto_now_add=False)
-    d_date = models.DateField(
-        _("Date Delivered"), auto_now=False, auto_now_add=False, blank=True, null=True
-    )
+    d_date = models.DateField(_("Date Delivered"), auto_now=False, auto_now_add=False, blank=True, null=True)
     priority = models.CharField(_("Priority"), max_length=50)
     po = models.PositiveIntegerField(_("P.O. Number"))
     history = HR()

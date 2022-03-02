@@ -27,9 +27,7 @@ class CustomUserAdmin(UserAdmin, SimpleHistoryAdmin):
 
     @admin.display(description="history")
     def get_history(self, obj):
-        return fh(
-            "<a href='/accounts/customuser/{}/history'>view history</a>".format(obj.pk)
-        )
+        return fh("<a href='/accounts/customuser/{}/history'>view history</a>".format(obj.pk))
 
     def changed(self, obj):
         # adds the field and new data to the history list as "changed"
@@ -37,9 +35,7 @@ class CustomUserAdmin(UserAdmin, SimpleHistoryAdmin):
             cfs = {}
             chg = obj.diff_against(obj.prev_record)
             for f in chg.changed_fields:
-                cfs[str(obj._meta.get_field(f).verbose_name)] = str(
-                    obj._meta.get_field(f).value_from_object(obj)
-                )
+                cfs[str(obj._meta.get_field(f).verbose_name)] = str(obj._meta.get_field(f).value_from_object(obj))
             cfds = ""
             for k, v in cfs.items():
                 cfds += "{0} to {1}<br>".format(k, v)

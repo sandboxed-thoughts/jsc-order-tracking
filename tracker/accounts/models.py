@@ -12,9 +12,7 @@ class CustomUser(AbstractUser):
     """
 
     username = None
-    email = models.EmailField(
-        _("email address"), max_length=254, unique=True, blank=False, null=False
-    )
+    email = models.EmailField(_("email address"), max_length=254, unique=True, blank=False, null=False)
     is_staff = models.BooleanField(_("staff status"), default=True)
     history = HR()
 

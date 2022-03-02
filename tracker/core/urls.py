@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+
 # Admin adjustments
 admin.site.site_header = "JSC Order Tracking"
 admin.site.site_title = "JSC Order Tracking"
@@ -28,4 +29,6 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += [path('__debug__/', include('debug_toolbar.urls')),]
+    urlpatterns += [
+        path("__debug__/", include("debug_toolbar.urls")),
+    ]

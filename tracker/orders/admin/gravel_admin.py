@@ -22,9 +22,7 @@ class GravelAdmin(SHA):
             cfs = {}
             chg = obj.diff_against(obj.prev_record)
             for f in chg.changed_fields:
-                cfs[str(obj._meta.get_field(f).verbose_name)] = str(
-                    obj._meta.get_field(f).value_from_object(obj)
-                )
+                cfs[str(obj._meta.get_field(f).verbose_name)] = str(obj._meta.get_field(f).value_from_object(obj))
             cfds = ""
             for k, v in cfs.items():
                 cfds += "{0} to {1}<br>".format(k, v)
@@ -58,7 +56,7 @@ class GravelAdmin(SHA):
                     ("bldr", "job_site", "lot"),
                     "caller",
                     ("r_loads", "d_loads"),
-                    "stone", 
+                    "stone",
                     "bsdt",
                     ("supplier", "driver"),
                     ("n_date", "d_date"),

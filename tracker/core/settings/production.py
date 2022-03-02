@@ -1,4 +1,3 @@
-import tracker
 from .base import *
 
 # Security settings

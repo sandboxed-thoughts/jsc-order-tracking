@@ -57,20 +57,12 @@ class Concrete(models.Model):
         max_length=8,
         choices=ORDER_TYPE_CHOICES,
     )
-    pdate = models.DateField(
-        _("Pour Date"), auto_now=False, auto_now_add=False, blank=True, null=True
-    )
-    incw = models.CharField(
-        _("Inclimate Weather"), max_length=4, choices=WEATHER_CHOICES, default=NONE
-    )
-    temp = models.CharField(
-        _("Temperature"), max_length=4, choices=TEMP_CHOICES, default=AVERAGE
-    )
+    pdate = models.DateField(_("Pour Date"), auto_now=False, auto_now_add=False, blank=True, null=True)
+    incw = models.CharField(_("Inclimate Weather"), max_length=4, choices=WEATHER_CHOICES, default=NONE)
+    temp = models.CharField(_("Temperature"), max_length=4, choices=TEMP_CHOICES, default=AVERAGE)
     bldr = models.CharField(_("Builder"), max_length=50)
     job_site = models.CharField(_("Job Site"), max_length=50)
-    lot = models.CharField(
-        _("Lot Numbers"), max_length=100, help_text="separate each lot with a comma (,)"
-    )
+    lot = models.CharField(_("Lot Numbers"), max_length=100, help_text="separate each lot with a comma (,)")
     item = models.CharField(_("Item"), max_length=50)
     cpour = models.CharField(_("Crew Pouring"), max_length=150, blank=True, null=True)
     supplier = models.CharField(_("Supplier"), max_length=50)
@@ -88,21 +80,17 @@ class Concrete(models.Model):
     ctype = models.CharField(_("Mix/Slump"), max_length=4, choices=C_TYPE_CHOICES)
     pump = models.BooleanField(_("Pump"), default=False)
     pinfo = models.TextField(_("Pump Info"), max_length=150, blank=True, null=True)
-    iagt = models.CharField(
-        _("Inspection Agency"), max_length=50, blank=True, null=True
-    )
-    itime = models.DateTimeField(
-        _("Inspection Time"), auto_now=False, auto_now_add=False, blank=True, null=True
-    )
-    ctime = models.DateTimeField(
-        _("Concrete Time"), auto_now=False, auto_now_add=False, blank=True, null=True
-    )
-    pprog = models.CharField(
-        _("Pour Progress"), max_length=8, choices=PROGRESS_CHOICES, default=WILL_CALL
-    )
+    iagt = models.CharField(_("Inspection Agency"), max_length=50, blank=True, null=True)
+    itime = models.DateTimeField(_("Inspection Time"), auto_now=False, auto_now_add=False, blank=True, null=True)
+    ctime = models.DateTimeField(_("Concrete Time"), auto_now=False, auto_now_add=False, blank=True, null=True)
+    pprog = models.CharField(_("Pour Progress"), max_length=8, choices=PROGRESS_CHOICES, default=WILL_CALL)
     history = HR()
-    garage = models.PositiveSmallIntegerField(_("Garage Height (ft)"),blank=True,null=True, help_text="only for footings")
-    wea =  models.PositiveSmallIntegerField(_("Walkout Egress Area (ft)"),blank=True,null=True, help_text="only for footings")
+    garage = models.PositiveSmallIntegerField(
+        _("Garage Height (ft)"), blank=True, null=True, help_text="only for footings"
+    )
+    wea = models.PositiveSmallIntegerField(
+        _("Walkout Egress Area (ft)"), blank=True, null=True, help_text="only for footings"
+    )
     notes = models.TextField(
         _("order notes"),
         blank=True,

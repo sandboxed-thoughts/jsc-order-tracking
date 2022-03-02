@@ -1,6 +1,7 @@
 -r base.txt
 
-black>=21.6b0
-coverage>=5.5
-isort>=5.9.1
-tox>=3.23.1
+black~=21.6b0
+coverage~=5.5
+flake8~=4.0.1
+isort~=5.9.1
+tox~=3.23.1
