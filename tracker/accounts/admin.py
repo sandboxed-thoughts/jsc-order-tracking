@@ -53,7 +53,6 @@ class CustomUserAdmin(UserAdmin, SimpleHistoryAdmin):
         "first_name",
         "last_name",
         "is_active",
-        "is_staff",
         "get_history",
     ]
     list_filter = [

@@ -11,28 +11,24 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 import os
+import dj_database_url
 from pathlib import Path
 from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY", default="This!$NOT_a_safe_key!!!DO_CHANGE_ME!!!")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = config(
-    "ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")]
+    "ALLOWED_HOSTS",
+    default="localhost,127.0.0.1",
+    cast=lambda v: [s.strip() for s in v.split(",")],
 )
-
-
-# Application definition
 
 INSTALLED_APPS = [
     "django.contrib.auth",
@@ -43,10 +39,19 @@ INSTALLED_APPS = [
     # 3rd party apps
     "simple_history",
     # project apps
-    "tracker.apps.JSCAdminConfig",  # replaces 'django.contrib.admin'
+    "core.apps.JSCAdminConfig",  # replaces 'django.contrib.admin'
     "accounts",  # custom user model
     "orders",
 ]
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+ROOT_URLCONF = config("ROOT_URLCONF", default="core.urls")
+
+INTERNAL_IPS = ["127.0.0.1"]
+
+WSGI_APPLICATION = config("WSGI_APP", default="core.wsgi.application")
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -60,12 +65,10 @@ MIDDLEWARE = [
     "simple_history.middleware.HistoryRequestMiddleware",
 ]
 
-ROOT_URLCONF = "tracker.urls"
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": ["templates/"],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -78,25 +81,14 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "tracker.wsgi.application"
-
-
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": config("DB_ENGINE"),
-        "NAME": config("DB_NAME"),
-    }
-}
+# Database - https://github.com/jacobian/dj-database-url
+DATABASES = {"default": dj_database_url.config(default=config("DATABASE_URL"))}
 
 
 # User model
 AUTH_USER_MODEL = config("USER_MODEL")
 
 # Password validation
-# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -115,11 +107,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = config("LANG_CODE", default="en-us")
 
-TIME_ZONE = config("TIME_ZONE")
+TIME_ZONE = config("TIME_ZONE", default="America/New_York")
 
 USE_I18N = True
 
@@ -127,16 +118,14 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = "{}/".format(config("STATIC_URL"))
+STATIC_URL = config("STATIC_URL", default="/static/")
 
 STATIC_ROOT = config("STATIC_ROOT")
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-STATICFILES_DIRS = [config("STATICFILES_DIRS", cast=Csv())]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+)
