@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.utils.html import format_html as fh
-from simple_history.admin import SimpleHistoryAdmin as SHA
+
 from orders.models import Concrete
+from simple_history.admin import SimpleHistoryAdmin as SHA
 
 
 @admin.register(Concrete)
