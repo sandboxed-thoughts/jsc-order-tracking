@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # 3rd party apps
     "simple_history",
+    "phonenumber_field",
     # project apps
     "core.apps.JSCAdminConfig",  # replaces 'django.contrib.admin'
     "accounts",  # custom user model

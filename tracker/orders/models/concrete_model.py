@@ -11,6 +11,7 @@ class Concrete(models.Model):
     Concrete order tracking model.
     """
 
+    # choices
     WALLS = "walls"
     FLATWORK = "flatwork"
     FOOTINGS = "footings"
@@ -28,19 +29,19 @@ class Concrete(models.Model):
     COMPLETE = "complete"
 
     ORDER_TYPE_CHOICES = [
-        (WALLS, "walls"),
         (FLATWORK, "flatwork"),
         (FOOTINGS, "footings"),
+        (WALLS, "walls"),
     ]
     WEATHER_CHOICES = [
+        (NONE, "none"),
         (RAIN, "rain"),
         (SNOW, "snow"),
-        (NONE, "none"),
     ]
     TEMP_CHOICES = [
+        (AVERAGE, "average"),
         (LOW, "low"),
         (HIGH, "high"),
-        (AVERAGE, "average"),
     ]
     C_TYPE_CHOICES = [
         (MIX, "mix"),
@@ -53,6 +54,7 @@ class Concrete(models.Model):
         (COMPLETE, "complete"),
     ]
 
+    # fields
     otype = models.CharField(
         _("Pour Type"),
         max_length=8,
@@ -99,9 +101,7 @@ class Concrete(models.Model):
     )
 
     def get_lots(self):
-        ll = [x for x in self.lot.strip(" ").split(",")]
-        pll = "<br>".join(ll)
-        return fh(pll)
+        return fh("<br>".join([x for x in self.lot.strip().split(",")]))
 
     def __str__(self) -> str:
         return "{0} [{1}] {2}".format(self.job_site, self.lot, self.pk)
