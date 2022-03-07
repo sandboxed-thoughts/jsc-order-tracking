@@ -14,7 +14,7 @@ class ContactModel(models.Model):
     zipcode = Zipcode(_("Zip"), blank=True, null=True)
     phone = PhoneNumberField(_("Phone"), blank=True, null=True)
     email = models.EmailField(_("Email"), max_length=254, blank=True, null=True)
-    fax = models.PhoneNumberField(_("Fax"), blank=True, null=True)
+    fax = PhoneNumberField(_("Fax"), blank=True, null=True)
 
     class Meta:
         abstract = True

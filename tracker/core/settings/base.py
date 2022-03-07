@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "core.apps.JSCAdminConfig",  # replaces 'django.contrib.admin'
     "accounts",  # custom user model
     "orders",
+    "suppliers",
 ]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -117,6 +118,9 @@ USE_I18N = True
 
 USE_TZ = True
 
+PHONENUMBER_DB_FORMAT = config("PHONENUMBER_DB_FORMAT", default="E164")
+
+PHONENUMBER_DEFAULT_REGION = config("PHONENUMBER_DEFAULT_REGION", default="US")
 
 # Static files (CSS, JavaScript, Images)
 
