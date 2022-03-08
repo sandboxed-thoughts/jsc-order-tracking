@@ -22,8 +22,6 @@ class Gravel(BaseOrder):
     )
     caller = models.CharField(_("Caller"), max_length=50)
     bsdt = models.CharField(_("B/S D/T"), max_length=3, choices=BSDT.choices, default=BSDT.B)
-    n_date = models.DateField(_("Date Needed"), auto_now=False, auto_now_add=False)
-    d_date = models.DateField(_("Date Delivered"), auto_now=False, auto_now_add=False, blank=True, null=True)
     priority = models.CharField(_("Priority"), max_length=50)
     history = HR(inherit=True)
 

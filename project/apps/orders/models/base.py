@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib import admin
 from django.utils.html import format_html as fh
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import RegexValidator
@@ -114,6 +115,7 @@ class BaseOrder(models.Model):
     )
     notes = models.TextField(_("notes"), blank=True, null=True)
 
+    @admin.display(description="lots")
     def get_lots(self):
         return fh("<br>".join([x for x in self.lot.strip().split(",")]))
 
