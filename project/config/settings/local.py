@@ -1,4 +1,4 @@
-from .tests import *
+from .base import *
 
 INSTALLED_APPS += [
     "debug_toolbar",
@@ -6,6 +6,4 @@ INSTALLED_APPS += [
 
 MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
 
-
-# Email
-EMAIL_BACKEND = config("EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend")
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

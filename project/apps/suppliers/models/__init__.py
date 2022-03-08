@@ -1,1 +1,1 @@
-from suppliers import Supplier
+from .suppliers import Supplier

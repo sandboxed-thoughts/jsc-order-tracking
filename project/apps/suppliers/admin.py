@@ -1,12 +1,31 @@
 from django.contrib import admin
 from django.utils.html import format_html as fh
 from simple_history.admin import SimpleHistoryAdmin as SHA
-from .models import JobSite
+from .models import Supplier
 from apps.core.admin import deactivate, activate, get_change, get_history
 
 
-@admin.register(JobSite)
-class JobSiteAdmin(SHA):
+@admin.register(Supplier)
+class SupplierAdmin(SHA):
+    def choices(self, cl):
+        for lookup, title in self.lookup_choices:
+            yield {
+                "selected": self.value() == lookup,
+                "query_string": cl.get_query_string(
+                    {
+                        self.parameter_name: lookup,
+                    },
+                    [],
+                ),
+                "display": title,
+            }
+
+    def queryset(self, request, queryset):
+        if self.value() in ("activate", "rejected"):
+            return queryset.filter(status=self.value())
+        elif self.value() == None:
+            return queryset.filter(status="pending")
+
     class Media:
         # extra javascript
         js = [
@@ -27,12 +46,22 @@ class JobSiteAdmin(SHA):
 
     actions = [activate, deactivate]
 
+    list_display = [
+        "name",
+        "is_active",
+        "get_addr",
+        "phone",
+        "email",
+        "get_site",
+        "fax",
+    ]
+
     search_fields = [
         "name",
         "street",
         "city",
         "state",
-        "zipcode",
+        "zip",
     ]
 
     list_filter = [
@@ -40,12 +69,4 @@ class JobSiteAdmin(SHA):
         "is_active",
     ]
 
-    list_display = [
-        "name",
-        "get_addr",
-        "is_active",
-        "get_history",
-    ]
-
     history_list_display = ["changes"]
-    exclude = ["change_reason"]

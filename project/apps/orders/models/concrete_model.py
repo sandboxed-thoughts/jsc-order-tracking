@@ -35,9 +35,12 @@ class Concrete(BaseOrder):
         ]
 
     # fields
+    job_site = models.ForeignKey(
+        "jobs.JobSite", verbose_name=_("Job Site"), related_name="concrete_orders", on_delete=models.CASCADE
+    )
     otype = models.CharField(_("Pour Type"), max_length=8, choices=OrderType.choices)
     dsph = models.CharField(_("Dispatcher"), max_length=50)
-    ctype = models.CharField(_("Mix/Slump"), max_length=4, choices=ConcreteType.choices)
+    ctype = models.CharField(_("Mix/Slump"), max_length=5, choices=ConcreteType.choices)
     pump = models.BooleanField(_("Pump"), default=False)
     pinfo = models.TextField(_("Pump Info"), max_length=150, blank=True, null=True)
     iagt = models.CharField(_("Inspection Agency"), max_length=50, blank=True, null=True)

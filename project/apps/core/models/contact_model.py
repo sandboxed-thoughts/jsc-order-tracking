@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html as fh
@@ -32,9 +33,23 @@ class ContactModel(models.Model):
     fax = PhoneNumberField(_("Fax"), blank=True, null=True)
     email = models.EmailField(_("Email"), max_length=254, blank=True, null=True)
 
-    def get_addr(self):
-        return fh("<address>{0}<br/>{1}, {2}, {3}</address>".format(self.street, self.city, self.state, self.zipcode))
-        
+    @admin.display(description="address")
+    def get_addr(self) -> str:
+        parts = [self.street, "<br>", self.city, self.state, self.zipcode]
+        if any(parts):
+            count = len(parts) - 1
+            address = "<address>"
+            for k, v in enumerate(parts):
+                if v is not None:
+                    address += v.capitalize()
+                if v == self.city and self.city is not None:
+                    address += ", "
+                elif 2 <= k < count:
+                    address += " "
+            address += "</address>"
+            return fh(address)
+        return "not provided"
+
     def __str__(self):
         return self.get_addr
 

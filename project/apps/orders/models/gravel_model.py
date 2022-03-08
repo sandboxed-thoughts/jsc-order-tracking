@@ -17,8 +17,11 @@ class Gravel(BaseOrder):
         ]
 
     # fields
+    job_site = models.ForeignKey(
+        "jobs.JobSite", verbose_name=_("Job Site"), related_name="gravel_orders", on_delete=models.CASCADE
+    )
     caller = models.CharField(_("Caller"), max_length=50)
-    bsdt = models.CharField(_("B/S D/T"), max_length=2, choices=BSDT.choices, default=BSDT.B)
+    bsdt = models.CharField(_("B/S D/T"), max_length=3, choices=BSDT.choices, default=BSDT.B)
     n_date = models.DateField(_("Date Needed"), auto_now=False, auto_now_add=False)
     d_date = models.DateField(_("Date Delivered"), auto_now=False, auto_now_add=False, blank=True, null=True)
     priority = models.CharField(_("Priority"), max_length=50)

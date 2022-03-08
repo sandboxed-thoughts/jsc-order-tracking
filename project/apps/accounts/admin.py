@@ -4,47 +4,44 @@ from django.contrib.auth.models import Group as DjangoGroup
 from django.utils.html import format_html as fh
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.admin import activate, deactivate, get_change
-from simple_history.admin import SimpleHistoryAdmin
-
 from .models import CustomUser
 
 
 @admin.register(CustomUser)
-class CustomUserAdmin(UserAdmin, SimpleHistoryAdmin):
+class CustomUserAdmin(UserAdmin):
     class Media:
         # extra javascript
         js = [
             "admin/js/vendor/jquery/jquery.js",
-            "core/js/list_filter_collapse.js",
+            "core/scripts/list_filter_collapse.js",
         ]
 
-    @admin.display(description="history")
-    def get_history(self, obj):
-        return fh(
-            "<a href='/accounts/customuser/%(obj_id)s/history'>view history</a>"
-            % {
-                "obj_id": obj.pk,
-            }
-        )
+    @admin.display(description="deactivate selected")
+    def deactivate(self, request, queryset):
+        queryset.update(is_active=False)
 
-    def changes(self, obj):
-        return get_change(self, obj)
+    @admin.display(description="activate selected")
+    def activate(self, request, queryset):
+        queryset.update(is_active=True)
 
-    actions = [activate, deactivate]
+    actions = ["activate", "deactivate"]
+
     ordering = ["email"]
+
     list_display = [
         "email",
         "first_name",
         "last_name",
         "is_active",
-        "get_history",
     ]
+
     list_filter = [
         "is_active",
         "groups",
     ]
-    history_list_display = ["changes"]
+
+    history_list_display = ["changed"]
+
     fieldsets = (
         (
             None,
@@ -59,6 +56,7 @@ class CustomUserAdmin(UserAdmin, SimpleHistoryAdmin):
             },
         ),
     )
+
     add_fieldsets = (
         (
             None,

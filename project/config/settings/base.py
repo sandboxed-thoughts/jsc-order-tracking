@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG")
+DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS",
@@ -37,12 +37,16 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # 3rd party apps
-    "simple_history",
     "phonenumber_field",
     "localflavor",
+    "simple_history",
     # project apps
     "config.apps.ProjectAdminConfig",  # replaces 'django.contrib.admin'
-    # "apps.accounts",  # custom user model
+    "apps.accounts",  # custom user model
+    "apps.core",
+    "apps.jobs",
+    "apps.suppliers",
+    "apps.orders",
 ]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -62,6 +66,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "simple_history.middleware.HistoryRequestMiddleware",
 ]
 
 TEMPLATES = [
@@ -83,8 +88,9 @@ TEMPLATES = [
 # Database - https://github.com/jacobian/dj-database-url
 DATABASES = {"default": dj_database_url.config(default=config("DATABASE_URL"))}
 
+
 # User model
-# AUTH_USER_MODEL = config("USER_MODEL")
+AUTH_USER_MODEL = config("USER_MODEL")
 
 # Password validation
 
@@ -117,6 +123,8 @@ USE_TZ = config("USE_TZ", cast=bool, default=True)
 PHONENUMBER_DB_FORMAT = config("PHONENUMBER_DB_FORMAT", default="E164")
 
 PHONENUMBER_DEFAULT_REGION = config("PHONENUMBER_DEFAULT_REGION", default="US")
+
+PHONENUMBER_DEFAULT_FORMAT = config("PHONENUMBER_DEFAULT_FORMAT", default="NATIONAL")
 
 # Static files (CSS, JavaScript, Images)
 

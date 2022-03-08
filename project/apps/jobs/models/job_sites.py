@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.db import models
 from django.utils.html import format_html as fh
 from django.utils.translation import gettext_lazy as _
@@ -18,12 +19,22 @@ class JobSite(models.Model):
     def __str__(self):
         return self.name
 
-    def get_addr(self):
-        if all[self.street, self.city, self.state, self.zipcode]:
-            return fh(
-                "<address>{0}<br/>{1}, {2}, {3}</address>".format(self.street, self.city, self.state, self.zipcode)
-            )
-        return self.pk
+    @admin.display(description="address")
+    def get_addr(self) -> str:
+        parts = [self.street, "<br>", self.city, self.state, self.zipcode]
+        if any(parts):
+            count = len(parts) - 1
+            address = "<address>"
+            for k, v in enumerate(parts):
+                if v is not None:
+                    address += v.capitalize()
+                if v == self.city and self.city is not None:
+                    address += ", "
+                elif 2 <= k < count:
+                    address += " "
+            address += "</address>"
+            return fh(address)
+        return "not provided"
 
     class Meta:
         db_table = "job_sites"

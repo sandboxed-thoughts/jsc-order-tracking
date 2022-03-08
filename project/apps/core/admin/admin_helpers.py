@@ -12,6 +12,18 @@ def activate(self, request, queryset):
     queryset.update(is_active=True)
 
 
+@admin.display(description="history")
+def get_history(self, cname, mname, obj):
+    return fh(
+        "<a href='/%(cname)s/%(mname)s/%(obj_id)s/history'>view history</a>"
+        % {
+            "cname": cname,
+            "mname": mname,
+            "obj_id": obj.pk,
+        }
+    )
+
+
 def get_change(self, obj):
     # adds the field as "changed"
     # provides a dict with the changed value for future possibilities
