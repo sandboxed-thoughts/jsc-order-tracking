@@ -5,6 +5,8 @@ from simple_history.models import HistoricalRecords as HR
 
 
 class StoneType(models.Model):
+    """Various orderable types of gravel"""
+
     name = models.CharField(
         _("Stone Type"),
         max_length=50,
@@ -20,3 +22,23 @@ class StoneType(models.Model):
         managed = True
         verbose_name = "Stone Type"
         verbose_name_plural = "Stone Types"
+
+
+class ConcreteType(models.Model):
+    """Various orderable types of concrete"""
+
+    name = models.CharField(
+        _("Concrete Type"),
+        max_length=50,
+        unique=True,
+    )
+    description = models.TextField(_("Description"), max_length=250, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = "concrete_types"
+        managed = True
+        verbose_name = "Concrete Type"
+        verbose_name_plural = "Concrete Types"

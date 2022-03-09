@@ -4,12 +4,20 @@ from django.utils.html import format_html as fh
 from apps.core.admin import activate, deactivate, get_change, get_history
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
-from .models import StoneType, Supplier
+from .models import StoneType, ConcreteType, Supplier
 
 
 @admin.register(StoneType)
 class StoneTypeAdmin(admin.ModelAdmin):
     """Admin View for StoneType"""
+
+    list_display = ("name", "description")
+    search_fields = ("name",)
+
+
+@admin.register(ConcreteType)
+class ConcreteTypeAdmin(admin.ModelAdmin):
+    """Admin View for ConcreteType"""
 
     list_display = ("name", "description")
     search_fields = ("name",)

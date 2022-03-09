@@ -1,1 +1,1 @@
-from .order_manager import NonCompleteOrderManager, CompleteOrderManager
+from .order_manager import CompleteOrderManager, NonCompleteOrderManager
