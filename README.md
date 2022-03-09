@@ -1,2 +1,2 @@
-# Django default project setup
-A production-in-mind django framework base primarily inspired by Vitor Freitas at Simple Is Better Than Complex
+# JSC Order
+A simple order tracking app with minimal database design as a low-budget app to provide change history
