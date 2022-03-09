@@ -6,11 +6,8 @@ from simple_history.admin import SimpleHistoryAdmin as SHA
 from apps.orders.models import Concrete
 
 
-
-
 @admin.register(Concrete)
 class ConcreteAdmin(SHA):
-
     class Media:
         # extra javascript
         js = [
@@ -23,8 +20,8 @@ class ConcreteAdmin(SHA):
             return True
         return False
 
-        def changes(self, obj):
-            return get_change(self, obj)
+    def changes(self, obj):
+        return get_change(self, obj)
 
     def get_history(self, obj):
         return get_history(self, "orders", "gravel", obj)
