@@ -26,11 +26,10 @@ class CustomUser(AbstractUser):
         full_name = "%s %s" % (self.first_name, self.last_name)
         return full_name.strip().title()
 
-
     def __str__(self) -> str:
         return "{0}. {1}".format(self.first_name[0], self.last_name).title()
 
     def save(self, *args, **kwargs):
         # if CustomUser.objects.get(email=self.email):
-            
+
         return super(CustomUser, self).save()

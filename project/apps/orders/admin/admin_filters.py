@@ -1,9 +1,10 @@
 from django.contrib.admin import SimpleListFilter
 from django.utils import timezone
 
+
 class OverdueFilter(SimpleListFilter):
-    title = 'Order Overdue' 
-    parameter_name = 'is_overdue'
+    title = "Order Overdue"
+    parameter_name = "is_overdue"
 
     def lookups(self, request, model_admin):
         """
@@ -17,6 +18,7 @@ class OverdueFilter(SimpleListFilter):
             ("True", "yes"),
             ("False", "no"),
         )
+
     def queryset(self, request, queryset):
         """
         Returns the filtered queryset based on the value
@@ -28,5 +30,5 @@ class OverdueFilter(SimpleListFilter):
 
         if self.value() == "False":
             return queryset.filter(ndate__gte=timezone.now())
-        
+
         return queryset

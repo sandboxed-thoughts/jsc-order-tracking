@@ -1,9 +1,8 @@
-from random import choices
 from django.db import models
-from django.utils.html import format_html as fh
 from django.utils.translation import gettext_lazy as _
 
 from simple_history.models import HistoricalRecords as HR
+
 from .base import BaseOrder
 
 
@@ -43,7 +42,6 @@ class Concrete(BaseOrder):
             (BAGS, "bags"),
         ]
 
-
     class ConcreteType:
         MIX = "mix"
         SLUMP = "slump"
@@ -71,9 +69,7 @@ class Concrete(BaseOrder):
         _("Walkout Egress Area (ft)"), blank=True, null=True, help_text="only for footings"
     )
     qord = models.PositiveIntegerField(_("Quantity Ordered"))
-    qtype = models.CharField(
-        _("Quantity Type"), max_length=5, choices=QTypeChoices.choices, default=QTypeChoices.SQFT
-    )
+    qtype = models.CharField(_("Quantity Type"), max_length=5, choices=QTypeChoices.choices, default=QTypeChoices.SQFT)
     etot = models.PositiveIntegerField(_("Estimated Total"), help_text="leave blank if same as quantity ordered")
     atot = models.PositiveIntegerField(_("Actual Total"), blank=True, null=True)
 

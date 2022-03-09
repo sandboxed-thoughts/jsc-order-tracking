@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin, UserAdmin
 from django.contrib.auth.models import Group as DjangoGroup
-from django.utils.html import format_html as fh
 from django.utils.translation import gettext_lazy as _
 
 from .models import CustomUser

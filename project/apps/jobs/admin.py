@@ -1,8 +1,9 @@
 from django.contrib import admin
-from django.utils.html import format_html as fh
+
+from apps.core.admin import activate, deactivate, get_change, get_history
 from simple_history.admin import SimpleHistoryAdmin as SHA
+
 from .models import JobSite
-from apps.core.admin import deactivate, activate, get_change, get_history
 
 
 @admin.register(JobSite)
@@ -50,15 +51,18 @@ class JobSiteAdmin(SHA):
     history_list_display = ["changes"]
     exclude = ["change_reason"]
 
-
     fieldsets = (
-        (None, {
-            "fields": (
-                ("name", "is_active",),
-                "street",
-                ("city", "state","zipcode"),
-            ),
-        }),        
+        (
+            None,
+            {
+                "fields": (
+                    (
+                        "name",
+                        "is_active",
+                    ),
+                    "street",
+                    ("city", "state", "zipcode"),
+                ),
+            },
+        ),
     )
-    
-    

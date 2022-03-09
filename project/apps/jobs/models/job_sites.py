@@ -10,18 +10,18 @@ from simple_history.models import HistoricalRecords as HR
 class JobSite(models.Model):
     """
     Customer worksites
-    
+
     Fields:
         name:       CharField,
         street:     CharField,
         city:       CharField,
         state:      localflavor.us.models.USStateField,
         zipcode:    localflavor.us.models.USZipCodeField,
-    
+
     Methods:
         get_addr:   returns the instance's full formatted address as html,
-    """    
-    
+    """
+
     name = models.CharField(_("Site Name"), max_length=100)
     street = models.CharField(_("Street Address"), max_length=50, blank=True, null=True)
     city = models.CharField(_("City"), max_length=50, blank=True, null=True)

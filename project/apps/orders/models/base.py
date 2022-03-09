@@ -1,9 +1,8 @@
-from django.db import models
 from django.contrib import admin
+from django.core.validators import RegexValidator
+from django.db import models
 from django.utils.html import format_html as fh
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import RegexValidator
-from simple_history.models import HistoricalRecords as HR
 
 
 class BaseOrder(models.Model):
@@ -76,7 +75,7 @@ class BaseOrder(models.Model):
     odate = models.DateField(_("Date Ordered"), auto_now=False, auto_now_add=False, editable=True)
     crew = models.CharField(_("Delivery / Pour Crew"), max_length=50, blank=True, null=True)
     po = models.CharField(
-        _("Purchase Order"), max_length=50, help_text="PO / order number", validators=[RegexValidator("[\S\w]")]
+        _("Purchase Order"), max_length=50, help_text="PO / order number", validators=[RegexValidator("[\\S\\w]")]
     )
     progress = models.CharField(
         _("Order Progress"), max_length=10, choices=ProgressChoices.choices, default=ProgressChoices.WILL_CALL

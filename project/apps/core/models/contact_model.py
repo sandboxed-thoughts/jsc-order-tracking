@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html as fh
+from django.utils.translation import gettext_lazy as _
+
 from localflavor.us.models import USStateField as State, USZipCodeField as Zipcode
 from phonenumber_field.modelfields import PhoneNumberField
 

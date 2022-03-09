@@ -1,18 +1,19 @@
 from django.contrib import admin
 from django.utils.html import format_html as fh
+
+from apps.core.admin import activate, deactivate, get_change, get_history
 from simple_history.admin import SimpleHistoryAdmin as SHA
-from .models import Supplier, StoneType
-StoneType
-StoneType
-from apps.core.admin import deactivate, activate, get_change, get_history
+
+from .models import StoneType, Supplier
 
 
 @admin.register(StoneType)
 class StoneTypeAdmin(admin.ModelAdmin):
-    '''Admin View for StoneType'''
+    """Admin View for StoneType"""
 
-    list_display = ('name','description')
-    search_fields = ('name',)
+    list_display = ("name", "description")
+    search_fields = ("name",)
+
 
 @admin.register(Supplier)
 class SupplierAdmin(SHA):
@@ -32,8 +33,10 @@ class SupplierAdmin(SHA):
     def queryset(self, request, queryset):
         if self.value() in ("activate", "rejected"):
             return queryset.filter(status=self.value())
-        elif self.value() == None:
+        elif self.value() is None:
             return queryset.filter(status="pending")
+        else:
+            return queryset
 
     class Media:
         # extra javascript
@@ -80,16 +83,30 @@ class SupplierAdmin(SHA):
 
     history_list_display = ["changes"]
 
-
     fieldsets = (
-        (None, {
-            "fields": (
-                ("name","is_active",),
-                ("phone","fax",),
-                ("email","website",),
-                "street",
-                ("city","state","zipcode",),
-            ),
-        }),
+        (
+            None,
+            {
+                "fields": (
+                    (
+                        "name",
+                        "is_active",
+                    ),
+                    (
+                        "phone",
+                        "fax",
+                    ),
+                    (
+                        "email",
+                        "website",
+                    ),
+                    "street",
+                    (
+                        "city",
+                        "state",
+                        "zipcode",
+                    ),
+                ),
+            },
+        ),
     )
-    

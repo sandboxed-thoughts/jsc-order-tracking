@@ -1,2 +1,2 @@
-from .suppliers import Supplier
 from .stones import StoneType
+from .suppliers import Supplier
