@@ -25,6 +25,25 @@ class Concrete(BaseOrder):
             (WALLS, "walls"),
         ]
 
+    class QTypeChoices:
+        CUYD = "cu yd"
+        SQFT = "sqft"
+        LBS = "lbs"
+        BAGS = "bags"
+
+        choices = [
+            (
+                "Large Loads",
+                (
+                    (CUYD, "cu yd"),
+                    (SQFT, "sqft"),
+                ),
+            ),
+            (LBS, "lbs"),
+            (BAGS, "bags"),
+        ]
+
+
     class ConcreteType:
         MIX = "mix"
         SLUMP = "slump"
@@ -51,6 +70,13 @@ class Concrete(BaseOrder):
     wea = models.PositiveSmallIntegerField(
         _("Walkout Egress Area (ft)"), blank=True, null=True, help_text="only for footings"
     )
+    qord = models.PositiveIntegerField(_("Quantity Ordered"))
+    qtype = models.CharField(
+        _("Quantity Type"), max_length=5, choices=QTypeChoices.choices, default=QTypeChoices.SQFT
+    )
+    etot = models.PositiveIntegerField(_("Estimated Total"), help_text="leave blank if same as quantity ordered")
+    atot = models.PositiveIntegerField(_("Actual Total"), blank=True, null=True)
+
     history = HR(inherit=True)
 
     def __str__(self) -> str:

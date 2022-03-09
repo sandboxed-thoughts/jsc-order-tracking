@@ -49,3 +49,16 @@ class JobSiteAdmin(SHA):
 
     history_list_display = ["changes"]
     exclude = ["change_reason"]
+
+
+    fieldsets = (
+        (None, {
+            "fields": (
+                ("name", "is_active",),
+                "street",
+                ("city", "state","zipcode"),
+            ),
+        }),        
+    )
+    
+    

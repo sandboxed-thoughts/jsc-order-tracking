@@ -1,9 +1,18 @@
 from django.contrib import admin
 from django.utils.html import format_html as fh
 from simple_history.admin import SimpleHistoryAdmin as SHA
-from .models import Supplier
+from .models import Supplier, StoneType
+StoneType
+StoneType
 from apps.core.admin import deactivate, activate, get_change, get_history
 
+
+@admin.register(StoneType)
+class StoneTypeAdmin(admin.ModelAdmin):
+    '''Admin View for StoneType'''
+
+    list_display = ('name','description')
+    search_fields = ('name',)
 
 @admin.register(Supplier)
 class SupplierAdmin(SHA):
@@ -70,3 +79,17 @@ class SupplierAdmin(SHA):
     ]
 
     history_list_display = ["changes"]
+
+
+    fieldsets = (
+        (None, {
+            "fields": (
+                ("name","is_active",),
+                ("phone","fax",),
+                ("email","website",),
+                "street",
+                ("city","state","zipcode",),
+            ),
+        }),
+    )
+    
