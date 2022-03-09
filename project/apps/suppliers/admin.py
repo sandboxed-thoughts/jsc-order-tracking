@@ -35,8 +35,7 @@ class SupplierAdmin(SHA):
             return queryset.filter(status=self.value())
         elif self.value() is None:
             return queryset.filter(status="pending")
-        else:
-            return queryset
+        return queryset
 
     class Media:
         # extra javascript
