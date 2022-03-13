@@ -1,11 +1,3 @@
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-
-from apps.orders.managers import CompleteOrderManager, NonCompleteOrderManager
-from simple_history.models import HistoricalRecords as HR
-
-from .base import BaseOrder
-
 
 class Gravel(BaseOrder):
     """A Django model for Gravel Orders
@@ -70,9 +62,7 @@ class Gravel(BaseOrder):
         return "Order: {0} - Site: {1}".format(self.po, self.job_site)
 
     def save(self, *args, **kwargs):
-        if self.rloads == self.dloads:
-            self.is_complete = True
-        if self.progress == "complete":
+        if any [(self.rloads == self.dloads), (self.progress == "complete"),]:
             self.is_complete = True
         super(Gravel, self).save(*args, **kwargs)
 

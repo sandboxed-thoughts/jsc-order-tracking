@@ -44,9 +44,9 @@ INSTALLED_APPS = [
     "config.apps.ProjectAdminConfig",  # replaces 'django.contrib.admin'
     "apps.accounts",  # custom user model
     "apps.core",
-    "apps.jobs",
+    "apps.clients",
     "apps.suppliers",
-    "apps.orders",
+    "apps.gravel",
 ]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

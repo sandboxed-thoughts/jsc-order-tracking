@@ -8,6 +8,18 @@ from simple_history.models import HistoricalRecords as HR
 
 
 class Supplier(ContactModel):
+    """Supplier model
+    
+    Fields:
+        name (str): Supplier CharField
+        is_active (bool): BooleanField
+        website (str): URLField
+        history (class): Historical Record
+
+    methods:
+        get_site (str): returns html link to website
+
+    """
 
     name = models.CharField(_("Supplier Name"), max_length=50, unique=True)
     is_active = models.BooleanField(_("Active"), default=True)
@@ -15,7 +27,7 @@ class Supplier(ContactModel):
     history = HR(inherit=True)
 
     def __str__(self):
-        return self.name
+        return self.name.title()
 
     @admin.display(description="view site")
     def get_site(self) -> str:
