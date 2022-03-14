@@ -87,10 +87,7 @@ GitHub.sublime-settings
 ./.vscode/
 .vscode/
 .vscode/* 
-!.vscode/settings.json 
-!.vscode/tasks.json 
-!.vscode/launch.json 
-!.vscode/extensions.json 
 .history
 
-project/static/
+# Windows 
+desktop.ini
