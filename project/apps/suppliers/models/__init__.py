@@ -1,2 +1,2 @@
-from .items import StoneType, ConcreteItems
+from .items import ConcreteItems, StoneType
 from .suppliers import Supplier

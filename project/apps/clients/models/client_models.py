@@ -1,19 +1,24 @@
 from gettext import translation
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from apps.core.models import ContactModel, AddressModel
+
+from apps.core.models import AddressModel, ContactModel
 from simple_history.models import HistoricalRecords as HR
 
+
 class Builder(ContactModel):
-
     class Meta:
-        db_table = 'client_builders'
+        db_table = "client_builders"
         managed = True
-        verbose_name = 'Builder'
-        verbose_name_plural = 'Builders'
+        verbose_name = "Builder"
+        verbose_name_plural = "Builders"
 
-    name = models.CharField(_("name"), max_length = 150, unique=True)
-    is_active = models.BooleanField(_("active builder"), default=True,)
+    name = models.CharField(_("name"), max_length=150, unique=True)
+    is_active = models.BooleanField(
+        _("active builder"),
+        default=True,
+    )
     history = HR()
 
     def __str__(self) -> str:
@@ -46,19 +51,20 @@ class Subdivision(AddressModel):
     history = HR()
 
     def __str__(self):
-        return self.name 
+        return self.name
+
 
 class Lot(models.Model):
-
     class Meta:
-        db_table = 'client_lots'
+        db_table = "client_lots"
         managed = True
-        verbose_name = 'Lot'
-        verbose_name_plural = 'Lots'
-
+        verbose_name = "Lot"
+        verbose_name_plural = "Lots"
 
     name = models.CharField(_("lot"), max_length=50)
-    builder = models.ForeignKey(Builder, verbose_name=_("builder"), related_name='builder_lots', on_delete=models.PROTECT)
+    builder = models.ForeignKey(
+        Builder, verbose_name=_("builder"), related_name="builder_lots", on_delete=models.PROTECT
+    )
     subdivision = models.ForeignKey(Subdivision, verbose_name=_("subdivision"), on_delete=models.PROTECT)
     history = HR(inherit=True)
 

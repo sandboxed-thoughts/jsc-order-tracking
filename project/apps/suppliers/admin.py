@@ -4,7 +4,7 @@ from django.utils.html import format_html as fh
 from apps.core.admin import activate, deactivate, get_change, get_history
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
-from .models import StoneType, ConcreteItems, Supplier
+from .models import ConcreteItems, StoneType, Supplier
 
 
 @admin.register(StoneType)
@@ -18,9 +18,8 @@ class StoneTypeAdmin(admin.ModelAdmin):
             "core/scripts/list_filter_collapse.js",
         ]
 
-
     list_display = ("name", "item_type", "description")
-    search_fields = ("name","item_type","description")
+    search_fields = ("name", "item_type", "description")
     list_filter = ("item_type",)
 
     def has_delete_permission(self, request, obj=None):
@@ -51,15 +50,7 @@ class SupplierAdmin(SHA):
 
     actions = [activate, deactivate]
 
-    list_display = [
-        "name",
-        "is_active",
-        "get_addr",
-        "phone",
-        "email",
-        "get_site",
-        "fax", "get_history"
-    ]
+    list_display = ["name", "is_active", "get_addr", "phone", "email", "get_site", "fax", "get_history"]
 
     search_fields = [
         "name",

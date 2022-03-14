@@ -71,11 +71,11 @@ class ConnectModel(models.Model):
     class Meta:
         abstract = True
 
+
 class ContactModel(AddressModel, ConnectModel):
     """
     Incorporates both, the address and communicaiton models
     """
-
 
     def __str__(self):
         return self.get_addr

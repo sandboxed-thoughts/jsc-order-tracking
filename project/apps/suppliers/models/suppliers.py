@@ -9,7 +9,7 @@ from simple_history.models import HistoricalRecords as HR
 
 class Supplier(ContactModel):
     """Supplier model
-    
+
     Fields:
         name (str): Supplier CharField
         is_active (bool): BooleanField

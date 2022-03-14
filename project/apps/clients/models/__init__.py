@@ -1,1 +1,1 @@
-from .client_models import Builder, Subdivision, Lot
+from .client_models import Builder, Lot, Subdivision

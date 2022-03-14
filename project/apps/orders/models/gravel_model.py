@@ -1,3 +1,5 @@
+from django.db import models
+
 
 class Gravel(BaseOrder):
     """A Django model for Gravel Orders
@@ -62,7 +64,10 @@ class Gravel(BaseOrder):
         return "Order: {0} - Site: {1}".format(self.po, self.job_site)
 
     def save(self, *args, **kwargs):
-        if any [(self.rloads == self.dloads), (self.progress == "complete"),]:
+        if any[
+            (self.rloads == self.dloads),
+            (self.progress == "complete"),
+        ]:
             self.is_complete = True
         super(Gravel, self).save(*args, **kwargs)
 

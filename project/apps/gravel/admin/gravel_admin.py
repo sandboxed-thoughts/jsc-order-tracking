@@ -5,14 +5,16 @@ from simple_history.admin import SimpleHistoryAdmin as SHA
 
 from ..models import GravelDelivery, GravelOrder
 
+
 class GravelDeliveryInline(admin.TabularInline):
-    '''Tabular Inline View for GravelDelivery'''
+    """Tabular Inline View for GravelDelivery"""
 
     model = GravelDelivery
     min_num = 1
     max_num = 500
     extra = 0
-    
+
+
 @admin.register(GravelOrder)
 class GravelOrderAdmin(SHA):
     class Media:
@@ -21,9 +23,12 @@ class GravelOrderAdmin(SHA):
             "admin/js/vendor/jquery/jquery.js",
             "core/scripts/list_filter_collapse.js",
         ]
-    list_display = ('po','supplier','lot','priority','nloads','need_by')
-    list_filter = ('supplier','lot','item','priority','need_by')
-    inlines = [GravelDeliveryInline,]
+
+    list_display = ("po", "supplier", "lot", "priority", "nloads", "need_by")
+    list_filter = ("supplier", "lot", "item", "priority", "need_by")
+    inlines = [
+        GravelDeliveryInline,
+    ]
 
     def changes(self, obj):
         return get_change(self, obj)
@@ -38,17 +43,18 @@ class GravelOrderAdmin(SHA):
             return True
         return False
 
+
 @admin.register(GravelDelivery)
 class GravelDelivery(SHA):
-
     class Media:
         # extra javascript
         js = [
             "admin/js/vendor/jquery/jquery.js",
             "core/scripts/list_filter_collapse.js",
         ]
-    list_display = ('ddriver','sdate','order','status','notes','loads')
-    list_filter = ('ddriver','sdate','status')
+
+    list_display = ("ddriver", "sdate", "order", "status", "notes", "loads")
+    list_filter = ("ddriver", "sdate", "status")
 
     def changes(self, obj):
         return get_change(self, obj)
