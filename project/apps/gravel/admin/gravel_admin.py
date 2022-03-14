@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.core.admin import activate, deactivate, get_change, get_history
+from apps.core.admin import get_change, get_history
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
 from ..models import GravelDelivery, GravelOrder

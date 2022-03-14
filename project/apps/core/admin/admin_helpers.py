@@ -10,6 +10,8 @@ def deactivate(self, request, queryset):
 @admin.display(description="activate selected")
 def activate(self, request, queryset):
     queryset.update(is_active=True)
+    for inst in queryset:
+        inst.refresh_from_db()
 
 
 @admin.display(description="history")

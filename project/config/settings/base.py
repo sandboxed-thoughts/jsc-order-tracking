@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "apps.clients",
     "apps.suppliers",
     "apps.gravel",
+    "apps.concrete",
 ]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

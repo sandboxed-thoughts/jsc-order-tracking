@@ -1,10 +1,10 @@
-from random import choices
 from django.db import models
-from django.contrib import admin
 from django.core.validators import RegexValidator
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from simple_history.models import HistoricalRecords as HR
+from apps.concrete.helpers import MixChoices
+
 
 class ConcreteOrder(models.Model):
     """Django model for concrete orders
@@ -25,43 +25,8 @@ class ConcreteOrder(models.Model):
         precip (str):       CharField
 
     """
-
-    class MixChoices:
-        RICH = 'rich'
-        STANDARD = 'standard'
-        MEDIUM = 'medium'
-        LEAN = 'lean'
-
-        choices = [
-            (RICH, 'rich'),
-            (STANDARD, 'standard'),
-            (MEDIUM, 'medium'),
-            (LEAN, 'lean'),
-        ]
-
-    class TempChoices:
-        NONE = None
-        HIGH = 'high'
-        LOW = 'low'
-
-        choices = [
-            (NONE, None),
-            (HIGH, 'high'),
-            (LOW, 'low'),
-        ]
-
-    class PrecipChoices:
-        CLEAR = None
-        RAIN = 'rain'
-        SNOW = 'snow'
-
-        choices = [
-            (CLEAR, None),
-            (RAIN, 'rain'),
-            (SNOW, 'snow'),
-        ]
-
-    po = models.CharField(_("Purchase Order"), max_length=50, validators=[RegexValidator("[\\S\\w]")])
+  
+    po = models.CharField(_("purchase order"), max_length=50, validators=[RegexValidator("[\\S\\w]")])
     lots = models.ManyToManyField("clients.Lot", verbose_name=_("lots"), related_name='orders')
     supplier = models.ForeignKey("suppliers.Supplier", verbose_name=_("supplier"), on_delete=models.PROTECT)
     dispatcher = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("dispatcher"), related_name='corders_accepted', on_delete=models.PROTECT)
@@ -70,16 +35,17 @@ class ConcreteOrder(models.Model):
     qordered = models.SmallIntegerField(_("total ordered"),)
     mix = models.CharField(_("mix"), max_length=10, choices=MixChoices.choices, default=MixChoices.STANDARD)
     slump = models.CharField(_("slump"), max_length=6)
-    is_pump = models.BooleanField(_("pump"),default=True)
-    pinfo = models.TextField(_("pump info"), blank=True, null=True)
-    temp = models.CharField(_("temperature"), max_length=4, blank=True, null=True, choices=TempChoices.choices, default=TempChoices.NONE)
-    precip = models.CharField(_("inclimate weather"), max_length=5, blank=True, null=True, choices=PrecipChoices.choices, default=PrecipChoices.CLEAR)
+    pinfo = models.OneToOneField("concrete.PumpInfo", verbose_name=_("pump info"), on_delete=models.CASCADE,blank=True, null=True)
+    order_notes = models.TextField(_("Order Notes"),blank=True, null=True)
     history = HR(inherit=True)
 
     def __str__(self) -> str:
         return "{0} [{1}] for {2}".format(self.po, "/".join(self.mix,self.slump))
 
-        
+    def is_pump(self) -> bool:
+        if self.pinfo is not None:
+            return True
+        return False
 
     class Meta:
         db_table = 'orders_concrete'
@@ -89,10 +55,17 @@ class ConcreteOrder(models.Model):
 
 
 
-class WallOrder(ConcreteOrder):
-    pass
+class WallOrder(models.Model):
+    order = models.OneToOneField(ConcreteOrder, verbose_name=_("order"), on_delete=models.CASCADE, primary_key=True)
+    history = HR(inherit=True)
+    class Meta:
+        db_table = 'orders_concrete_walls'
+        managed = True
+        verbose_name = 'Wall Order'
+        verbose_name_plural = 'Wall Orders'
 
-class FootingsOrder(ConcreteOrder):
+
+class FootingsOrder(models.Model):
     """Extends the Concrete Order model"""
 
     class GarageChoices:
@@ -105,13 +78,26 @@ class FootingsOrder(ConcreteOrder):
             (FT8, "8'"),
             (FT9, "9'"),
         ]
-    
+
+    order = models.OneToOneField(ConcreteOrder, verbose_name=_("order"), on_delete=models.CASCADE, primary_key=True)
     garage = models.CharField(_("garage"), max_length=4, choices=GarageChoices.choices,default=GarageChoices.FT8)
     wea = models.CharField(_("walkout egress area"), max_length=50)
     history = HR(inherit=True)
 
     class Meta:
-        db_table = 'orders_concrete_wall'
+        db_table = 'orders_concrete_footings'
         managed = True
         verbose_name = "Footings Order"
         verbose_name_plural = "Footings Orders"
+
+
+class FlatworkOrder(models.Model):
+    order = models.OneToOneField(ConcreteOrder, verbose_name=_("order"), on_delete=models.CASCADE, primary_key=True)
+    items = models.ManyToManyField("suppliers.ConcreteItems", verbose_name=_("Items"), related_name='concrete_orders',)
+    
+    history = HR(inherit=True)
+    class Meta:
+        db_table = 'orders_concrete_flatwork'
+        managed = True
+        verbose_name = "Flatwork Order"
+        verbose_name_plural = "Flatwork Orders"
