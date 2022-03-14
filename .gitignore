@@ -91,3 +91,5 @@ GitHub.sublime-settings
 
 # Windows 
 desktop.ini
+*.ini
+desktop.ini
