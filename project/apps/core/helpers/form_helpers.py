@@ -2,7 +2,8 @@ from functools import partial
 from itertools import groupby
 from operator import attrgetter
 
-from django.forms.models import ModelChoiceIterator, ModelChoiceField
+from django.forms.models import ModelChoiceField, ModelChoiceIterator, ModelMultipleChoiceField
+
 
 def get_choice_list(choice_items) -> list:
 
@@ -33,13 +34,6 @@ def get_choices(model, label_field, category_field=None):
     return choices
 
 
-
-
-
-
-
-
-
 class GroupedModelChoiceIterator(ModelChoiceIterator):
     def __init__(self, field, groupby):
         self.groupby = groupby
@@ -61,6 +55,10 @@ class GroupedModelChoiceField(ModelChoiceField):
         if isinstance(choices_groupby, str):
             choices_groupby = attrgetter(choices_groupby)
         elif not callable(choices_groupby):
-            raise TypeError('choices_groupby must either be a str or a callable accepting a single argument')
+            raise TypeError("choices_groupby must either be a str or a callable accepting a single argument")
         self.iterator = partial(GroupedModelChoiceIterator, groupby=choices_groupby)
         super().__init__(*args, **kwargs)
+
+
+class GroupedModelMultipleChoiceField(GroupedModelChoiceField):
+    pass

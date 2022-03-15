@@ -45,10 +45,7 @@ class ConcreteOrder(models.Model):
     )
     mix = models.CharField(_("mix"), max_length=10, choices=MixChoices.choices, default=MixChoices.STANDARD)
     slump = models.CharField(_("slump"), max_length=6)
-    pinfo = models.OneToOneField(
-        "concrete.PumpInfo", verbose_name=_("pump info"), on_delete=models.CASCADE, blank=True, null=True
-    )
-    order_notes = models.TextField(_("Order Notes"), blank=True, null=True)
+    onotes = models.TextField(_("Order Notes"), blank=True, null=True)
     history = HR(inherit=True)
 
     def __str__(self) -> str:

@@ -28,5 +28,5 @@ class OverdueFilter(SimpleListFilter):
 
         if self.value() == "False":
             return queryset.filter(ndate__gte=timezone.now())
-        
+
         return queryset
