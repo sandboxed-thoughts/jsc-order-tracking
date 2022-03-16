@@ -30,6 +30,19 @@ class PourProgress:
     ]
 
 
+class GarageChoices:
+    NONE = None
+    FT4 = "4'"
+    FT8 = "8'"
+    FT9 = "9'"
+
+    choices = [
+        (NONE, None),
+        (FT4, "4'"),
+        (FT8, "8'"),
+        (FT9, "9'"),
+    ]
+
 # not used, not imported:
 
 # class TempDelay:
