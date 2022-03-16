@@ -11,6 +11,7 @@ class MixChoices:
         (LEAN, "lean"),
     ]
 
+
 class PourProgress:
     WILL_CALL = "will call"
     SCHEDULED = "scheduled"

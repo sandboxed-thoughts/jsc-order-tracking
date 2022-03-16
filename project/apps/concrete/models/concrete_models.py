@@ -24,6 +24,7 @@ class ConcreteOrder(models.Model):
         precip (str):       CharField
 
     """
+
     po = models.CharField(_("purchase order"), max_length=50, validators=[RegexValidator("[\\S\\w]")])
     lots = models.ManyToManyField("clients.Lot", verbose_name=_("lots"), related_name="orders")
     supplier = models.ForeignKey("suppliers.Supplier", verbose_name=_("supplier"), on_delete=models.PROTECT)
@@ -55,7 +56,7 @@ class ConcreteOrder(models.Model):
 
 class FootingsOrder(ConcreteOrder):
     """Extends the Concrete Order model
-    
+
     fields:
         garage (str):   CharField
         wea (str):      CharField
@@ -73,7 +74,7 @@ class FootingsOrder(ConcreteOrder):
             (FT9, "9'"),
         ]
 
-    garage = models.CharField(_("garage size"), choices=GarageChoices.choices, default=GarageChoices.FT8,  max_length=3)
+    garage = models.CharField(_("garage size"), choices=GarageChoices.choices, default=GarageChoices.FT8, max_length=3)
     wea = models.CharField(_("walkout egress area"), max_length=50)
     history = HR(inherit=True)
 
@@ -81,7 +82,7 @@ class FootingsOrder(ConcreteOrder):
         return "footings order - " + super().__str__()
 
     class Meta:
-        db_table ='orders_concrete_footings'
+        db_table = "orders_concrete_footings"
         managed = True
         verbose_name = "flatwork order"
 
@@ -104,13 +105,14 @@ class FlatworkOrder(ConcreteOrder):
         verbose_name = "Wall Order"
         verbose_name_plural = "Wall Orders"
 
+
 class WallOrder(ConcreteOrder):
     """Extends the Concrete order model
-    
+
     fields:
         history (int):  ForeignKey -> HistoryRecord
     """
-    
+
     history = HR(inherit=True)
 
     def __str__(self) -> str:

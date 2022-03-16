@@ -12,11 +12,11 @@ from ..helpers import MixChoices
 class BaseConcreteOrderForm(forms.ModelForm):
     """Custom form to handle creation of wall orders
 
-    This form will cover every field found in all three types of concrete orders (flatwork, foundation, and walls) including the one-to-one PumpInfo
+     This form will cover every field found in all three types of concrete orders (flatwork, foundation, and walls) including the one-to-one PumpInfo
 
 
-   Thanks to Simple is Better Than Complex : https://rb.gy/t5diij
-   
+    Thanks to Simple is Better Than Complex : https://rb.gy/t5diij
+
     """
 
     # user model
@@ -24,7 +24,7 @@ class BaseConcreteOrderForm(forms.ModelForm):
     User = get_user_model()
 
     # fields
-    
+
     po = forms.CharField(
         label="purchase order".title(), max_length=50, required=True, validators=[RegexValidator("[\\S\\w]")]
     )
@@ -43,6 +43,4 @@ class BaseConcreteOrderForm(forms.ModelForm):
     mix = forms.ChoiceField(label="mix".title(), choices=MixChoices.choices)
     slump = forms.CharField(label="slump".title())
     # pump info
-    crew = forms.ModelChoiceField(
-        label="dispatcher".title(), queryset=User.objects.filter(groups__name="Operators")
-    )
+    crew = forms.ModelChoiceField(label="dispatcher".title(), queryset=User.objects.filter(groups__name="Operators"))

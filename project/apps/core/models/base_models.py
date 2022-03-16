@@ -63,7 +63,7 @@ class ContactModel(AddressModel, ConnectModel):
     """
     Incorporates both, the address and communicaiton models
     """
-    
+
     def __str__(self):
         return self.get_addr
 
@@ -73,7 +73,7 @@ class ContactModel(AddressModel, ConnectModel):
 
 class NoteModel(models.Model):
     """Standard model for recording notes
-    
+
     fields:
         author (int):           ForeignKey
         note (str):             TextField
@@ -85,7 +85,9 @@ class NoteModel(models.Model):
 
     # fields
     author = models.ForeignKey(User, verbose_name=_("submitted by"), on_delete=models.CASCADE)
-    note = models.TextField(_("Note"),)
+    note = models.TextField(
+        _("Note"),
+    )
     note_time = models.DateTimeField(auto_now=True, auto_now_add=False)
 
     class Meta:
@@ -93,4 +95,3 @@ class NoteModel(models.Model):
         verbose_name = "note"
         verbose_name_plural = "notes"
         managed = True
-        
