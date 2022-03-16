@@ -10,7 +10,7 @@ class GravelDeliveryInline(admin.TabularInline):
     """Tabular Inline View for GravelDelivery"""
 
     model = GravelDelivery
-    min_num = 1
+    min_num = 0
     max_num = 500
     extra = 0
 

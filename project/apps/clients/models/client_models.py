@@ -63,7 +63,7 @@ class Lot(models.Model):
 
     name = models.CharField(_("lot"), max_length=50)
     builder = models.ForeignKey(
-        Builder, verbose_name=_("builder"), related_name="builder_lots", on_delete=models.PROTECT
+        Builder, verbose_name=_("builder"), related_name="builder_lots", on_delete=models.PROTECT, blank=True, null=True
     )
     subdivision = models.ForeignKey(Subdivision, verbose_name=_("subdivision"), on_delete=models.PROTECT)
     history = HR(inherit=True)

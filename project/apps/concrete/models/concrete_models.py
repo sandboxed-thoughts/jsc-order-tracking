@@ -55,12 +55,13 @@ class ConcreteOrder(models.Model):
     wea = models.CharField(_("walkout egress area"), max_length=50, blank=True, null=True)
 
     def __str__(self) -> str:
-        return "{0} [{1}] for {2}".format(self.supplier, self.po, "/".join(self.mix, self.slump))
+        return "{0} [{1}] for {2}".format(self.supplier, self.po, "/".join([self.mix, self.slump]))
 
     class Meta:
         db_table = "concrete_orders"
         managed = True
-        verbose_name = "concrete orders"
+        verbose_name = "concrete order"
+        verbose_name_plural = "concrete orders"
 
 
 class FlatworkItem(models.Model):

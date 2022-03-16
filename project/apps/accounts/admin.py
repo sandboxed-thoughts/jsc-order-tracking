@@ -15,6 +15,15 @@ class CustomUserAdmin(UserAdmin):
             "core/scripts/list_filter_collapse.js",
         ]
 
+    def get_queryset(self, request):
+        if not request.user.is_superuser:
+            qs = self.model.editable_objects.get_queryset()
+            ordering = self.ordering or ()
+            if ordering:
+                qs = qs.order_by(*ordering)
+            return qs
+        return super().get_queryset(request)
+
     @admin.display(description="deactivate selected")
     def deactivate(self, request, queryset):
         queryset.update(is_active=False)

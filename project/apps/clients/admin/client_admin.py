@@ -116,7 +116,7 @@ class SubdivisionAdmin(SHA):
     ]
 
 
-# not registered
+@admin.register(Lot)
 class LotAdmin(SHA):
     list_display = (
         "name",

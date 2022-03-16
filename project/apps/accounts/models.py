@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from .managers import CustomUserManager
+from .managers import CustomUserManager, EditableUserManager
 
 
 class CustomUser(AbstractUser):
@@ -18,6 +18,7 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = ["first_name", "last_name"]
 
     objects = CustomUserManager()
+    editable_objects = EditableUserManager()
 
     def get_full_name(self):
         """

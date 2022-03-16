@@ -38,3 +38,8 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError(_("Superusers must be superusers"))
         return self.create_user(email, first_name, last_name, password, **extra_fields)
+
+
+class EditableUserManager(BaseUserManager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_superuser=False)
