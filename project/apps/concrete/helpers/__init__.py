@@ -1,1 +1,1 @@
-from .choice_helpers import MixChoices, PourProgress, GarageChoices
+from .choice_helpers import GarageChoices, MixChoices, PourProgress

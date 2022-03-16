@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "localflavor",
     "simple_history",
+    "sass_processor",
     # project apps
     "config.apps.ProjectAdminConfig",  # replaces 'django.contrib.admin'
     "apps.accounts",  # custom user model
@@ -73,7 +74,9 @@ MIDDLEWARE = [
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [
+            BASE_DIR.parent / "templates",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -141,4 +144,9 @@ STATICFILES_DIRS = [
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "sass_processor.finders.CssFinder",
 )
+
+# SASS
+SASS_PRECISION = 8
+SASS_OUTPUT_STYLE = "compact"

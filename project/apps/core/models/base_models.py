@@ -1,13 +1,14 @@
 from tabnanny import verbose
+
 from django.conf import Settings, settings
 from django.contrib import admin
-from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from ..helpers import get_addr
 
 from localflavor.us.models import USStateField as State, USZipCodeField as Zipcode
 from phonenumber_field.modelfields import PhoneNumberField
+
+from ..helpers import get_addr
 
 
 class AddressModel(models.Model):

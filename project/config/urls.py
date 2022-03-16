@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path("", admin.site.urls),
+    path("builders", include("apps.clients.urls", namespace=("builders"))),
+    path("admin", admin.site.urls),
 ]
 
 if settings.DEBUG:

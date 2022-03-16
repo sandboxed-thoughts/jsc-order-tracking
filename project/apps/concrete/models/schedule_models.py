@@ -1,10 +1,13 @@
 from lib2to3.pgen2 import driver
+
 from django.conf import settings
 from django.db import models
 from django.forms import MultipleChoiceField
 from django.utils.translation import gettext_lazy as _
-from simple_history.models import HistoricalRecords as HR
+
 from apps.core.models import NoteModel
+from simple_history.models import HistoricalRecords as HR
+
 from ..helpers import PourProgress
 
 User = settings.AUTH_USER_MODEL

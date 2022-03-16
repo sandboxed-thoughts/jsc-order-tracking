@@ -5,3 +5,6 @@ django-phonenumber-field[phonenumberslite]~=6.1.0
 django-simple-history~=3.0.0
 python-decouple~=3.6
 psycopg2~=2.9.3
+libsass~=0.21
+django-compressor~=3.1 
+django-sass-processor~=1.1

@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from simple_history.models import HistoricalRecords as HR
+
 from apps.core.models import ContactModel
+from simple_history.models import HistoricalRecords as HR
 
 
 class InspectionAgency(ContactModel):

@@ -1,6 +1,13 @@
 from django.contrib import admin
-from ..models import ConcreteOrder, PumpSchedule
+
 from simple_history.admin import SimpleHistoryAdmin as SHA
+
+from ..models import ConcreteOrder, PumpSchedule, ScheduleNotes
+
+
+class ScheduleNotesInline(admin.StackedInline):
+    model = ScheduleNotes
+    extra = 0
 
 
 @admin.register(ConcreteOrder)
@@ -10,4 +17,6 @@ class ConcreteOrderAdmin(SHA):
 
 @admin.register(PumpSchedule)
 class PumpScheduleAdmin(SHA):
-    pass
+    inlines = [
+        ScheduleNotesInline,
+    ]

@@ -2,8 +2,9 @@ from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+from apps.concrete.helpers import GarageChoices, MixChoices
 from apps.core.models import NoteModel
-from apps.concrete.helpers import MixChoices, GarageChoices
 from simple_history.models import HistoricalRecords as HR
 
 
@@ -27,6 +28,7 @@ class ConcreteOrder(models.Model):
         wea (char):         CharField
 
     """
+
     is_wall = models.BooleanField(_("is wall order"), default=True)
     is_footings = models.BooleanField(_("is footing order"), default=False)
     is_flatwork = models.BooleanField(_("is flatwork order"), default=False)
@@ -51,7 +53,14 @@ class ConcreteOrder(models.Model):
     # flatwork order parts
     items = models.ManyToManyField("FlatworkItem", verbose_name=_("items"), through="FlatworkOrderItems")
     # footings order parts
-    garage = models.CharField(_("garage size"), choices=GarageChoices.choices, default=GarageChoices.NONE, max_length=3, blank=True, null=True)
+    garage = models.CharField(
+        _("garage size"),
+        choices=GarageChoices.choices,
+        default=GarageChoices.NONE,
+        max_length=3,
+        blank=True,
+        null=True,
+    )
     wea = models.CharField(_("walkout egress area"), max_length=50, blank=True, null=True)
 
     def __str__(self) -> str:
@@ -76,7 +85,7 @@ class OrderNotes(NoteModel):
     order = models.ForeignKey("ConcreteOrder", verbose_name=_("concrete order notes"), on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'orders_concrete_notes'
+        db_table = "orders_concrete_notes"
         managed = True
         verbose_name = "order note"
         verbose_name_plural = "order notes"

@@ -43,6 +43,7 @@ class GarageChoices:
         (FT9, "9'"),
     ]
 
+
 # not used, not imported:
 
 # class TempDelay:
