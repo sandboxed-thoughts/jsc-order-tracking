@@ -7,11 +7,6 @@ from simple_history.models import HistoricalRecords as HR
 class StoneType(models.Model):
     """Various orderable types of gravel"""
 
-    item_type = models.CharField(
-        max_length=10,
-        choices=[("Gravel", "Gravel"), ("Concrete", "Concrete")],
-    )
-
     name = models.CharField(
         _("Stone Type"),
         max_length=50,

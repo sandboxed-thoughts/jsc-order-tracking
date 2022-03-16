@@ -1,7 +1,10 @@
+from tabnanny import verbose
+from django.conf import Settings, settings
 from django.contrib import admin
+from django.conf import settings
 from django.db import models
-from django.utils.html import format_html as fh
 from django.utils.translation import gettext_lazy as _
+from ..helpers import get_addr
 
 from localflavor.us.models import USStateField as State, USZipCodeField as Zipcode
 from phonenumber_field.modelfields import PhoneNumberField
@@ -31,23 +34,7 @@ class AddressModel(models.Model):
 
     @admin.display(description="address")
     def get_addr(self) -> str:
-        if self.street is None:
-            parts = [self.city, self.state, self.zipcode]
-        else:
-            parts = [self.street, "<br>", self.city, self.state, self.zipcode]
-        if any(parts):
-            count = len(parts) - 1
-            address = "<address>"
-            for k, v in enumerate(parts):
-                if v is not None:
-                    address += v.title()
-                if v == self.city and self.city is not None:
-                    address += ", "
-                elif 2 <= k < count:
-                    address += " "
-            address += "</address>"
-            return fh(address)
-        return "not provided"
+        return get_addr(self)
 
     def __str__(self):
         return self.get_addr
@@ -76,9 +63,34 @@ class ContactModel(AddressModel, ConnectModel):
     """
     Incorporates both, the address and communicaiton models
     """
-
+    
     def __str__(self):
         return self.get_addr
 
     class Meta:
         abstract = True
+
+
+class NoteModel(models.Model):
+    """Standard model for recording notes
+    
+    fields:
+        author (int):           ForeignKey
+        note (str):             TextField
+        note_time (datetime):   DateTimeField
+    """
+
+    # user model
+    User = settings.AUTH_USER_MODEL
+
+    # fields
+    author = models.ForeignKey(User, verbose_name=_("submitted by"), on_delete=models.CASCADE)
+    note = models.TextField(_("Note"),)
+    note_time = models.DateTimeField(auto_now=True, auto_now_add=False)
+
+    class Meta:
+        db_table = "notes"
+        verbose_name = "note"
+        verbose_name_plural = "notes"
+        managed = True
+        

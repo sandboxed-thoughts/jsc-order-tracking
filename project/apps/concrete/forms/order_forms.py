@@ -24,7 +24,7 @@ class BaseConcreteOrderForm(forms.ModelForm):
     User = get_user_model()
 
     # fields
-
+    
     po = forms.CharField(
         label="purchase order".title(), max_length=50, required=True, validators=[RegexValidator("[\\S\\w]")]
     )

@@ -18,9 +18,8 @@ class StoneTypeAdmin(admin.ModelAdmin):
             "core/scripts/list_filter_collapse.js",
         ]
 
-    list_display = ("name", "item_type", "description")
-    search_fields = ("name", "item_type", "description")
-    list_filter = ("item_type",)
+    list_display = ("name", "description")
+    search_fields = ("name", "description")
 
     def has_delete_permission(self, request, obj=None):
         if request.user.is_superuser:
