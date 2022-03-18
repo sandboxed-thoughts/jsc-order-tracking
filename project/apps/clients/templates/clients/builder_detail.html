@@ -58,10 +58,10 @@
                     </thead>
                     <tbody>
                     {% for lot in builder.builder_lots.all %}
-                        {% if lot.concrete_orders.any %}
+                        {% if lot.pour_lots %}
                         <tr>
                             <td scope="row"><a href="#">{{ lot.name }}</a></td>
-                            {% for order in lot.concrete_orders.all %}
+                            {% for order in lot.pour_lots.all %}
                             <td>{{ order.po }}</td>
                             <td>{{ order.qord }}</td>
                             <td>{{ order.etotal }}</td>

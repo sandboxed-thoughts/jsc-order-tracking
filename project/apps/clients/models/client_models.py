@@ -76,7 +76,7 @@ class Lot(models.Model):
         blank=True,
         null=True,
     )
-    subdivision = models.ForeignKey(Subdivision, verbose_name=_("subdivision"), on_delete=models.PROTECT)
+    subdivision = models.ForeignKey(Subdivision, verbose_name=_("subdivision"), related_name="lots", on_delete=models.PROTECT)
     history = HR(inherit=True)
 
     def __str__(self):
