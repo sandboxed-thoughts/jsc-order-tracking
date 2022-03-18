@@ -1,1 +1,2 @@
-from .concrete_order_admin import ConcreteOrderAdmin
+from .concrete_order_admin import FlatworkOrderAdmin, WallOrderAdmin, FootingsOrderAdmin
+from .pump_schedule_admin import PumpScheduleAdmin

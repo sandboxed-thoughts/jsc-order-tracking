@@ -18,7 +18,7 @@ class PumpSchedule(models.Model):
 
     fields:
         project_manager (int):  ForeignKey -> User
-        operator (int):         ForeignKey  -> User
+        driver (int):         ForeignKey  -> User
         crew (str):             CharField
         pdate (date):           DateField
         ctime (datetime):       DateTimeField
@@ -39,7 +39,11 @@ class PumpSchedule(models.Model):
     progress = models.CharField(
         _("pump progress"), choices=PourProgress.choices, default=PourProgress.WILL_CALL, max_length=11
     )
+    order = models.ForeignKey("ConcreteOrder", verbose_name=_("concrete order"), on_delete=models.CASCADE)
     history = HR()
+
+    def __str__(self):
+        return "{0}: {1} loads".format(self.order.po, str(self.loads).strip(".")[0])
 
     class Meta:
         db_table = "concrete_pump_schedule"

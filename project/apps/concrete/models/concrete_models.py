@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from apps.concrete.helpers import GarageChoices
 from apps.core.models import NoteModel
 from simple_history.models import HistoricalRecords as HR
+from ..managers import (WallManager, FootingsManager, FlatworkManager)
 
 
 class ConcreteOrder(models.Model):
@@ -19,8 +20,6 @@ class ConcreteOrder(models.Model):
         etotal (int):       SmallIntegerField
         atotal (int):       SmallIntegerField
         qordered (int):     SmallIntegerField
-        mix (str):          CharField
-        slump (str):        CharField
         temp (str):         CharField
         precip (str):       CharField
         items (int):        ForeignKey -> FlatworkItem
@@ -67,6 +66,11 @@ class ConcreteOrder(models.Model):
     def __str__(self) -> str:
         return "{0} [{1}]".format(self.supplier, self.po)
 
+    objects = models.Manager()
+    wall_orders = WallManager()
+    footings_orders = FootingsManager()
+    flatwork_orders = FlatworkManager()
+
     class Meta:
         db_table = "orders_concrete"
         managed = True
@@ -74,9 +78,54 @@ class ConcreteOrder(models.Model):
         verbose_name_plural = "concrete orders"
 
 
+class FlatworkOrder(ConcreteOrder):
+    class Meta:
+        proxy = True
+        verbose_name = "flatwork order"
+
+    objects = FlatworkManager()
+
+    def save(self, *args, **kwargs):
+        self.is_wall = False
+        self.is_footings = False
+        self.is_flatwork = True
+        super().save(*args, **kwargs)  # Call the "real" save() method.
+
+
+class WallOrder(ConcreteOrder):
+    class Meta:
+        proxy = True
+        verbose_name = "wall order"
+
+    objects = WallManager()
+
+    def save(self, *args, **kwargs):
+        self.is_wall = True
+        self.is_footings = False
+        self.is_flatwork = False
+        super().save(*args, **kwargs)  # Call the "real" save() method.
+
+
+class FootingsOrder(ConcreteOrder):
+    class Meta:
+        proxy = True
+        verbose_name = "footings order"
+
+    objects = FootingsManager()
+
+    def save(self, *args, **kwargs):
+        self.is_wall = False
+        self.is_footings = True
+        self.is_flatwork = False
+        super().save(*args, **kwargs)  # Call the "real" save() method.
+
+
 class FlatworkItem(models.Model):
     name = models.CharField(_("name"), max_length=50)
-    description = models.TextField(_("item description"))
+    description = models.TextField(_("item description"), blank=True, null=True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         db_table = "orders_concrete_flatwork_items"
