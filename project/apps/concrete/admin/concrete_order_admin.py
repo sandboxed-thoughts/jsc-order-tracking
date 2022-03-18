@@ -2,11 +2,11 @@ from django.contrib import admin
 
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
-from ..models import ConcreteOrder, PumpSchedule, ScheduleNotes
+from ..models import ConcreteOrder, PumpSchedule, PumpScheduleNotes
 
 
-class ScheduleNotesInline(admin.StackedInline):
-    model = ScheduleNotes
+class PumpScheduleNotesInline(admin.StackedInline):
+    model = PumpScheduleNotes
     extra = 0
 
 
@@ -18,5 +18,5 @@ class ConcreteOrderAdmin(SHA):
 @admin.register(PumpSchedule)
 class PumpScheduleAdmin(SHA):
     inlines = [
-        ScheduleNotesInline,
+        PumpScheduleNotesInline,
     ]

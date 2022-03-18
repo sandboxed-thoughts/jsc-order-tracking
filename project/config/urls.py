@@ -15,10 +15,7 @@ Including another URLconf
 """
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.auth import views
 from django.urls import include, path
-from apps.accounts.forms import UserLoginForm
-from apps.accounts.views import CustomLoginView
 
 urlpatterns = [
     path("clients/", include("apps.clients.urls", namespace="clients")),

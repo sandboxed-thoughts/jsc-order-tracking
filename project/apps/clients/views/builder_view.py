@@ -6,13 +6,13 @@ from django.views.generic import ListView, DetailView, UpdateView
 from django.contrib.auth.mixins import UserPassesTestMixin
 
 from apps.clients.models import Builder, Lot, Subdivision
-from .utils import group_check
+from apps.core.utils import group_check
 
 
 class BuilderListView(UserPassesTestMixin, View):
     def test_func(self):
         check_groups = [
-            'Administrator',
+            'Administrators',
             'Project Managers',
         ]
         return group_check(self, check_groups=check_groups)
@@ -20,7 +20,7 @@ class BuilderListView(UserPassesTestMixin, View):
     page_title = "Builders"
     dash_name = page_title
     builders = Builder.objects.filter(is_active=True)
-    template_name = "clients/builder_view_template.html"
+    template_name = "clients/builder_list.html"
 
     def get(self, request, *args, **kwargs):
         context = {

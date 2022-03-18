@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from views import BuilderDetailView, BuilderListView
+from .views import BuilderDetailView, BuilderListView
 
 app_name = "clients"
 urlpatterns = [

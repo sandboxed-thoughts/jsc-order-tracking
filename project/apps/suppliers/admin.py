@@ -4,7 +4,7 @@ from django.utils.html import format_html as fh
 from apps.core.admin import activate, deactivate, get_change, get_history
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
-from .models import ConcreteType, StoneType, Supplier
+from .models import ConcreteType, StoneType, Supplier, ConcreteType
 
 
 @admin.register(StoneType)
@@ -25,6 +25,11 @@ class StoneTypeAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return True
         return False
+
+
+@admin.register(ConcreteType)
+class ConcreteTypeAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(Supplier)

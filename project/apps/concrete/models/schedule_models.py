@@ -2,7 +2,6 @@ from lib2to3.pgen2 import driver
 
 from django.conf import settings
 from django.db import models
-from django.forms import MultipleChoiceField
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.models import NoteModel
@@ -43,26 +42,26 @@ class PumpSchedule(models.Model):
     history = HR()
 
     class Meta:
-        db_table = "concrete_schedule"
+        db_table = "concrete_pump_schedule"
         managed = True
-        verbose_name = "pump schedule"
+        verbose_name = "concrete pump schedule"
 
 
-class ScheduleNotes(NoteModel):
+class PumpScheduleNotes(NoteModel):
     """schedule notes"""
 
     pump = models.ForeignKey(
-        "PumpSchedule", verbose_name=_("pump scheduled"), related_name="pump_notes", on_delete=models.CASCADE
+        "PumpSchedule", verbose_name=_("pump scheduled"), related_name="pump_schedule_notes", on_delete=models.CASCADE
     )
 
     def __str__(self) -> str:
         return "{} {}".format(self.author, self.pump.pdate)
 
     class Meta:
-        db_table = "concrete_schedule_notes"
+        db_table = "concrete_pump_schedule_notes"
         managed = True
-        verbose_name = "note"
-        verbose_name_plural = "notes"
+        verbose_name = "pump schedule note"
+        verbose_name_plural = "pump schedule notes"
 
 
 class InclimateWeather(models.Model):
@@ -86,7 +85,7 @@ class InclimateWeather(models.Model):
         verbose_name_plural = "inclimate weather reports"
 
 
-class WeatherNotes(NoteModel):
+class InclimateWeatherNotes(NoteModel):
     "notes on inclimate weather"
 
     weather = models.ForeignKey(

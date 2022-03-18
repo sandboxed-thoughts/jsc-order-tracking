@@ -7,19 +7,23 @@
 
 <div class="col-lg-6 p-5">
     <h1 class="display-5 fw-bold lh-1 mb-3">{{ builder.name }}</h1>
-    <p class="lead"><i class="fa-duotone fa-location-dot"></i> {{ builder.get_untagged_addr }}<br/>
-    <i class="fa-duotone fa-phone"></i> <a href="tel:{{builder.phone.as_e164}}">{{ builder.phone }}</a><br/>
-    <i class="fa-duotone fa-paper-plane"></i> <a href="mailto:{{ builder.email }}">{{ builder.email }}</a></p>
+    <p class="lead">{% if not builder.get_untagged_addr == "" %}<i class="fa-duotone fa-location-dot"></i>{{ builder.get_untagged_addr }}<br/>{% endif %}
+    {% if builder.phone %}<i class="fa-duotone fa-phone"></i> <a href="tel:{{builder.phone.as_e164}}">{{ builder.phone }}</a><br/>{% endif %}
+    {% if builder.email %}<i class="fa-duotone fa-paper-plane"></i> <a href="mailto:{{ builder.email }}">{{ builder.email }}</a>{% endif %}</p>
 </div>
 
 <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      {% comment %} Lot List Tab {% endcomment %}
       <button class="nav-link active" id="lot-tab" data-bs-toggle="tab" data-bs-target="#lot" type="button" role="tab" aria-controls="lot" aria-selected="true">Lots</button>
+      {% comment %} Concrete Order Tab {% endcomment %}
       <button class="nav-link" id="concrete-orders-tab" data-bs-toggle="tab" data-bs-target="#concrete-orders" type="button" role="tab" aria-controls="concrete-orders" aria-selected="false">Concrete Orders</button>
+      {% comment %} Gravel Order Tab {% endcomment %}
       <button class="nav-link" id="gravel-orders-tab" data-bs-toggle="tab" data-bs-target="#gravel-orders" type="button" role="tab" aria-controls="gravel-orders" aria-selected="false">Gravel Orders</button>
     </div>
   </nav>
   <div class="tab-content" id="nav-tabContent">
+    {% comment %} Lot List Table {% endcomment %}
     <div class="tab-pane fade show active" id="lot" role="tabpanel" aria-labelledby="lot-tab">
         <div class="table-responsive-lg table-striped">
             <table class="table table-hover">
@@ -39,8 +43,9 @@
                 {% endfor %}
                 </tbody>
             </table>
-        </div>        
+        </div>
     </div>
+    {% comment %} Concrete Order Table {% endcomment %}
     <div class="tab-pane fade" id="concrete-orders" role="tabpanel" aria-labelledby="concrete-orders-tab">
         <h2>Concrete</h2>
         <div class="table-responsive-lg table-striped">
@@ -67,12 +72,13 @@
                     {% endfor %}
                     </tbody>
                 </table>
-            </div>        
-        </div>        
+            </div>
+        </div>
     </div>
+    {% comment %} Gravel Order Table {% endcomment %}
     <div class="tab-pane fade" id="gravel-orders" role="tabpanel" aria-labelledby="gravel-orders-tab">
         <h2>Gravel</h2>
     </div>
   </div>
-  
+
 {% endblock content %}

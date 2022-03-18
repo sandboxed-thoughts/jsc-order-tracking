@@ -20,6 +20,7 @@ class Builder(ContactModel):
         _("active builder"),
         default=True,
     )
+    subdivisions = models.ManyToManyField("Subdivision", verbose_name=_("subdivisions"), through="Lot", related_name="builders")
     history = HR()
 
     def __str__(self) -> str:
