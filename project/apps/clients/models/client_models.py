@@ -1,6 +1,7 @@
 from gettext import translation
 
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.models import AddressModel, ContactModel
@@ -24,6 +25,9 @@ class Builder(ContactModel):
     def __str__(self) -> str:
         return self.name.title()
 
+    def get_absolute_url(self):
+        return reverse("clients:view", kwargs={"pk": self.pk})
+
 
 class Subdivision(AddressModel):
     """
@@ -46,6 +50,7 @@ class Subdivision(AddressModel):
         verbose_name = "Subdivision"
         verbose_name_plural = "Subdivisions"
 
+    street = models.CharField(_("Street Name"), max_length=50, blank=True, null=True)
     name = models.CharField(_("Site Name"), max_length=100)
     is_active = models.BooleanField(_("Active"), default=True)
     history = HR()

@@ -9,18 +9,18 @@ from ..models import ConcreteOrder, FlatworkItem
 class ConcreteOrderLot(models.Model):
     """Joins concrete orders to lots"""
 
-    lot = models.ForeignKey("clients.Lot", verbose_name=_("lot"), related_name="pour_lots", on_delete=models.PROTECT)
+    lot = models.ForeignKey("clients.Lot", verbose_name=_("lot"), related_name="concrete_orders", on_delete=models.PROTECT)
     concrete_order = models.ForeignKey(
-        "ConcreteOrder", verbose_name=_("concrete order"), related_name="concrete_orders", on_delete=models.PROTECT
+        "ConcreteOrder", verbose_name=_("concrete order"), related_name="pour_lots", on_delete=models.PROTECT
     )
 
     class Meta:
-        db_table = "concrete_order_lots"
+        db_table = "orders_concrete_lots"
         managed = True
         verbose_name = "concrete order lot"
 
 
-class OrderInspection(models.Model):
+class ConcreteOrderInspection(models.Model):
     """Joins concrete orders to inspections"""
 
     concrete_order = models.ForeignKey(
@@ -40,9 +40,10 @@ class OrderInspection(models.Model):
     itime = models.DateTimeField(_("inspection time"), auto_now=False, auto_now_add=False)
 
     class Meta:
-        db_table = "concrete_order_inspections"
+        db_table = "orders_concrete_inspections"
         managed = True
         verbose_name = "concrete order inspection"
+        verbose_name_plural = "concrete order inspections"
 
 
 class FlatworkOrderItems(models.Model):
@@ -64,6 +65,6 @@ class FlatworkOrderItems(models.Model):
     )
 
     class Meta:
-        db_table = "concrete_order_flatwork_items"
+        db_table = "orders_concrete_flatwork_order_items"
         managed = True
         verbose_name = "flatwork items"

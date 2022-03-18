@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from simple_history.models import HistoricalRecords as HR
+from ..helpers import MixChoices
 
 
 class StoneType(models.Model):
@@ -24,7 +25,7 @@ class StoneType(models.Model):
         verbose_name_plural = "Stone Types"
 
 
-class ConcreteItems(models.Model):
+class ConcreteType(models.Model):
     """Various orderable types of concrete"""
 
     name = models.CharField(
@@ -32,6 +33,8 @@ class ConcreteItems(models.Model):
         max_length=50,
         unique=True,
     )
+    mix = models.CharField(_("mix"), max_length=10, choices=MixChoices.choices, default=MixChoices.STANDARD)
+    slump = models.CharField(_("slump"), max_length=6)
     description = models.TextField(_("Description"), max_length=250, blank=True, null=True)
 
     def __str__(self):

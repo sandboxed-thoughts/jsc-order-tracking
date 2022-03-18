@@ -4,7 +4,7 @@ from django.utils.html import format_html as fh
 from apps.core.admin import activate, deactivate, get_change, get_history
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
-from .models import ConcreteItems, StoneType, Supplier
+from .models import ConcreteType, StoneType, Supplier
 
 
 @admin.register(StoneType)

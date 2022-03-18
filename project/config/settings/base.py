@@ -96,6 +96,14 @@ DATABASES = {"default": dj_database_url.config(default=config("DATABASE_URL"))}
 # User model
 AUTH_USER_MODEL = config("USER_MODEL")
 
+LOGIN_URL = '/login/'
+
+LOGIN_REDIRECT_URL = '/'
+
+LOGOUT_URL = '/logout'
+
+LOGOUT_REDIRECT_URL = LOGIN_URL
+
 # Password validation
 
 AUTH_PASSWORD_VALIDATORS = [

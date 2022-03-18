@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from localflavor.us.models import USStateField as State, USZipCodeField as Zipcode
 from phonenumber_field.modelfields import PhoneNumberField
 
-from ..helpers import get_addr
+from ..helpers import get_addr, get_untagged_addr
 
 
 class AddressModel(models.Model):
@@ -36,6 +36,9 @@ class AddressModel(models.Model):
     @admin.display(description="address")
     def get_addr(self) -> str:
         return get_addr(self)
+
+    def get_untagged_addr(self):
+        return get_untagged_addr(self)
 
     def __str__(self):
         return self.get_addr

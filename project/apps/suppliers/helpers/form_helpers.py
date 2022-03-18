@@ -1,4 +1,13 @@
-from random import choices
 
-from apps.core.helpers import get_choices
-from apps.suppliers.models import Supplier
+class MixChoices:
+    RICH = "rich"
+    STANDARD = "standard"
+    MEDIUM = "medium"
+    LEAN = "lean"
+
+    choices = [
+        (RICH, "rich"),
+        (STANDARD, "standard"),
+        (MEDIUM, "medium"),
+        (LEAN, "lean"),
+    ]

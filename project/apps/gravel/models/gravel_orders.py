@@ -29,7 +29,7 @@ class GravelOrder(models.Model):
 
     po = models.CharField(_("Purchase Order"), max_length=50, validators=[RegexValidator("[\\S\\w]")])
     priority = models.CharField(_("priority"), max_length=50)
-    lot = models.ForeignKey("clients.Lot", verbose_name=_("lot"), on_delete=models.PROTECT)
+    lot = models.ForeignKey("clients.Lot", verbose_name=_("lot"), related_name="lot_gravel", on_delete=models.PROTECT)
     item = models.ForeignKey("suppliers.StoneType", verbose_name=_("stone type"), on_delete=models.PROTECT)
     bsdt = models.CharField(_("B/S D/T"), max_length=50, blank=True, null=True)
     supplier = models.ForeignKey("suppliers.Supplier", verbose_name=_("supplier"), on_delete=models.PROTECT)

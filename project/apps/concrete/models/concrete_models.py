@@ -3,7 +3,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.concrete.helpers import GarageChoices, MixChoices
+from apps.concrete.helpers import GarageChoices
 from apps.core.models import NoteModel
 from simple_history.models import HistoricalRecords as HR
 
@@ -33,8 +33,9 @@ class ConcreteOrder(models.Model):
     is_footings = models.BooleanField(_("is footing order"), default=False)
     is_flatwork = models.BooleanField(_("is flatwork order"), default=False)
     po = models.CharField(_("purchase order"), max_length=50, validators=[RegexValidator("[\\S\\w]")], unique=True)
-    lots = models.ManyToManyField("clients.Lot", verbose_name=_("lots"), related_name="orders")
-    supplier = models.ForeignKey("suppliers.Supplier", verbose_name=_("supplier"), on_delete=models.PROTECT)
+    lots = models.ManyToManyField("clients.Lot", verbose_name=_("lots"), through="ConcreteOrderLot")
+    ctype = models.ForeignKey("suppliers.ConcreteType", verbose_name=_("concrete type"), on_delete=models.PROTECT)
+    supplier = models.ForeignKey("suppliers.Supplier", verbose_name=_("supplier"), related_name="supplier_concrete_orders", on_delete=models.PROTECT)
     dispatcher = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name=_("dispatcher"),
@@ -48,10 +49,8 @@ class ConcreteOrder(models.Model):
     qordered = models.SmallIntegerField(
         _("total ordered"),
     )
-    mix = models.CharField(_("mix"), max_length=10, choices=MixChoices.choices, default=MixChoices.STANDARD)
-    slump = models.CharField(_("slump"), max_length=6)
     # flatwork order parts
-    items = models.ManyToManyField("FlatworkItem", verbose_name=_("items"), through="FlatworkOrderItems")
+    items = models.ManyToManyField("FlatworkItem", verbose_name=_("flatwork items"), through="FlatworkOrderItems")
     # footings order parts
     garage = models.CharField(
         _("garage size"),
@@ -62,12 +61,14 @@ class ConcreteOrder(models.Model):
         null=True,
     )
     wea = models.CharField(_("walkout egress area"), max_length=50, blank=True, null=True)
+    order_date = models.DateTimeField(_("order date"), auto_now=False, auto_now_add=False, blank=True, null=True)
+    history = HR()
 
     def __str__(self) -> str:
-        return "{0} [{1}] for {2}".format(self.supplier, self.po, "/".join([self.mix, self.slump]))
+        return "{0} [{1}]".format(self.supplier, self.po)
 
     class Meta:
-        db_table = "concrete_orders"
+        db_table = "orders_concrete"
         managed = True
         verbose_name = "concrete order"
         verbose_name_plural = "concrete orders"
@@ -79,10 +80,13 @@ class FlatworkItem(models.Model):
 
     class Meta:
         db_table = "orders_concrete_flatwork_items"
+        managed = True
+        verbose_name = "flatwork item"
+        verbose_name_plural = "flatwork items"
 
 
-class OrderNotes(NoteModel):
-    order = models.ForeignKey("ConcreteOrder", verbose_name=_("concrete order notes"), on_delete=models.CASCADE)
+class ConcreteOrderNote(NoteModel):
+    order = models.ForeignKey("ConcreteOrder", verbose_name=_("concrete order notes"), related_name="concrete_order_notes", on_delete=models.CASCADE)
 
     class Meta:
         db_table = "orders_concrete_notes"

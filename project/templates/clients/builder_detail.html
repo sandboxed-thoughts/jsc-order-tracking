@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ builder.name }} |{% endblock title %}
+
+{% block content %}
+
+
+<div class="col-lg-6 p-5">
+    <h1 class="display-5 fw-bold lh-1 mb-3">{{ builder.name }}</h1>
+    <p class="lead"><i class="fa-duotone fa-location-dot"></i> {{ builder.get_untagged_addr }}<br/>
+    <i class="fa-duotone fa-phone"></i> <a href="tel:{{builder.phone.as_e164}}">{{ builder.phone }}</a><br/>
+    <i class="fa-duotone fa-paper-plane"></i> <a href="mailto:{{ builder.email }}">{{ builder.email }}</a></p>
+</div>
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <button class="nav-link active" id="lot-tab" data-bs-toggle="tab" data-bs-target="#lot" type="button" role="tab" aria-controls="lot" aria-selected="true">Lots</button>
+      <button class="nav-link" id="concrete-orders-tab" data-bs-toggle="tab" data-bs-target="#concrete-orders" type="button" role="tab" aria-controls="concrete-orders" aria-selected="false">Concrete Orders</button>
+      <button class="nav-link" id="gravel-orders-tab" data-bs-toggle="tab" data-bs-target="#gravel-orders" type="button" role="tab" aria-controls="gravel-orders" aria-selected="false">Gravel Orders</button>
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="lot" role="tabpanel" aria-labelledby="lot-tab">
+        <div class="table-responsive-lg table-striped">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col col">Lot</th><th scope="col">Subdivision</th><th scope="col">&#035; Concrete Orders</th><th scope="col">&#035; Gravel Orders</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for lot in builder.builder_lots.all %}
+                    <tr>
+                        <td scope="row"><a href="#">{{ lot.name }}</a></td>
+                        <td>{{ lot.subdivision.get_addr }}</td>
+                        <td>{{ lot.pour_lots.count }}</td>
+                        <td>{{ lot.lot_gravel.count }}</td>
+                    <tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>        
+    </div>
+    <div class="tab-pane fade" id="concrete-orders" role="tabpanel" aria-labelledby="concrete-orders-tab">
+        <h2>Concrete</h2>
+        <div class="table-responsive-lg table-striped">
+            <div class="table-responsive-lg table-striped">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col col">Lot</th><th scope="col">Order Number</th><th scope="col">Quantity Ordered</th><th scope="col">Estimated Total</th><th scope="col">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for lot in builder.builder_lots.all %}
+                        {% if lot.concrete_orders.any %}
+                        <tr>
+                            <td scope="row"><a href="#">{{ lot.name }}</a></td>
+                            {% for order in lot.concrete_orders.all %}
+                            <td>{{ order.po }}</td>
+                            <td>{{ order.qord }}</td>
+                            <td>{{ order.etotal }}</td>
+                            <td>{{order.ordernotes_set.all}}</td>
+                            {% endfor %}
+                        <tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>        
+        </div>        
+    </div>
+    <div class="tab-pane fade" id="gravel-orders" role="tabpanel" aria-labelledby="gravel-orders-tab">
+        <h2>Gravel</h2>
+    </div>
+  </div>
+  
+{% endblock content %}
