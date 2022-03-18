@@ -23,7 +23,7 @@ class UserLoginForm(AuthenticationForm):
             'id': 'floatingPassword',
         }
     ))
-    
+
     def __init__(self, *args, **kwargs):
         super(UserLoginForm, self).__init__(*args, **kwargs)
 
@@ -37,7 +37,6 @@ class UserLoginForm(AuthenticationForm):
             )
             if self.user_cache is None:
                 raise self.get_invalid_login_error()
-            else:
-                self.confirm_login_allowed(self.user_cache)
+            self.confirm_login_allowed(self.user_cache)
 
         return self.cleaned_data
