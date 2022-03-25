@@ -18,9 +18,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path("clients/", include("apps.clients.urls", namespace="clients")),
-    path('', include("apps.accounts.urls", namespace='accounts')),
-    path("admin/", admin.site.urls),
+    path("", admin.site.urls),
 ]
 
 if settings.DEBUG:

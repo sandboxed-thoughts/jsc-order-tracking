@@ -1,5 +1,3 @@
-from lib2to3.pgen2 import driver
-
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
