@@ -1,1 +1,1 @@
-from .user_admin import UserAdmin, GroupAdmin
+from .user_admin import GroupAdmin, UserAdmin

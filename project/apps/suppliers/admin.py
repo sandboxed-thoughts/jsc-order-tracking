@@ -4,32 +4,7 @@ from django.utils.html import format_html as fh
 from apps.core.admin import activate, deactivate, get_change, get_history
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
-from .models import ConcreteType, StoneType, Supplier, ConcreteType
-
-
-@admin.register(StoneType)
-class StoneTypeAdmin(admin.ModelAdmin):
-    """Admin View for StoneType"""
-
-    class Media:
-        # extra javascript
-        js = [
-            "admin/js/vendor/jquery/jquery.js",
-            "core/scripts/list_filter_collapse.js",
-        ]
-
-    list_display = ("name", "description")
-    search_fields = ("name", "description")
-
-    def has_delete_permission(self, request, obj=None):
-        if request.user.is_superuser:
-            return True
-        return False
-
-
-@admin.register(ConcreteType)
-class ConcreteTypeAdmin(admin.ModelAdmin):
-    pass
+from .models import Supplier
 
 
 @admin.register(Supplier)

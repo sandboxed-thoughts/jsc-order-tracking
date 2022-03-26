@@ -1,3 +1,1 @@
-import imp
-
-from .gravel_admin import GravelOrderAdmin
+from .gravel_admin import StoneTypeAdmin

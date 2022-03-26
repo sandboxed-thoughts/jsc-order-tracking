@@ -1,5 +1,1 @@
-from .concrete_order_managers import (
-    WallManager,
-    FootingsManager,
-    FlatworkManager,
-)
+from .concrete_order_managers import FlatworkManager, FootingsManager, WallManager

@@ -3,11 +3,11 @@ from django.db import models
 from django.utils.html import format_html as fh
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.models import ContactModel
+from apps.core.models import CommunicationsModel
 from simple_history.models import HistoricalRecords as HR
 
 
-class Supplier(ContactModel):
+class Supplier(CommunicationsModel):
     """Supplier model
 
     Fields:

@@ -1,25 +1,25 @@
 from multiprocessing import context
 
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import render
 from django.views import View
-from django.views.generic import ListView, DetailView, UpdateView
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.views.generic import DetailView, UpdateView
 
-from apps.clients.models import Builder, Lot, Subdivision
 from apps.core.utils import group_check
+
+from ..models import BuilderModel as Builder
 
 
 class BuilderListView(UserPassesTestMixin, View):
     def test_func(self):
         check_groups = [
-            'Administrators',
-            'Project Managers',
+            "Administrators",
+            "Project Managers",
         ]
-        return group_check(self, check_groups=check_groups)
+        return group_check(user=self.request.user, check_groups=check_groups)
 
-    page_title = "Builders"
-    dash_name = page_title
-    builders = Builder.objects.filter(is_active=True)
+    builders = Builder.active_builders.all()
+
     template_name = "clients/builder_list.html"
 
     def get(self, request, *args, **kwargs):
@@ -31,7 +31,14 @@ class BuilderListView(UserPassesTestMixin, View):
         return render(request, self.template_name, context)
 
 
-class BuilderDetailView(DetailView):
+class BuilderDetailView(UserPassesTestMixin, DetailView):
+    def test_func(self):
+        check_groups = [
+            "Administrators",
+            "Project Managers",
+        ]
+        return group_check(user=self.request.user, check_groups=check_groups)
+
     model = Builder
     template_name = "clients/builder_detail.html"
     page_title = "Builders"

@@ -1,4 +1,3 @@
-
 class MixChoices:
     RICH = "rich"
     STANDARD = "standard"

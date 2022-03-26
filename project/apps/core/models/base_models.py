@@ -1,12 +1,11 @@
-from tabnanny import verbose
-
-from django.conf import Settings, settings
+from django.conf import settings
 from django.contrib import admin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from localflavor.us.models import USStateField as State, USZipCodeField as Zipcode
 from phonenumber_field.modelfields import PhoneNumberField
+from simple_history.models import HistoricalRecords as HR
 
 from ..helpers import get_addr, get_untagged_addr
 
@@ -47,7 +46,7 @@ class AddressModel(models.Model):
         abstract = True
 
 
-class ConnectModel(models.Model):
+class ContactModel(models.Model):
     """
     The standard block of communications information to any model
     """
@@ -63,9 +62,9 @@ class ConnectModel(models.Model):
         abstract = True
 
 
-class ContactModel(AddressModel, ConnectModel):
+class CommunicationsModel(AddressModel, ContactModel):
     """
-    Incorporates both, the address and communicaiton models
+    Incorporates both, the address and contact models
     """
 
     def __str__(self):
@@ -81,7 +80,9 @@ class NoteModel(models.Model):
     fields:
         author (int):           ForeignKey
         note (str):             TextField
-        note_time (datetime):   DateTimeField
+        created_on (datetime):  DateTimeField
+        updated_on (datetime):  DateTimeField
+        history (obj):          HistoricalRecords
     """
 
     # user model
@@ -92,10 +93,14 @@ class NoteModel(models.Model):
     note = models.TextField(
         _("Note"),
     )
-    note_time = models.DateTimeField(auto_now=True, auto_now_add=False)
+    created_on = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True, auto_now_add=False)
+
+    history = HR()
 
     class Meta:
         db_table = "notes"
         verbose_name = "note"
         verbose_name_plural = "notes"
         managed = True
+        ordering = ["author", "-created_on"]

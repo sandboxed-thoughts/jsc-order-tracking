@@ -4,13 +4,16 @@ from django.utils.html import format_html as fh
 
 @admin.display(description="deactivate selected")
 def deactivate(self, request, queryset):
-    queryset.update(is_active=False)
+    for inst in queryset:
+        inst.is_active = False
+        inst.save()
 
 
 @admin.display(description="activate selected")
 def activate(self, request, queryset):
-    queryset.update(is_active=True)
     for inst in queryset:
+        inst.is_active = True
+        inst.save()
         inst.refresh_from_db()
 
 

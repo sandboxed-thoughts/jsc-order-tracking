@@ -1,2 +1,1 @@
-from .concrete_order_admin import FlatworkOrderAdmin, WallOrderAdmin, FootingsOrderAdmin
-from .pump_schedule_admin import PumpScheduleAdmin
+from .concrete_type_admin import ConcreteTypeInline

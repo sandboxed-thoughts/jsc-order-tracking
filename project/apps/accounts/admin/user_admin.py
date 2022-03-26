@@ -3,43 +3,21 @@ from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin, UserAdmin
 from django.contrib.auth.models import Group as DjangoGroup
 from django.utils.translation import gettext_lazy as _
 
+from apps.core.admin.admin_helpers import activate, deactivate
+
 from ..models import CustomUser
 
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-    class Media:
-        # extra javascript
-        js = [
-            "admin/js/vendor/jquery/jquery.js",
-            "core/scripts/list_filter_collapse.js",
-        ]
 
-    def get_queryset(self, request):
-        if not request.user.is_superuser:
-            qs = self.model.editable_objects.get_queryset()
-            ordering = self.ordering or ()
-            if ordering:
-                qs = qs.order_by(*ordering)
-            return qs
-        return super().get_queryset(request)
-
-    @admin.display(description="deactivate selected")
-    def deactivate(self, request, queryset):
-        queryset.update(is_active=False)
-
-    @admin.display(description="activate selected")
-    def activate(self, request, queryset):
-        queryset.update(is_active=True)
-
-    actions = ["activate", "deactivate"]
+    actions = [activate, deactivate]
 
     ordering = ["email"]
 
     list_display = [
+        "get_full_name",
         "email",
-        "first_name",
-        "last_name",
         "is_active",
     ]
 
@@ -79,6 +57,24 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
     )
+
+    check_groups = [
+        "Administrators",
+        "Project Managers",
+    ]
+
+    def get_queryset(self, request):
+        """Only superusers can see superusers"""
+        if not request.user.is_superuser:
+            qs = self.model.editable_objects.get_queryset()
+            ordering = self.ordering or ()
+            if ordering:
+                qs = qs.order_by(*ordering)
+            return qs
+        return super().get_queryset(request)
+
+    def has_delete_permission(self, request, obj=None) -> bool:
+        return True if request.user.is_superuser else False
 
 
 class Group(DjangoGroup):

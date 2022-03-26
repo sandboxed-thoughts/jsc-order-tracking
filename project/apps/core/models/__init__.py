@@ -1,1 +1,1 @@
-from .base_models import AddressModel, ConnectModel, ContactModel, NoteModel
+from .base_models import AddressModel, CommunicationsModel, ContactModel, NoteModel
