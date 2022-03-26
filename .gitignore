@@ -53,6 +53,7 @@ coverage.xml
 
 # pyenv 
 .python-version 
+pyvenv.cfg
 
 # celery 
 celerybeat-schedule.* 
@@ -86,8 +87,9 @@ GitHub.sublime-settings
 ./.vscode/
 .vscode/
 .vscode/* 
-!.vscode/settings.json 
-!.vscode/tasks.json 
-!.vscode/launch.json 
-!.vscode/extensions.json 
 .history
+
+# Windows 
+desktop.ini
+*.ini
+desktop.ini
