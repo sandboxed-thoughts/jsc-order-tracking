@@ -33,7 +33,7 @@ class GravelDeliveryAdmin(SHA):
             "core/scripts/list_filter_collapse.js",
         ]
 
-    list_display = ("driver", "sdate", "order", "status", "loads", "get_history")
+    list_display = ("get_driver", "sdate", "order", "status", "loads", "get_history")
     list_filter = (
         "driver",
         "sdate",
