@@ -22,7 +22,7 @@ jobs:
       DATABASE_URL: postgres://postgres:postgrespassword@localhost:5432/jsc
       USER_MODEL: accounts.CustomUser
       STATIC_ROOT: /project/static/
-      BROWSER_DRIVER_PATH: None
+      BROWSER_DRIVER_PATH: /project/
 
     services:
       postgres:
