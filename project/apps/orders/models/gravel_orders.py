@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.core.validators import RegexValidator
 from django.db import models
+from django.utils.html import format_html as fh
 from django.utils.translation import gettext_lazy as _
 
 from simple_history.models import HistoricalRecords as HR
@@ -21,19 +22,18 @@ class GravelOrder(models.Model):
         need_by     (datetime): DateField
         rloads      (int):      SmallIntegerField
         dloads      (int):      SmallIntegerField
-        ddate       (datetime): DateField
-        history     (class):    HistoricalRecords
 
     methods:
         nloads (int): returns the remaining loads to complete the order
         is_complete (bool): status
+        get_lots (list): returns a list of lots formatted with line breaks
     """
 
     po = models.CharField(_("Purchase Order"), max_length=50, validators=[RegexValidator("[\\S\\w]")])
     priority = models.CharField(_("priority"), max_length=50)
     builder = models.ForeignKey(
         "clients.BuilderModel",
-        verbose_name=_("builders"),
+        verbose_name=_("builder"),
         related_name="builder_gravel_orders",
         limit_choices_to={"is_active": True},
         on_delete=models.PROTECT,
@@ -57,7 +57,6 @@ class GravelOrder(models.Model):
     need_by = models.DateField(_("date needed"), auto_now=False, auto_now_add=False)
     rloads = models.SmallIntegerField(_("loads requested"))
     dloads = models.SmallIntegerField(_("loads delivered"), default=0)
-    ddate = models.DateTimeField(_("delivery date"), auto_now=False, auto_now_add=False, blank=True, null=True)
 
     history = HR()
 
@@ -73,6 +72,12 @@ class GravelOrder(models.Model):
     @admin.display(description="loads needed")
     def nloads(self) -> int:
         return self.rloads - self.dloads
+
+    @admin.display(description="lots")
+    def get_lots(self):
+        ll = [x for x in self.lots.strip(" ").split(",")]
+        pll = "<br>".join(ll)
+        return fh(pll)
 
     def is_complete(self) -> bool:
         if self.nloads <= 0:

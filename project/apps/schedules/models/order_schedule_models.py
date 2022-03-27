@@ -1,4 +1,6 @@
 from django.conf import settings
+from django.contrib import admin
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -15,24 +17,32 @@ class GravelDeliverySchedule(models.Model):
     """delivery schedule of a gravel order
 
     Args:
-        order   (str):      ForeignKey -> GravelOrder
-        ddriver (int):      ForeignKey -> AUTH_USER_MODEL
-        sdate   (datetime): DateField
-        loads   (int):      SmallIntegerField
-        note    (str):      ForeignKey -> NoteModel
-        status  (str):      CharField -> StatusChoices
-
-    Returns:
-        _type_: _description_
+        order               (str):          ForeignKey -> GravelOrder
+        supplier_delivers   (bool):         BooleanField
+        driver              (int):          ForeignKey -> AUTH_USER_MODEL
+        sdate               (datetime):     DateField
+        loads               (int):          SmallIntegerField
+        status              (str):          CharField -> StatusChoices
+        ddate               (datetime):     DateTimeField
+        get_driver          (str):          returns the driver's full name or the supplier if supplier_delivers
     """
 
-    order = models.ForeignKey(GravelOrder, verbose_name=_("order"), on_delete=models.PROTECT)
+    order = models.ForeignKey(
+        GravelOrder, verbose_name=_("order"), related_name="gravel_deliveries", on_delete=models.PROTECT
+    )
+    supplier_delivers = models.BooleanField(
+        _("supplier delivers"),
+        default=False,
+        help_text="Check if the supplier is responsible for delivering the order",
+    )
     driver = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name=_("delivery driver"),
         related_name="deliveries",
         limit_choices_to={"groups__name": "Drivers"},
         on_delete=models.PROTECT,
+        blank=True,
+        null=True,
     )
     sdate = models.DateField(_("scheduled for"), auto_now=False, auto_now_add=False, default=timezone.now)
     loads = models.SmallIntegerField(_("loads"), default=1)
@@ -42,15 +52,54 @@ class GravelDeliverySchedule(models.Model):
     ddate = models.DateTimeField(_("delivered on"), auto_now=False, auto_now_add=False, blank=True, null=True)
     history = HR()
 
+    @admin.display(description="delivery driver")
+    def get_driver(self):
+        """if supplier_delivers return supplier name, otherwise return the driver's full name"""
+
+        if self.supplier_delivers:
+            return self.order.supplier.name
+        return self.driver.get_full_name()
+
     def __str__(self) -> str:
         """label for class instance
 
         Returns:
             str: first letter of first name, full last name, instance pk
         """
-        return "{0}. {1} [{2}]".format(self.driver.first_name[0].capitalize(), self.driver.last_name.title(), self.pk)
+        return "{0} [{1}]".format(self.get_driver(), self.pk)
+
+    def clean(self):
+        """
+        Require at least one of supplier_delivers or driver to be set - but not both
+        """
+        if not (self.supplier_delivers or self.driver):
+            raise ValidationError(
+                {
+                    "supplier_delivers": ValidationError(_("Someone must deliver the order.")),
+                    "driver": ValidationError(_("Someone must deliver the order.")),
+                }
+            )
+
+        if self.supplier_delivers and self.driver:
+            raise ValidationError(
+                {
+                    "supplier_delivers": ValidationError(
+                        _("only one can deliver, please remove one of these options")
+                    ),
+                    "driver": ValidationError(_("only one can deliver, please remove one of these options")),
+                }
+            )
 
     def save(self, *args, **kwargs):
+        order = self.order
+        if self.loads > 0:
+            order.dloads += self.loads
+            order.save()
+            order.refresh_from_db()
+        if order.nloads() == 0:
+            self.status = StatusChoices.COMPLETE
+        elif order.rloads > order.nloads() > 0:
+            self.status = StatusChoices.IN_PROGRESS
 
         super(GravelDeliverySchedule, self).save(*args, **kwargs)  # Call the real save() method
 

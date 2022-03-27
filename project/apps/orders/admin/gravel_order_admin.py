@@ -16,8 +16,29 @@ class GravelOrderAdmin(SHA):
             "core/scripts/list_filter_collapse.js",
         ]
 
-    list_display = ("po", "supplier", "lots", "priority", "nloads", "need_by", "get_history")
-    list_filter = ("supplier", "lots", "item", "priority", "need_by")
+    list_select_related = True
+    list_display = (
+        "po",
+        "supplier",
+        "builder",
+        "site",
+        "get_lots",
+        "priority",
+        "nloads",
+        "need_by",
+        "get_history",
+    )
+    list_filter = (
+        "priority",
+        "need_by",
+    )
+    search_fields = [
+        "supplier__name",
+        "builder__name",
+        "site__site_name",
+        "lots",
+        "po",
+    ]
     inlines = [
         GravelDeliveryInline,
     ]
