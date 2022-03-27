@@ -21,7 +21,7 @@ jobs:
       ROOT_URLCONF: config.urls
       DATABASE_URL: postgres://postgres:postgrespassword@localhost:5432/jsc
       USER_MODEL: accounts.CustomUser
-      
+      STATIC_ROOT: /project/static/
 
     services:
       postgres:
