@@ -10,7 +10,7 @@ class ConcreteType(models.Model):
     order = models.ForeignKey("orders.ConcreteOrder", verbose_name=_("concrete orders"), on_delete=models.CASCADE)
     mix = models.CharField(_("mix"), max_length=10, choices=MixChoices.choices, default=MixChoices.STANDARD)
     slump = models.CharField(_("slump"), max_length=6)
-    note = models.ForeignKey("core.NoteModel", verbose_name=_("note"), on_delete=models.CASCADE)
+    note = models.TextField(_("note"), blank=True, null=True)
 
     def __str__(self):
         return "{0}/{1}".format(self.mix, self.slump)
