@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from apps.core.admin import get_change, get_history
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
