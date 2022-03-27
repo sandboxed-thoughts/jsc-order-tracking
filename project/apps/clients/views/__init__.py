@@ -1,1 +1,1 @@
-from .builder_view import BuilderDetailView, BuilderListView
+# from .builder_view import BuilderDetailView, BuilderListView
