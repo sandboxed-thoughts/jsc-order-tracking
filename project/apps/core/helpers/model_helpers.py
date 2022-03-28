@@ -2,39 +2,29 @@ from django.utils.html import format_html as fh
 
 
 def get_addr(self) -> str:
-    if self.street is None:
-        parts = [self.city, self.state, self.zipcode]
-    else:
-        parts = [self.street, "<br>", self.city, self.state, self.zipcode]
-    if any(parts):
-        count = len(parts) - 1
+    if any([self.street, self.city, self.state, self.zipcode]):
         address = "<address>"
-        for k, v in enumerate(parts):
-            if v is not None:
-                address += v.title()
-            if v == self.city and self.city is not None:
-                address += ", "
-            elif 2 <= k < count:
-                address += " "
+        if self.street is not None:
+            address += "{}<br>".format(self.street)
+        if self.city is not None:
+            address += "{}, ".format(self.city)
+        if self.state is not None:
+            address += "{} ".format(self.state)
+        if self.zipcode is not None:
+            address += self.zipcode
         address += "</address>"
         return fh(address)
     return "not provided"
 
 
 def get_untagged_addr(self) -> str:
-    if self.street is None:
-        parts = [self.city, self.state, self.zipcode]
-    else:
-        parts = [self.street, ", ", self.city, self.state, self.zipcode]
-    if any(parts):
-        count = len(parts) - 1
-        address = ""
-        for k, v in enumerate(parts):
-            if v is not None:
-                address += v.title()
-            if v == self.city and self.city is not None:
-                address += ", "
-            elif 2 <= k < count:
-                address += " "
-        return fh(address)
-    return ""
+    address = ""
+    if self.street is not None:
+        address += "{}, ".format(self.street)
+    if self.city is not None:
+        address += "{}, ".format(self.city)
+    if self.state is not None:
+        address += "{} ".format(self.state)
+    if self.zipcode is not None:
+        address += "{}".format(self.zipcode)
+    return address

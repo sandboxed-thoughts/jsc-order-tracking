@@ -3,13 +3,41 @@ import time
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.test import Client, TestCase
+from django.urls import reverse
 
 from selenium import webdriver
 
 from ..models import CustomUser as User
 
 
-class TestWebsiteLogin(StaticLiveServerTestCase):
+class TestLogin(TestCase):
+    def setUp(self):
+        # Every test needs access to the request factory.
+        self.client = Client()
+        self.user = User.objects.create_superuser(
+            email="test@test.test", first_name="super", last_name="user", password="password"
+        )
+
+    def test_AnonymousUser_must_login(self):
+        client = self.client.get(reverse("admin:index"))
+        response = client
+
+        # Anonymous user should redirect to login
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/login/?next=/")
+
+    def logged_in_user_gets_index(self):
+        self.client.force_login(user=self.user)
+        client = self.client
+        client.force_login(self.user)
+        response = client.get(reverse("admin:index"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.url, "/")
+
+
+class TestWebsiteLoginWithSelenium(StaticLiveServerTestCase):
     driver = None
     port = 8888
 

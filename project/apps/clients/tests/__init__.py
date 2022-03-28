@@ -1,1 +1,2 @@
-from .builder_tests import BuilderTest
+from .builder_model_tests import TestBuilderModel
+from .builder_view_tests import TestBuilderAdmin
