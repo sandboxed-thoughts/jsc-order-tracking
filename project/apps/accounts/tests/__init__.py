@@ -1,3 +1,2 @@
 from .customuser_tests import EditableUserManagerTestCase, StandardUserTestCase, SuperUserTestCase
-
-# from .user_login_tests import TestWebsiteLogin
+from .user_login_tests import TestLogin
