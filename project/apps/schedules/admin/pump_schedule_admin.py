@@ -3,8 +3,8 @@ from django.contrib import admin
 from apps.core.admin import get_change, get_history
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
-from ..models import InclimateWeather, InclimateWeatherNote, PumpSchedule, PumpScheduleNote
 from ..helpers import mark_pump_complete
+from ..models import InclimateWeather, InclimateWeatherNote, PumpSchedule, PumpScheduleNote
 
 
 class PumpScheduleNotesInline(admin.StackedInline):

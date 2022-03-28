@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.timezone import now
 
 # from django.utils.html import format_html as fh
-from .choice_helpers import StatusChoices, PourProgress
+from .choice_helpers import PourProgress, StatusChoices
 
 
 @admin.display(description="Complete delivery")

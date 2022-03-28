@@ -4,8 +4,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.utils import timezone
-from apps.orders.models import GravelOrder, ConcreteOrder
+
+from apps.orders.models import ConcreteOrder, GravelOrder
 from simple_history.models import HistoricalRecords as HR
 
 from ..helpers import PourProgress, StatusChoices
@@ -126,6 +126,7 @@ class PumpSchedule(models.Model):
         loads               (float):        FloatField
         progress            (str):          CharField
     """
+
     supplier_delivers = models.BooleanField(
         _("supplier delivers"),
         default=False,
@@ -175,7 +176,7 @@ class PumpSchedule(models.Model):
                     "driver": ValidationError(_("Someone must deliver the order.")),
                 }
             )
-        if (self.supplier_delivers and self.driver):
+        if self.supplier_delivers and self.driver:
             raise ValidationError(
                 {
                     "supplier_delivers": ValidationError(
