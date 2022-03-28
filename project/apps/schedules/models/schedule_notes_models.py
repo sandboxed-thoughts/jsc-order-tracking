@@ -18,7 +18,7 @@ class PumpScheduleNote(NoteModel):
     )
 
     def __str__(self):
-        pass
+        return "{0} [{1}]".format(self.pump.__str__(), self.pk)
 
     class Meta:
         db_table = "schedules_pump_schedule_notes"
