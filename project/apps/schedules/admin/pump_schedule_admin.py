@@ -3,6 +3,7 @@ from django.contrib import admin
 from apps.core.admin import get_change, get_history
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
+from ..helpers import mark_pump_complete
 from ..models import InclimateWeather, InclimateWeatherNote, PumpSchedule, PumpScheduleNote
 
 
@@ -41,9 +42,11 @@ class PumpScheduleAdmin(SHA):
         InclimateWeatherInline,
     ]
     list_display = [
-        "driver",
+        "__str__",
+        "get_driver",
         "crew",
         "pdate",
+        "ctime",
         "loads",
         "progress",
         "get_history",
@@ -53,6 +56,8 @@ class PumpScheduleAdmin(SHA):
         "pdate",
         "progress",
     ]
+
+    actions = [mark_pump_complete]
 
     def changes(self, obj):
         return get_change(self, obj)
