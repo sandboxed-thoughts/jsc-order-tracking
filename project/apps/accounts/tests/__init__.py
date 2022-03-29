@@ -1,2 +1,2 @@
-from .customuser_tests import EditableUserManagerTestCase, StandardUserTestCase, SuperUserTestCase
+from .customuser_tests import StandardUserTestCase, SuperUserTestCase, TestCustomUserManager, TestEditableUserManager
 from .user_login_tests import TestLogin

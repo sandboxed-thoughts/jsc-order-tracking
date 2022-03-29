@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
 """Django's command-line utility for administrative tasks."""
-from email.policy import default
 import os
 import sys
+from email.policy import default
+
 from decouple import config
 
 

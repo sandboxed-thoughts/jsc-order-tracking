@@ -1,9 +1,10 @@
+from django.contrib.auth.models import AnonymousUser
 from django.test import TestCase
 
-from ..helpers import get_addr, get_untagged_addr, get_choice_list, get_choices
-from ..utils import group_check
 from apps.accounts.models import CustomUser as User
-from django.contrib.auth.models import AnonymousUser
+
+from ..helpers import get_addr, get_choice_list, get_choices, get_untagged_addr
+from ..utils import group_check
 
 
 class TestAddrHelpers(TestCase):
@@ -15,18 +16,9 @@ class TestAddrHelpers(TestCase):
                 self.state = state
                 self.zipcode = zipcode
 
-        self.full_address = Addr(
-            street=" 23 Test St",
-            city="Test City",
-            state="VA",
-            zipcode="12345"
-        )
+        self.full_address = Addr(street=" 23 Test St", city="Test City", state="VA", zipcode="12345")
 
-        self.no_st = Addr(
-            city="Test City",
-            state="VA",
-            zipcode="12345"
-        )
+        self.no_st = Addr(city="Test City", state="VA", zipcode="12345")
 
         self.state_only = Addr(state="Virginia")
 
@@ -34,7 +26,9 @@ class TestAddrHelpers(TestCase):
 
     def test_get_addr(self):
         address = self.full_address
-        correct_fmt = "<address>{0}<br>{1}, {2} {3}</address>".format(address.street, address.city, address.state, address.zipcode)
+        correct_fmt = "<address>{0}<br>{1}, {2} {3}</address>".format(
+            address.street, address.city, address.state, address.zipcode
+        )
 
         self.assertEqual(get_addr(address), correct_fmt)
 
@@ -66,17 +60,19 @@ class TestAddrHelpers(TestCase):
 
 class TestViewHelpers(TestCase):
     def setUp(self):
-        User.objects.create_superuser(email="test@super.local", first_name="super", last_name="user", password="password")
+        User.objects.create_superuser(
+            email="test@super.local", first_name="super", last_name="user", password="password"
+        )
         self.user = User.objects.get(email="test@super.local")
 
     def test_group_check(self):
-        self.assertTrue(group_check(self.user, ['Admin']))
-        self.assertFalse(group_check(AnonymousUser, ['Admin']))
+        self.assertTrue(group_check(self.user, ["Admin"]))
+        self.assertFalse(group_check(AnonymousUser, ["Admin"]))
 
 
 class TestFormHelpers(TestCase):
     def setUp(self):
-        self.choice_items = ({"states": ["Virginia", "Maryland"], "state_abbrs": ["VA", "MD"]})
+        self.choice_items = {"states": ["Virginia", "Maryland"], "state_abbrs": ["VA", "MD"]}
 
     def test_get_choice_list(self):
         choice_fmt = (("states", ["Virginia", "Maryland"]), ("state_abbrs", ["VA", "MD"]))

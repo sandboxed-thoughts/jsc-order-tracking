@@ -23,7 +23,7 @@ class BuilderModel(CommunicationsModel):
     )
     date_created = models.DateTimeField(_("created on"), auto_now=False, auto_now_add=True)
     date_updated = models.DateTimeField(_("updated on"), auto_now=True, auto_now_add=False)
-    slug = models.SlugField(max_length=50, blank=True)
+    slug = models.SlugField(max_length=150, blank=True)
 
     history = HR()
 

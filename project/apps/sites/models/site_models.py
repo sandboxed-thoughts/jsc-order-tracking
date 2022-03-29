@@ -35,7 +35,7 @@ class SiteModel(AddressModel):
     street = None
     site_name = models.CharField(_("Site Name"), max_length=100)
     is_active = models.BooleanField(_("Active"), default=True)
-    slug = models.SlugField(_("url"), blank=True)
+    slug = models.SlugField(_("url"), blank=True, max_length=100)
     created_on = models.DateTimeField(_("created on"), auto_now=False, auto_now_add=True)
     updated_on = models.DateTimeField(_("last updated"), auto_now=True, auto_now_add=False)
     project_manager = models.ForeignKey(
