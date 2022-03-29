@@ -9,7 +9,7 @@ class InspectionModel(ContactModel):
     name = models.CharField(_("agency name"), max_length=50)
     agent = models.CharField(_("inspector name"), max_length=50)
     inspection_date = models.DateTimeField(_("inspection time"), auto_now=False, auto_now_add=False)
-    note = models.ForeignKey("core.NoteModel", verbose_name=_("inspection note"), on_delete=models.CASCADE)
+    note = models.TextField(_("note"), max_length=250, blank=True, null=True)
     history = HR()
 
     def __str__(self):

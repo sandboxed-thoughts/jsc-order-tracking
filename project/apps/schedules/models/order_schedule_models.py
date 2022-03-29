@@ -93,7 +93,7 @@ class GravelDeliverySchedule(models.Model):
     def save(self, *args, **kwargs):
         order = self.order
         if self.loads > order.nloads():
-            return ValidationError({"loads": "more loads scheudled than the amount ordered"})
+            return ValidationError({"loads": "more loads scheduled than the amount ordered"})
         if self.loads > 0:
             order.dloads += self.loads
             order.save()

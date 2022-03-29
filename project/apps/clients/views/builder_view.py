@@ -3,7 +3,7 @@ from multiprocessing import context
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import render
 from django.views import View
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import DetailView
 
 from apps.core.utils import group_check
 
