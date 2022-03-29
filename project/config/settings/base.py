@@ -10,12 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+from email.policy import default
 from pathlib import Path
 
 import dj_database_url
 from decouple import config
 
 from .jazzmin_settings import JAZZMIN_SETTINGS, JAZZMIN_UI_TWEAKS
+import email_settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -59,7 +61,7 @@ INSTALLED_APPS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-ROOT_URLCONF = config("ROOT_URLCONF", default="config.urls")
+ROOT_URLCONF = config("ROOT_URLCONF", default="config.urls.local")
 
 INTERNAL_IPS = ["127.0.0.1"]
 
@@ -101,13 +103,13 @@ DATABASES = {"default": dj_database_url.config(default=config("DATABASE_URL"))}
 
 
 # User model
-AUTH_USER_MODEL = config("USER_MODEL")
+AUTH_USER_MODEL = config("USER_MODEL", default="accounts.CustomUser")
 
-LOGIN_URL = "/login/"
+LOGIN_URL = config("LOGIN_URL", default="/login/")
 
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = config("LOGIN_REDIRECT_URL", default="/")
 
-LOGOUT_URL = "/logout"
+LOGOUT_URL = config("LOGOUT_URL", default="/logout")
 
 LOGOUT_REDIRECT_URL = LOGIN_URL
 
@@ -145,6 +147,7 @@ PHONENUMBER_DEFAULT_REGION = config("PHONENUMBER_DEFAULT_REGION", default="US")
 
 PHONENUMBER_DEFAULT_FORMAT = config("PHONENUMBER_DEFAULT_FORMAT", default="NATIONAL")
 
+
 # Static files (CSS, JavaScript, Images)
 
 STATIC_URL = config("STATIC_URL", default="/static/")
@@ -164,7 +167,7 @@ STATICFILES_FINDERS = [
 
 
 # SASS
-SASS_PRECISION = 8
-SASS_OUTPUT_STYLE = "compact"
 
-BROWSER_DRIVER_PATH = config("BROWSER_DRIVER_PATH")
+SASS_PRECISION = 8
+
+SASS_OUTPUT_STYLE = "compact"
