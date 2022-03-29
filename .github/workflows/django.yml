@@ -18,11 +18,10 @@ jobs:
     env:
       SECRET_KEY: TESTtheDJANGOapplication
       DEBUG: True
-      ROOT_URLCONF: config.urls
+      ROOT_URLCONF: config.urls.local
       DATABASE_URL: postgres://postgres:postgrespassword@localhost:5432/jsc
       USER_MODEL: accounts.CustomUser
       STATIC_ROOT: /project/static/
-      BROWSER_DRIVER_PATH: /project/
 
     services:
       postgres:
