@@ -28,3 +28,9 @@ def get_untagged_addr(self) -> str:
     if self.zipcode is not None:
         address += "{}".format(self.zipcode)
     return address
+
+
+def get_lots(lots):
+    ll = [x for x in lots.strip(" ").split(",")]
+    pll = "<br>".join(ll)
+    return fh(pll)
