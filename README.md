@@ -1,6 +1,6 @@
 # JSC Order Tracker
 
-[![CodeFactor](https://www.codefactor.io/repository/github/sandboxed-thoughts/jscorder/badge)](https://www.codefactor.io/repository/github/sandboxed-thoughts/jscorder)&emsp;![django workflow](https://github.com/sandboxed-thoughts/jscorder/actions/workflows/django.yml/badge.svg)
+[![CodeFactor](https://www.codefactor.io/repository/github/sandboxed-thoughts/jsc-order-tracking/badge)](https://www.codefactor.io/repository/github/sandboxed-thoughts/jsc-order-tracking)&emsp;![django workflow](https://github.com/sandboxed-thoughts/jscorder/actions/workflows/django.yml/badge.svg)
 
 A django application designed to track concrete and gravel deliveries from the perspective of a middleman. Clients call into the company and place an order requesting a specific date and time of delivery. The company then places the orders with the same specifications to the supplier. Once the order has been placed with the supplier, a delivery schedule is updated with the order, who's delivering it, and the progress of the delivery.
 
