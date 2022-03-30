@@ -7,7 +7,6 @@ on:
     branches: [ master ]
 
 jobs:
-  if: github.repository == 'sandboxed-thoughts/jscorder'
   build:
 
     runs-on: ubuntu-latest
