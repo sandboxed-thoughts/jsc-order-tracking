@@ -1,9 +1,12 @@
+from django.contrib import admin
+from django.utils.html import format_html as fh
 from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.models import NoteModel
+from apps.core.helpers import get_lots
 from simple_history.models import HistoricalRecords as HR
 
 from ..helpers import GarageChoices
@@ -109,6 +112,22 @@ class ConcreteOrder(models.Model):
         return "{0} [{1}]".format(self.builder, self.po)
 
     objects = models.Manager()
+
+    @admin.display(description="lots")
+    def get_lots(self):
+        return(get_lots(self.lots))
+
+    @admin.display(description="notes")
+    def get_notes(self):
+        nl = ['{0}:<br>&ensp;"{1}"'.format(x.author, x.note) for x in self.order_notes.all()]
+        pnl = "<br>".join(nl)
+        return fh(pnl)
+
+    @ admin.display(description="concrete")
+    def get_ctypes(self):
+        cl = [x.__str__() for x in self.order_ctypes.all()]
+        pcl = "<br>".join(cl)
+        return fh(pcl)
 
     class Meta:
         db_table = "orders_concrete"

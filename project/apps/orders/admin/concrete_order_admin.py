@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from apps.core.admin import get_change, get_history
 from apps.concrete.admin import ConcreteTypeInline
 from apps.schedules.admin import PumpScheduleInline
 from simple_history.admin import SimpleHistoryAdmin as SHA
@@ -40,10 +40,18 @@ class ConcreteOrderAdmin(SHA):
 
     list_display = [
         "po",
+        "builder",
+        "site",
+        "get_lots",
         "supplier",
         "dispatcher",
+        "get_ctypes",
         "etotal",
         "qordered",
+        "date_needed",
+        "inspection",
+        "get_notes",
+        "get_history",
     ]
 
     fieldsets = (
@@ -54,6 +62,7 @@ class ConcreteOrderAdmin(SHA):
                     "po",
                     "builder",
                     "site",
+                    "lots",
                     "supplier",
                     "dispatcher",
                     "etotal",
@@ -64,3 +73,11 @@ class ConcreteOrderAdmin(SHA):
             },
         ),
     )
+
+    def changes(self, obj):
+        return get_change(self, obj)
+
+    def get_history(self, obj):
+        return get_history(self, "orders", "concreteorder", obj)
+
+    history_list_display = ["changes"]
