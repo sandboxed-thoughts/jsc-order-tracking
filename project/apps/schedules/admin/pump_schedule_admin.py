@@ -32,7 +32,7 @@ class PumpScheduleInline(admin.StackedInline):
 
     model = PumpSchedule
     min_num = 0
-    extra = 1
+    extra = 0
 
 
 @admin.register(PumpSchedule)

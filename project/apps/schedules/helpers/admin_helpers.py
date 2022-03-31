@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.utils.timezone import now
+from django.utils import timezone
 
 # from django.utils.html import format_html as fh
 from .choice_helpers import PourProgress, StatusChoices
@@ -9,7 +9,7 @@ from .choice_helpers import PourProgress, StatusChoices
 def mark_complete(self, request, queryset):
     for inst in queryset:
         inst.status = StatusChoices.COMPLETE
-        inst.ddate = now()
+        inst.ddate = timezone.localtime()
         inst.save()
         inst.refresh_from_db()
 
@@ -18,7 +18,7 @@ def mark_complete(self, request, queryset):
 def mark_pump_complete(self, request, queryset):
     for inst in queryset:
         inst.progress = PourProgress.COMPLETE
-        inst.pdate = now().date()
-        inst.ctime = now().time()
+        inst.pdate = timezone.localdate()
+        inst.ctime = timezone.localtime()
         inst.save()
         inst.refresh_from_db()
