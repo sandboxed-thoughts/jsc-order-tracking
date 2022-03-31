@@ -16,7 +16,7 @@ JAZZMIN_SETTINGS = {
     # Welcome text on the login screen
     "welcome_sign": "Welcome to JSC Order Tracker",
     # Copyright on the footer
-    "copyright": "Sandboxed Thoughts",
+    "copyright": "",
     # The model admin to search from the search bar, search bar omitted if excluded
     # "search_model": "auth.User",
     # Field name on user model that contains avatar ImageField/URLField/Charfield or a callable that receives the user

@@ -43,7 +43,11 @@ class PumpScheduleAdmin(SHA):
     ]
     list_display = [
         "__str__",
+        "get_builder",
+        "get_supplier",
         "get_driver",
+        "get_site",
+        "get_lots",
         "crew",
         "pdate",
         "ctime",
@@ -62,8 +66,25 @@ class PumpScheduleAdmin(SHA):
     def changes(self, obj):
         return get_change(self, obj)
 
+    @admin.display(description="schedule history")
     def get_history(self, obj):
         return get_history(self, "schedules", "pumpschedule", obj)
+
+    @admin.display(description="builder")
+    def get_builder(self, obj):
+        return obj.order.builder.name
+
+    @admin.display(description="supplier")
+    def get_supplier(self, obj):
+        return obj.order.supplier.name
+
+    @admin.display(description="lots")
+    def get_lots(self, obj):
+        return obj.order.get_lots()
+
+    @admin.display(description="site")
+    def get_site(self, obj):
+        return obj.order.site
 
     history_list_display = ["changes"]
 
