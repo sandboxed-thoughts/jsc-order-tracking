@@ -11,7 +11,7 @@ currently being supported with security updates.
 
 ## Reporting a Vulnerability
 
-Vulnerabilities should be reported to [Sandboxed Thoughts](mailto:admin@sandboxedthoughts.com?subject=vulnerability&ensp;found&ensp;in&ensp;sandboxed-thoughts/jscorder)
+Vulnerabilities should be reported to [Sandboxed Thoughts](mailto:admin@sandboxedthoughts.com?subject=vulnerability&ensp;found&ensp;in&ensp;sandboxed-thoughts/jsc-order-tracking)
 
 Include:
 
