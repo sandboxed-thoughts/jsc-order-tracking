@@ -49,7 +49,6 @@ class ConcreteOrderAdmin(SHA):
         "etotal",
         "qordered",
         "date_needed",
-        "inspection",
         "get_notes",
         "get_history",
     ]
