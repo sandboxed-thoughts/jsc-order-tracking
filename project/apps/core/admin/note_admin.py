@@ -14,3 +14,8 @@ class NoteModelAdmin(admin.ModelAdmin):
     search_fields = ("",)
     date_hierarchy = "updated_on"
     ordering = ("author", "-updated_on")
+
+    class Media:
+        css = {
+            'all': ('css/base.css',)
+        }

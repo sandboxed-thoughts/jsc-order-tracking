@@ -98,3 +98,8 @@ class PumpScheduleAdmin(SHA):
             if request.user.groups.filter(name__in=["Drivers"]).exists():
                 return super().get_queryset(request).filter(driver=request.user)
         return super().get_queryset(request)
+
+    class Media:
+        css = {
+            'all': ('core/css/base.css',)
+        }

@@ -30,6 +30,11 @@ class FlatworkItemInline(admin.StackedInline):
 @admin.register(ConcreteOrder)
 class ConcreteOrderAdmin(SHA):
 
+    class Media:
+        css = {
+            'all': ('core/css/base.css',)
+        }
+
     inlines = [
         ConcreteTypeInline,
         FlatworkItemInline,
