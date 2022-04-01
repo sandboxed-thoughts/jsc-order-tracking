@@ -20,7 +20,7 @@ def activate(self, request, queryset):
 @admin.display(description="history")
 def get_history(self, cname, mname, obj):
     return fh(
-        "<a href='/%(cname)s/%(mname)s/%(obj_id)s/history'>view history</a>"
+        '<a href="/%(cname)s/%(mname)s/%(obj_id)s/history"><i class="fas fa-eye"></i></a>'
         % {
             "cname": cname,
             "mname": mname,

@@ -15,7 +15,7 @@ class GravelDeliveryScheduleNoteInline(admin.StackedInline):
     extra = 1
 
 
-class GravelDeliveryInline(admin.TabularInline):
+class GravelDeliveryInline(admin.StackedInline):
     """Tabular Inline View for GravelDelivery"""
 
     model = GravelDelivery
@@ -33,7 +33,19 @@ class GravelDeliveryAdmin(SHA):
             "core/scripts/list_filter_collapse.js",
         ]
 
-    list_display = ("get_driver", "sdate", "order", "status", "loads", "get_history")
+    list_display = (
+        "order",
+        "status",
+        "order_builder",
+        "order_supplier",
+        "order_lots",
+        "get_driver",
+        "sdate",
+        "order_item",
+        "loads",
+        "ddate",
+        "get_history"
+    )
     list_filter = (
         "driver",
         "sdate",
@@ -49,6 +61,7 @@ class GravelDeliveryAdmin(SHA):
     def changes(self, obj):
         return get_change(self, obj)
 
+    @admin.display(description="History")
     def get_history(self, obj):
         return get_history(self, "schedules", "graveldeliveryschedule", obj)
 

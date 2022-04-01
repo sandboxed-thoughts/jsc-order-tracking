@@ -52,13 +52,37 @@ class GravelDeliverySchedule(models.Model):
     ddate = models.DateTimeField(_("delivered on"), auto_now=False, auto_now_add=False, blank=True, null=True)
     history = HR()
 
-    @admin.display(description="delivery driver")
+    @admin.display(description="delivery driver", ordering="driver")
     def get_driver(self):
         """if supplier_delivers return supplier name, otherwise return the driver's full name"""
 
         if self.supplier_delivers:
             return self.order.supplier.name
         return self.driver.get_full_name()
+
+    @admin.display(description="item", ordering="order__item")
+    def order_item(self):
+        if self.order.item:
+            return self.order.item
+        return "None"
+
+    @admin.display(description="builder", ordering="order__builder")
+    def order_builder(self):
+        if self.order.builder:
+            return self.order.builder.name.title()
+        return "None"
+
+    @admin.display(description="supplier", ordering="order__supplier")
+    def order_supplier(self):
+        if self.order.supplier:
+            return self.order.supplier.name.title()
+        return "None"
+
+    @admin.display(description="lots", ordering="order__lots")
+    def order_lots(self):
+        if self.order.lots:
+            return self.order.get_lots()
+        return "None"
 
     def __str__(self) -> str:
         """label for class instance
@@ -94,15 +118,10 @@ class GravelDeliverySchedule(models.Model):
         order = self.order
         if self.loads > order.nloads():
             return ValidationError({"loads": "more loads scheduled than the amount ordered"})
-        if self.loads > 0:
+        if (self.status == StatusChoices.COMPLETE) and (self.loads > 0):
             order.dloads += self.loads
             order.save()
             order.refresh_from_db()
-        if order.nloads() == 0 and self.ddate is not None:
-            self.status = StatusChoices.COMPLETE
-        elif order.rloads > order.nloads() > 0:
-            self.status = StatusChoices.IN_PROGRESS
-
         super(GravelDeliverySchedule, self).save(*args, **kwargs)  # Call the real save() method
 
     class Meta:
