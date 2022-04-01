@@ -8,6 +8,12 @@ from ..models import BuilderModel
 
 @admin.register(BuilderModel)
 class BuilderAdmin(SHA):
+
+    class Media:
+        css = {
+            'all': ('core/css/base.css',)
+        }
+
     list_display = [
         "name",
         "get_addr",

@@ -9,12 +9,11 @@ from ..models import GravelOrder
 
 @admin.register(GravelOrder)
 class GravelOrderAdmin(SHA):
+
     class Media:
-        # extra javascript
-        js = [
-            "admin/js/vendor/jquery/jquery.js",
-            "core/scripts/list_filter_collapse.js",
-        ]
+        css = {
+            'all': ('core/css/base.css',)
+        }
 
     list_select_related = True
     list_display = (
