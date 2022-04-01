@@ -10,11 +10,8 @@ from ..models import CustomUser
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-
     class Media:
-        css = {
-            'all': ('core/css/base.css',)
-        }
+        css = {"all": ("core/css/base.css",)}
 
     actions = [activate, deactivate]
 

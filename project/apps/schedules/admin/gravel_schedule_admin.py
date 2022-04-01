@@ -44,7 +44,7 @@ class GravelDeliveryAdmin(SHA):
         "order_item",
         "loads",
         "ddate",
-        "get_history"
+        "get_history",
     )
     list_filter = (
         "driver",
@@ -79,6 +79,4 @@ class GravelDeliveryAdmin(SHA):
         return super().get_queryset(request)
 
     class Media:
-        css = {
-            'all': ('core/css/base.css',)
-        }
+        css = {"all": ("core/css/base.css",)}

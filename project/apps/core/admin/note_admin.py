@@ -16,6 +16,4 @@ class NoteModelAdmin(admin.ModelAdmin):
     ordering = ("author", "-updated_on")
 
     class Media:
-        css = {
-            'all': ('css/base.css',)
-        }
+        css = {"all": ("css/base.css",)}

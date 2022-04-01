@@ -100,6 +100,4 @@ class PumpScheduleAdmin(SHA):
         return super().get_queryset(request)
 
     class Media:
-        css = {
-            'all': ('core/css/base.css',)
-        }
+        css = {"all": ("core/css/base.css",)}

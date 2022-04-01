@@ -9,11 +9,8 @@ from ..models import GravelOrder
 
 @admin.register(GravelOrder)
 class GravelOrderAdmin(SHA):
-
     class Media:
-        css = {
-            'all': ('core/css/base.css',)
-        }
+        css = {"all": ("core/css/base.css",)}
 
     list_select_related = True
     list_display = (

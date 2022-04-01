@@ -1,6 +1,7 @@
 from django.contrib import admin
-from apps.core.admin import get_change, get_history
+
 from apps.concrete.admin import ConcreteTypeInline
+from apps.core.admin import get_change, get_history
 from apps.schedules.admin import PumpScheduleInline
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
@@ -29,11 +30,8 @@ class FlatworkItemInline(admin.StackedInline):
 
 @admin.register(ConcreteOrder)
 class ConcreteOrderAdmin(SHA):
-
     class Media:
-        css = {
-            'all': ('core/css/base.css',)
-        }
+        css = {"all": ("core/css/base.css",)}
 
     inlines = [
         ConcreteTypeInline,

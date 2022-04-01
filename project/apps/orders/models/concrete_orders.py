@@ -1,12 +1,12 @@
-from django.contrib import admin
-from django.utils.html import format_html as fh
 from django.conf import settings
+from django.contrib import admin
 from django.core.validators import RegexValidator
 from django.db import models
+from django.utils.html import format_html as fh
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.models import NoteModel
 from apps.core.helpers import get_lots
+from apps.core.models import NoteModel
 from simple_history.models import HistoricalRecords as HR
 
 from ..helpers import GarageChoices
@@ -115,7 +115,7 @@ class ConcreteOrder(models.Model):
 
     @admin.display(description="lots")
     def get_lots(self):
-        return(get_lots(self.lots))
+        return get_lots(self.lots)
 
     @admin.display(description="notes")
     def get_notes(self):
@@ -123,7 +123,7 @@ class ConcreteOrder(models.Model):
         pnl = "<br>".join(nl)
         return fh(pnl)
 
-    @ admin.display(description="concrete")
+    @admin.display(description="concrete")
     def get_ctypes(self):
         cl = [x.__str__() for x in self.order_ctypes.all()]
         pcl = "<br>".join(cl)
