@@ -5,6 +5,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from apps.core.admin import get_notes
 from apps.orders.models import GravelOrder
 from simple_history.models import HistoricalRecords as HR
 
@@ -83,6 +84,10 @@ class GravelDeliverySchedule(models.Model):
         if self.order.lots:
             return self.order.get_lots()
         return "None"
+
+    @admin.display(description="", empty_value="")
+    def get_notes(self):
+        return get_notes(self.gravel_delivery_notes.all())
 
     def __str__(self) -> str:
         """label for class instance

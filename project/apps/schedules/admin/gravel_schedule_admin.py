@@ -1,22 +1,23 @@
 from django.contrib import admin
 
-from apps.core.admin import get_change, get_history
+from apps.core.admin import get_change, get_history, save_note_inline
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
 from ..helpers import mark_complete
 from ..models import GravelDeliverySchedule as GravelDelivery, GravelDeliveryScheduleNote
 
 
-class GravelDeliveryScheduleNoteInline(admin.StackedInline):
+class GravelDeliveryScheduleNoteInline(admin.TabularInline):
     """Stacked Inline View for GravelDeliveryScheduleNote"""
 
-    read_only_fields = ["author"]
+    fields = ['author', 'note', 'updated_on']
+    readonly_fields = ['author', 'updated_on']
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "author":
-            author = request.user
-            if author:
-                kwargs["initial"] = author
+            author_id = request.user.pk
+            if author_id:
+                kwargs["initial"] = author_id
         return super(GravelDeliveryScheduleNoteInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
     model = GravelDeliveryScheduleNote
@@ -54,6 +55,7 @@ class GravelDeliveryAdmin(SHA):
         "loads",
         "ddate",
         "get_history",
+        "get_notes",
     )
     list_filter = (
         "driver",
@@ -94,6 +96,5 @@ class GravelDeliveryAdmin(SHA):
 
         for instance in instances:
             if isinstance(instance, GravelDeliveryScheduleNote):  # Check if it is the correct type of inline
-                if not instance.author:
-                    instance.author = request.user
-                instance.save()
+                save_note_inline(instance, request.user.pk)
+            instance.save()

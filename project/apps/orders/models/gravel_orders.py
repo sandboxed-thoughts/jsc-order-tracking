@@ -94,7 +94,7 @@ class GravelOrder(models.Model):
         pll = "<br>".join(ll)
         return fh(pll)
 
-    @admin.display(description="notes")
+    @admin.display(description="", empty_value="")
     def get_notes(self):
         return get_notes(self.gravel_order_notes.all().order_by("created_on"))
 

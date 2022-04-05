@@ -13,7 +13,7 @@ User = settings.AUTH_USER_MODEL
 class PumpScheduleNote(NoteModel):
 
     pump = models.ForeignKey(
-        PumpSchedule, verbose_name=_("pump"), related_name="pump_schedule", on_delete=models.CASCADE
+        PumpSchedule, verbose_name=_("pump"), related_name="pump_schedule_notes", on_delete=models.CASCADE
     )
 
     def __str__(self):
@@ -29,7 +29,7 @@ class PumpScheduleNote(NoteModel):
 class GravelDeliveryScheduleNote(NoteModel):
 
     delivery = models.ForeignKey(
-        GravelDeliverySchedule, verbose_name=_("pump"), related_name="gravel_delivery", on_delete=models.CASCADE
+        GravelDeliverySchedule, verbose_name=_("pump"), related_name="gravel_delivery_notes", on_delete=models.CASCADE
     )
 
     def __str__(self):

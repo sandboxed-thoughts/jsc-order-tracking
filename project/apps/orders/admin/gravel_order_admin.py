@@ -1,15 +1,18 @@
 from django.contrib import admin
 
-from apps.core.admin import get_change, get_history
+from apps.core.admin import get_change, get_history, save_note_inline
 from apps.schedules.admin import GravelDeliveryInline
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
 from ..models import GravelOrder, GravelOrderNote
 
 
-class GravelOrderNoteInline(admin.StackedInline):
+class GravelOrderNoteInline(admin.TabularInline):
     model = GravelOrderNote
     extra = 0
+
+    fields = ['author', 'note', 'updated_on']
+    readonly_fields = ['author', 'updated_on']
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "author":
@@ -65,3 +68,11 @@ class GravelOrderAdmin(SHA):
         if request.user.is_superuser:
             return True
         return False
+
+    def save_formset(self, request, form, formset, change):
+        instances = formset.save(commit=False)
+
+        for instance in instances:
+            if isinstance(instance, GravelOrderNoteInline):  # Check if it is the correct type of inline
+                save_note_inline(instance, request.user.pk)
+            instance.save()
