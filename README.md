@@ -13,6 +13,8 @@ A django application designed to track concrete and gravel deliveries from the p
   This project also assumes you have a basic understanding and the ability to run a django application in development. If you are not sure of the basic development settings, I highly encourage you to [read the documentation](https://www.djangoproject.com/).
 
   You can read information about setting up a basic django app using PostgreSQL in [this](https://www.section.io/engineering-education/django-app-using-postgresql-database/) section.io article. The following instructions will **not** cover every requirement to build your development environment.
+  
+  If you need some additional assistance in making heads-or-tails of the directory structure, please take a look at Simple is Better Than Complex's article [How to Start a Production-Ready Django Project](https://simpleisbetterthancomplex.com/tutorial/2021/06/27/how-to-start-a-production-ready-django-project.html).
 
 ---
 
