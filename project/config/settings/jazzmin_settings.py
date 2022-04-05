@@ -81,7 +81,6 @@ JAZZMIN_SETTINGS = {
                 "permissions": ["schedules.view_graveldeliveryschedule"],
             },
         ],
-
         "concrete": [
             {
                 "name": "Concrete Orders",

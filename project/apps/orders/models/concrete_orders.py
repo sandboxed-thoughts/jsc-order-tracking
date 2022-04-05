@@ -5,6 +5,7 @@ from django.db import models
 from django.utils.html import format_html as fh
 from django.utils.translation import gettext_lazy as _
 
+from apps.core.admin import get_notes
 from apps.core.helpers import get_lots
 from apps.core.models import NoteModel
 from simple_history.models import HistoricalRecords as HR
@@ -117,11 +118,9 @@ class ConcreteOrder(models.Model):
     def get_lots(self):
         return get_lots(self.lots)
 
-    @admin.display(description="notes")
+    @admin.display(description="", empty_value="")
     def get_notes(self):
-        nl = ['{0}:<br>&ensp;"{1}"'.format(x.author, x.note) for x in self.order_notes.all()]
-        pnl = "<br>".join(nl)
-        return fh(pnl)
+        return get_notes(self.order_notes.all())
 
     @admin.display(description="concrete")
     def get_ctypes(self):

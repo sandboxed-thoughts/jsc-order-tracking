@@ -4,7 +4,19 @@ from apps.core.admin import get_change, get_history
 from apps.schedules.admin import GravelDeliveryInline
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
-from ..models import GravelOrder
+from ..models import GravelOrder, GravelOrderNote
+
+
+class GravelOrderNoteInline(admin.StackedInline):
+    model = GravelOrderNote
+    extra = 0
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "author":
+            author = request.user
+            if author:
+                kwargs["initial"] = author
+        return super(GravelOrderNoteInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 @admin.register(GravelOrder)
@@ -23,6 +35,7 @@ class GravelOrderAdmin(SHA):
         "nloads",
         "need_by",
         "get_history",
+        "get_notes",
     )
     list_filter = (
         "priority",
@@ -36,6 +49,7 @@ class GravelOrderAdmin(SHA):
         "po",
     ]
     inlines = [
+        GravelOrderNoteInline,
         GravelDeliveryInline,
     ]
 

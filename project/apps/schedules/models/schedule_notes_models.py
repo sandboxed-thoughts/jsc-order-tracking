@@ -33,7 +33,7 @@ class GravelDeliveryScheduleNote(NoteModel):
     )
 
     def __str__(self):
-        pass
+        return "{0} [{1}]".format(self.delivery.__str__(), self.pk)
 
     class Meta:
         db_table = "schedules_gravel_delivery_schedule_notes"

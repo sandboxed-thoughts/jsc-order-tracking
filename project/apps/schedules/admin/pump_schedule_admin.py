@@ -11,6 +11,13 @@ class PumpScheduleNotesInline(admin.StackedInline):
     model = PumpScheduleNote
     extra = 0
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "author":
+            author = request.user
+            if author:
+                kwargs["initial"] = author
+        return super(PumpScheduleNotesInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 class InclimateWeatherNoteInline(admin.StackedInline):
     """Stacked Inline View for InclimateWeatherNote"""
