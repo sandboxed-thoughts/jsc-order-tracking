@@ -130,4 +130,3 @@ class GravelDeliverySchedule(models.Model):
         verbose_name = "Gravel Delivery"
         verbose_name_plural = "Gravel Deliveries"
         ordering = ["-sdate", "driver"]
-
