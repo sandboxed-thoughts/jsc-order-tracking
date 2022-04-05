@@ -31,9 +31,24 @@ def get_history(self, cname, mname, obj):
 
 @admin.display(description="", empty_value="")
 def get_notes(notes):
+    """Returns a formated string of notes to display on the admin list_display
+
+        This function manipulates the list_display to hide the column get_notes sits in and inserts it as a new row.
+
+    Args:
+        notes (queryset): a list of notes for the model
+
+    Returns:
+        str:    <tr><td>Notes:</td><td colspan='5'>{0}</td></tr>".format(pnl)
+                    if any notes for the model exists, return the formatted list of notes from earlierst to newest created
+                    otherwise, return an empty string
+    """
+
     nl = ['{0}:&ensp;"{1}"'.format(x.author, x.note) for x in notes.order_by("created_on")]
-    pnl = "<br>".join(nl)
-    return fh("<tr><td>Notes:</td><td colspan='5'>{0}</td></tr>".format(pnl))
+    if len(nl) > 0:
+        pnl = "<br>".join(nl)
+        return fh("<tr><td>Notes:</td><td colspan='5'>{0}</td></tr>".format(pnl))
+    return ""
 
 
 def get_change(self, obj):
@@ -50,3 +65,11 @@ def get_change(self, obj):
             }
         return fh(cfds)
     return "created"
+
+
+def save_note_inline(instance, user_id):
+    if not instance.author_id:
+        instance.author_id = user_id
+    if instance.author_id and instance.author_id != user_id:
+        return ValueError("you cannot edit another user's note")
+    instance.save()

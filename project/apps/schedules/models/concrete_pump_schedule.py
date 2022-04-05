@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from apps.core.admin import get_notes
 
 from apps.orders.models import ConcreteOrder
 from simple_history.models import HistoricalRecords as HR
@@ -64,6 +65,10 @@ class PumpSchedule(models.Model):
             order = ConcreteOrder.objects.get(pk=self.order.pk)
             return "{0}".format(order.supplier)
         return "{0}".format(self.driver.get_full_name())
+
+    @admin.display(description="", empty_value="")
+    def get_notes(self):
+        return get_notes(self.pump_schedule_notes.all())
 
     def clean(self):
         """

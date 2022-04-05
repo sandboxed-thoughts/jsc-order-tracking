@@ -1,22 +1,25 @@
 from django.contrib import admin
 
 from apps.concrete.admin import ConcreteTypeInline
-from apps.core.admin import get_change, get_history
+from apps.core.admin import get_change, get_history, save_note_inline
 from apps.schedules.admin import PumpScheduleInline
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
 from ..models import ConcreteInspection, ConcreteOrder, ConcreteOrderNote, FlatworkItem, FootingsItem
 
 
-class ConcreteOrderNoteInline(admin.StackedInline):
+class ConcreteOrderNoteInline(admin.TabularInline):
     model = ConcreteOrderNote
     extra = 0
 
+    fields = ['author', 'note', 'updated_on']
+    readonly_fields = ['author', 'updated_on']
+
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "author":
-            author = request.user
-            if author:
-                kwargs["initial"] = author
+            author_id = request.user.pk
+            if author_id:
+                kwargs["initial"] = author_id
         return super(ConcreteOrderNoteInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
@@ -117,3 +120,11 @@ class ConcreteOrderAdmin(SHA):
         return get_history(self, "orders", "concreteorder", obj)
 
     history_list_display = ["changes"]
+
+    def save_formset(self, request, form, formset, change):
+        instances = formset.save(commit=False)
+
+        for instance in instances:
+            if isinstance(instance, ConcreteOrderNote):  # Check if it is the correct type of inline
+                save_note_inline(instance, request.user.pk)
+            instance.save()
