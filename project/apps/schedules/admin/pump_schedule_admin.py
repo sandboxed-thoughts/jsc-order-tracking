@@ -15,7 +15,7 @@ class PumpScheduleNotesInline(admin.StackedInline):
         if db_field.name == "author":
             author = request.user
             if author:
-                kwargs['initial'] = author
+                kwargs["initial"] = author
         return super(PumpScheduleNotesInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 

@@ -4,8 +4,8 @@ from django.db import models
 from django.utils.html import format_html as fh
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.models import NoteModel
 from apps.core.admin import get_notes
+from apps.core.models import NoteModel
 from simple_history.models import HistoricalRecords as HR
 
 
