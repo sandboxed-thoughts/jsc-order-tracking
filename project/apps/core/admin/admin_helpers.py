@@ -29,6 +29,13 @@ def get_history(self, cname, mname, obj):
     )
 
 
+@admin.display(description="", empty_value="")
+def get_notes(notes):
+    nl = ['{0}:&ensp;"{1}"'.format(x.author, x.note) for x in notes.order_by("created_on")]
+    pnl = "<br>".join(nl)
+    return fh("<tr><td>Notes:</td><td colspan='5'>{0}</td></tr>".format(pnl))
+
+
 def get_change(self, obj):
     # adds the field as "changed"
     # provides a dict with the changed value for future possibilities

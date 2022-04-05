@@ -10,9 +10,18 @@ from ..models import GravelDeliverySchedule as GravelDelivery, GravelDeliverySch
 class GravelDeliveryScheduleNoteInline(admin.StackedInline):
     """Stacked Inline View for GravelDeliveryScheduleNote"""
 
+    read_only_fields = ['author']
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "author":
+            author = request.user
+            if author:
+                kwargs['initial'] = author
+        return super(GravelDeliveryScheduleNoteInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
     model = GravelDeliveryScheduleNote
     min_num = 0
-    extra = 1
+    extra = 0
 
 
 class GravelDeliveryInline(admin.StackedInline):
@@ -27,7 +36,7 @@ class GravelDeliveryInline(admin.StackedInline):
 @admin.register(GravelDelivery)
 class GravelDeliveryAdmin(SHA):
     class Media:
-        # extra javascript
+        css = {"all": ("core/css/base.css",)}
         js = [
             "admin/js/vendor/jquery/jquery.js",
             "core/scripts/list_filter_collapse.js",
@@ -80,5 +89,11 @@ class GravelDeliveryAdmin(SHA):
                 return super().get_queryset(request).filter(driver=request.user)
         return super().get_queryset(request)
 
-    class Media:
-        css = {"all": ("core/css/base.css",)}
+    def save_formset(self, request, form, formset, change):
+        instances = formset.save(commit=False)
+
+        for instance in instances:
+            if isinstance(instance, GravelDeliveryScheduleNote):  # Check if it is the correct type of inline
+                if not instance.author:
+                    instance.author = request.user
+                instance.save()

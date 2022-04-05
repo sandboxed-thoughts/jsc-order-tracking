@@ -4,7 +4,22 @@ from django.db import models
 from django.utils.html import format_html as fh
 from django.utils.translation import gettext_lazy as _
 
+from apps.core.models import NoteModel
+from apps.core.admin import get_notes
 from simple_history.models import HistoricalRecords as HR
+
+
+class GravelOrderNote(NoteModel):
+
+    order = models.ForeignKey(
+        "GravelOrder", verbose_name=_("gravel order"), related_name="gravel_order_notes", on_delete=models.CASCADE
+    )
+
+    class Meta:
+        db_table = "orders_gravel_order_notes"
+        managed = True
+        verbose_name = "order note"
+        verbose_name_plural = "order notes"
 
 
 class GravelOrder(models.Model):
@@ -78,6 +93,10 @@ class GravelOrder(models.Model):
         ll = [x for x in self.lots.strip(" ").split(",")]
         pll = "<br>".join(ll)
         return fh(pll)
+
+    @admin.display(description="notes")
+    def get_notes(self):
+        return get_notes(self.gravel_order_notes.all().order_by("created_on"))
 
     def is_complete(self) -> bool:
         if self.nloads <= 0:

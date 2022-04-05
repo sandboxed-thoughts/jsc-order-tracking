@@ -5,17 +5,38 @@ from apps.core.admin import get_change, get_history
 from apps.schedules.admin import PumpScheduleInline
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
-from ..models import ConcreteOrder, ConcreteOrderNote, FlatworkItem, FootingsItem, InspectionModel
+from ..models import ConcreteOrder, ConcreteOrderNote, FlatworkItem, FootingsItem, ConcreteInspection
 
 
 class ConcreteOrderNoteInline(admin.StackedInline):
     model = ConcreteOrderNote
     extra = 0
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "author":
+            author = request.user
+            if author:
+                kwargs['initial'] = author
+        return super(ConcreteOrderNoteInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 class InspectionModelInline(admin.StackedInline):
-    model = InspectionModel
+    model = ConcreteInspection
     extra = 0
+    verbose_name = "Inspection"
+
+    fieldsets = (
+        (None, {
+            "fields": (
+                "name",
+                "agent",
+                ("phone", "fax"),
+                "email",
+                "inspection_date",
+                "note",
+            ),
+        }),
+    )
 
 
 class FootingsItemInline(admin.StackedInline):
@@ -39,6 +60,7 @@ class ConcreteOrderAdmin(SHA):
         FootingsItemInline,
         ConcreteOrderNoteInline,
         PumpScheduleInline,
+        InspectionModelInline,
     ]
 
     list_select_related = True
@@ -54,8 +76,8 @@ class ConcreteOrderAdmin(SHA):
         "etotal",
         "qordered",
         "date_needed",
-        "get_notes",
         "get_history",
+        "get_notes",
     ]
 
     list_filter = [

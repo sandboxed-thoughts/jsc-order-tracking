@@ -20,3 +20,10 @@ class InspectionModel(ContactModel):
         managed = True
         verbose_name = "inspection agency"
         verbose_name_plural = "inspection agencies"
+
+
+class ConcreteInspection(InspectionModel):
+    order = models.ForeignKey("orders.ConcreteOrder", verbose_name=_("concrete order"), on_delete=models.CASCADE)
+
+    db_table = "orders_concrete_inspections"
+    managed = True
