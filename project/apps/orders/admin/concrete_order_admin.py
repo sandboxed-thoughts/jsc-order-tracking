@@ -41,6 +41,8 @@ class ConcreteOrderAdmin(SHA):
         PumpScheduleInline,
     ]
 
+    list_select_related = True
+
     list_display = [
         "po",
         "builder",
@@ -54,6 +56,13 @@ class ConcreteOrderAdmin(SHA):
         "date_needed",
         "get_notes",
         "get_history",
+    ]
+
+    list_filter = [
+        "site",
+        "builder",
+        "supplier",
+        "dispatcher",
     ]
 
     fieldsets = (

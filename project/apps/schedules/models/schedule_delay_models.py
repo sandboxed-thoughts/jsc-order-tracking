@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from apps.core.models import NoteModel
 from simple_history.models import HistoricalRecords as HR
 
-from .order_schedule_models import PumpSchedule
+from ..models import PumpSchedule
 
 User = settings.AUTH_USER_MODEL
 
