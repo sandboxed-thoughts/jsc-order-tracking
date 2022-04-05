@@ -48,8 +48,10 @@ class GravelDeliveryAdmin(SHA):
     )
     list_filter = (
         "driver",
-        "sdate",
         "status",
+        "order__builder",
+        "order__supplier",
+        "order__item",
     )
 
     inlines = [

@@ -57,8 +57,9 @@ class PumpScheduleAdmin(SHA):
     ]
     list_filter = [
         "driver",
-        "pdate",
         "progress",
+        "order__builder",
+        "order__supplier",
     ]
 
     actions = [mark_pump_complete]

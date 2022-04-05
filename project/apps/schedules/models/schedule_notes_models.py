@@ -4,9 +4,8 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.models import NoteModel
-from simple_history.models import HistoricalRecords as HR
 
-from .order_schedule_models import GravelDeliverySchedule, PumpSchedule
+from ..models import GravelDeliverySchedule, PumpSchedule
 
 User = settings.AUTH_USER_MODEL
 
