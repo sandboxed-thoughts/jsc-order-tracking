@@ -12,3 +12,8 @@ class ConcreteTypeInline(admin.StackedInline):
     min_num = 0
     max_num = 20
     extra = 0
+
+
+@admin.register(ConcreteType)
+class ConcreteTypeAdmin(SHA):
+    pass
