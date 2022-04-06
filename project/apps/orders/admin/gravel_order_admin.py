@@ -70,9 +70,19 @@ class GravelOrderAdmin(SHA):
         return False
 
     def save_formset(self, request, form, formset, change):
+        user = request.user
         instances = formset.save(commit=False)
 
         for instance in instances:
             if isinstance(instance, GravelOrderNoteInline):  # Check if it is the correct type of inline
-                save_note_inline(instance, request.user.pk)
-            instance.save()
+                save_note_inline(instance, user)
+            else:
+                instance.save()
+
+        for obj in formset.deleted_objects:
+            if isinstance(obj, GravelOrderNoteInline):
+                if any([user.is_superuser, user.groups.filter(name__in=("Administrators")), user.pk == obj.author_id]):
+                    obj.delete()
+
+            elif any([user.is_superuser, user.groups.filter(name__in=("Administrators"))]):
+                obj.delete()

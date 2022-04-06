@@ -67,9 +67,10 @@ def get_change(self, obj):
     return "created"
 
 
-def save_note_inline(instance, user_id):
+def save_note_inline(instance, user):
     if not instance.author_id:
-        instance.author_id = user_id
-    if instance.author_id and instance.author_id != user_id:
-        return ValueError("you cannot edit another user's note")
-    instance.save()
+        instance.author_id = user.pk
+    if instance.author_id != user.pk:
+        pass
+    elif instance.author_id == user.pk:
+        instance.save()
