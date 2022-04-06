@@ -1,9 +1,11 @@
 from django.conf import settings
+from django.contrib import admin
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from apps.core.admin import get_notes
 from apps.core.models import AddressModel, NoteModel
 from simple_history.models import HistoricalRecords as HR
 
@@ -51,6 +53,10 @@ class SiteModel(AddressModel):
     def __str__(self):
         return self.site_name
 
+    @admin.display(description="", empty_value="")
+    def get_notes(self):
+        return get_notes(self.site_notes.all())
+
     def get_absolute_url(self):
         return reverse("site_detail", kwargs={"slug": self.slug})
 
@@ -60,4 +66,4 @@ class SiteModel(AddressModel):
 
 
 class SiteNote(NoteModel):
-    site = models.ForeignKey(SiteModel, verbose_name=_("site note"), on_delete=models.CASCADE)
+    site = models.ForeignKey(SiteModel, verbose_name=_("site note"), related_name="site_notes", on_delete=models.CASCADE)
