@@ -10,8 +10,8 @@ from ..models import GravelDeliverySchedule as GravelDelivery, GravelDeliverySch
 class GravelDeliveryScheduleNoteInline(admin.TabularInline):
     """Stacked Inline View for GravelDeliveryScheduleNote"""
 
-    fields = ['author', 'note', 'updated_on']
-    readonly_fields = ['author', 'updated_on']
+    fields = ["author", "note", "updated_on"]
+    readonly_fields = ["author", "updated_on"]
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "author":

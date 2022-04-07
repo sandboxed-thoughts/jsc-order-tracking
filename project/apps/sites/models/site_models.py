@@ -66,4 +66,6 @@ class SiteModel(AddressModel):
 
 
 class SiteNote(NoteModel):
-    site = models.ForeignKey(SiteModel, verbose_name=_("site note"), related_name="site_notes", on_delete=models.CASCADE)
+    site = models.ForeignKey(
+        SiteModel, verbose_name=_("site note"), related_name="site_notes", on_delete=models.CASCADE
+    )

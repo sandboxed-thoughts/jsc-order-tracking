@@ -11,8 +11,8 @@ class GravelOrderNoteInline(admin.TabularInline):
     model = GravelOrderNote
     extra = 0
 
-    fields = ['author', 'note', 'updated_on']
-    readonly_fields = ['author', 'updated_on']
+    fields = ["author", "note", "updated_on"]
+    readonly_fields = ["author", "updated_on"]
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "author":

@@ -4,8 +4,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from apps.core.admin import get_notes
 
+from apps.core.admin import get_notes
 from apps.orders.models import ConcreteOrder
 from simple_history.models import HistoricalRecords as HR
 
