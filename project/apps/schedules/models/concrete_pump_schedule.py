@@ -97,9 +97,9 @@ class PumpSchedule(models.Model):
         Returns:
             str: first letter of first name, full last name, instance pk
         """
-        return "{0} [{1}]".format(self.get_driver(), self.order.po)
+        return "{0}".format(self.pk)
 
     class Meta:
         db_table = "concrete_pump_schedule"
         managed = True
-        verbose_name = "concrete pump schedule"
+        verbose_name = "pump"
