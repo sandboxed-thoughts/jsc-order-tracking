@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.core.admin import get_notes
 from apps.core.helpers import get_lots
+from apps.core.utils import check_supplier_po
 from apps.core.models import NoteModel
 from simple_history.models import HistoricalRecords as HR
 
@@ -86,7 +87,14 @@ class ConcreteOrder(models.Model):
         _("total ordered"),
     )
     # order info
-    po = models.CharField(_("purchase order"), max_length=50, validators=[RegexValidator("[\\S\\w]")], unique=True)
+    po = models.CharField(
+        _("purchase order"),
+        max_length=50,
+        validators=[RegexValidator("[\\S\\w]")],
+        blank=True,
+        null=True,
+        unique=True,
+    )
     date_needed = models.DateField(_("date needed"), auto_now=False, auto_now_add=False, blank=True, null=True)
     date_created = models.DateTimeField(_("created on"), auto_now=False, auto_now_add=True)
     order_notes = models.ManyToManyField("core.NoteModel", verbose_name=_("notes"), through=ConcreteOrderNote)
@@ -95,6 +103,8 @@ class ConcreteOrder(models.Model):
         verbose_name=_("supplier"),
         related_name="supplier_concrete_orders",
         on_delete=models.PROTECT,
+        blank=True,
+        null=True,
     )
     dispatcher = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -127,6 +137,10 @@ class ConcreteOrder(models.Model):
         cl = [x.__str__() for x in self.order_ctypes.all()]
         pcl = "<br>".join(cl)
         return fh(pcl)
+
+    def clean(self):
+        check_supplier_po(self)
+        super(ConcreteOrder, self).clean()
 
     class Meta:
         db_table = "orders_concrete"

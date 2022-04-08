@@ -72,6 +72,7 @@ class ConcreteOrderAdmin(SHA):
     list_select_related = True
 
     list_display = [
+        "id",
         "po",
         "builder",
         "site",
