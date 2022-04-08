@@ -88,6 +88,8 @@ class PumpScheduleAdmin(SHA):
 
     @admin.display(description="supplier")
     def get_supplier(self, obj):
+        if not obj.order.supplier:
+            return "None"
         return obj.order.supplier.name
 
     @admin.display(description="lots")

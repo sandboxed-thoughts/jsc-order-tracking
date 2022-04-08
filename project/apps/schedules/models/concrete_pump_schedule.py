@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.admin import get_notes
+from apps.core.utils import check_delivery_driver
 from apps.orders.models import ConcreteOrder
 from simple_history.models import HistoricalRecords as HR
 
@@ -71,25 +72,8 @@ class PumpSchedule(models.Model):
         return get_notes(self.pump_schedule_notes.all())
 
     def clean(self):
-        """
-        Require at least one of supplier_delivers or driver to be set - but not both
-        """
-        if not (self.supplier_delivers or self.driver):
-            raise ValidationError(
-                {
-                    "supplier_delivers": ValidationError(_("Someone must deliver the order.")),
-                    "driver": ValidationError(_("Someone must deliver the order.")),
-                }
-            )
-        if self.supplier_delivers and self.driver:
-            raise ValidationError(
-                {
-                    "supplier_delivers": ValidationError(
-                        _("only one can deliver, please remove one of these options")
-                    ),
-                    "driver": ValidationError(_("only one can deliver, please remove one of these options")),
-                }
-            )
+        check_delivery_driver(self)
+        super(PumpSchedule, self).clean()
 
     def __str__(self) -> str:
         """label for class instance
