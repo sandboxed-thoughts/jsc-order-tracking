@@ -1,7 +1,6 @@
 from django.contrib import admin
 
 from apps.core.admin import get_change, get_history, save_note_inline
-
 # from apps.schedules.admin import GravelDeliveryInline
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
@@ -56,7 +55,7 @@ class GravelOrderAdmin(SHA):
         "lots",
         "po",
     ]
-    date_hierarchy = 'need_by'
+    date_hierarchy = "need_by"
     inlines = [
         GravelOrderNoteInline,
         # GravelDeliveryInline,

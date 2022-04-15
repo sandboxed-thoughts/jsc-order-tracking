@@ -1,1 +1,1 @@
-from .order_helpers import GarageChoices, OrderStatusChoices, MixChoices, check_supplier_po, format_lots
+from .order_helpers import GarageChoices, MixChoices, OrderStatusChoices, check_supplier_po, format_lots

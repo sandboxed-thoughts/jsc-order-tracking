@@ -4,7 +4,8 @@ from apps.core.admin import get_change, get_history, save_note_inline
 # from apps.schedules.admin import PumpScheduleInline
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
-from ..models import ConcreteOrder, ConcreteType, ConcreteOrderNote, FlatworkItem, FootingsItem
+from ..models import ConcreteOrder, ConcreteOrderNote, ConcreteType, FlatworkItem, FootingsItem
+
 
 class ConcreteTypeInline(admin.StackedInline):
     """Stacked Inline View for ConcreteType"""
@@ -102,7 +103,7 @@ class ConcreteOrderAdmin(SHA):
         "dispatcher",
     ]
 
-    date_hierarchy = 'date_needed'
+    date_hierarchy = "date_needed"
 
     fieldsets = (
         (

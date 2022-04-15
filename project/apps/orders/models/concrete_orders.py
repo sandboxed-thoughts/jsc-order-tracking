@@ -112,7 +112,7 @@ class ConcreteOrder(models.Model):
     @admin.display(description="concrete")
     def get_ctypes(self):
         if not self.concrete_supplies.first():
-            return(fh('<span style="color: red">No concrete listed</span>'))
+            return fh('<span style="color: red">No concrete listed</span>')
         cl = [x.__str__() for x in self.concrete_supplies.all()]
         pcl = "<br>".join(cl)
         return fh(pcl)

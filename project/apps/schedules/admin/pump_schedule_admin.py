@@ -4,7 +4,7 @@ from apps.core.admin import get_change, get_history, save_note_inline
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
 from ..helpers import mark_pump_complete
-from ..models import InclimateWeather, InclimateWeatherNote, ConcreteOrderSchedule, ConcreteOrderScheduleNote
+from ..models import ConcreteOrderSchedule, ConcreteOrderScheduleNote, InclimateWeather, InclimateWeatherNote
 
 
 class ConcreteOrderScheduleNotesInline(admin.TabularInline):

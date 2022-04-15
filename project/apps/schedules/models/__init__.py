@@ -1,4 +1,4 @@
 from .concrete_order_schedule import ConcreteOrderSchedule
 from .gravel_delivery_schedule import GravelDeliverySchedule
 from .schedule_delay_models import InclimateWeather, InclimateWeatherNote
-from .schedule_notes_models import GravelDeliveryScheduleNote, ConcreteOrderScheduleNote
+from .schedule_notes_models import ConcreteOrderScheduleNote, GravelDeliveryScheduleNote

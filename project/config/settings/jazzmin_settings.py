@@ -51,7 +51,9 @@ JAZZMIN_SETTINGS = {
     # Whether to aut expand the menu
     "navigation_expanded": False,
     # Hide these apps when generating side menu e.g (auth)
-    "hide_apps": ["core",],
+    "hide_apps": [
+        "core",
+    ],
     # Hide these models when generating side menu (e.g auth.user)
     "hide_models": ["supplies.GravelItem", "concrete.ConcreteType"],
     # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)

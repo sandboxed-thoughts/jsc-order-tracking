@@ -8,7 +8,7 @@ from apps.supplies.models import GravelItem, Supplier
 from model_bakery import baker
 
 from ..helpers import MixChoices
-from ..models import GravelOrder, GravelOrderNote, ConcreteOrder, ConcreteType, ConcreteOrderNote
+from ..models import ConcreteOrder, ConcreteOrderNote, ConcreteType, GravelOrder, GravelOrderNote
 
 
 class TestGravelOrderModel(TestCase):
@@ -95,9 +95,8 @@ class TestGravelOrderNote(TestCase):
 
 
 class TestConcreteOrderModel(TestCase):
-
     def setUp(self):
-        self.user = baker.make(User)        
+        self.user = baker.make(User)
         builder = baker.make(Client)
         site = baker.make(Site)
         ConcreteOrder.objects.create(
@@ -105,14 +104,15 @@ class TestConcreteOrderModel(TestCase):
             builder=builder,
             site=site,
             lots="1234 First St, 5678 First St, 1234 Some Cir, 5678 Some Cir",
-            etotal = 15,
+            etotal=15,
         ).save()
         self.co = ConcreteOrder.objects.first()
+
     def test_order_is_instance(self):
         self.assertIsInstance(self.co, ConcreteOrder)
 
     def test_order_saves_without_supplier(self):
-        self.co.supplier=None
+        self.co.supplier = None
         self.co.save()
         self.assertIsInstance(self.co, ConcreteOrder)
 
@@ -127,15 +127,15 @@ class TestConcreteOrderModel(TestCase):
 
 class TestConcreteTypeModel(TestCase):
     def setUp(self):
-        self.user = baker.make(User)        
+        self.user = baker.make(User)
         self.builder = baker.make(Client)
         self.site = baker.make(Site)
         self.order = baker.make(ConcreteOrder)
         self.ctype = ConcreteType.objects.create(
-            order = self.order,
-            mix = MixChoices.RICH,
-            slump = "S3",
-            note = "Test Type Note",
+            order=self.order,
+            mix=MixChoices.RICH,
+            slump="S3",
+            note="Test Type Note",
         )
 
     def test_ctype_is_instance(self):
@@ -146,7 +146,7 @@ class TestConcreteTypeModel(TestCase):
             self.assertIsInstance(
                 ConcreteType.objects.create(
                     mix=MixChoices.LEAN,
-                    slump = "S2",
+                    slump="S2",
                 ),
-                ConcreteType
+                ConcreteType,
             )

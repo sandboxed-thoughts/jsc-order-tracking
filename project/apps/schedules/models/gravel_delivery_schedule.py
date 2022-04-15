@@ -98,8 +98,8 @@ class GravelDeliverySchedule(models.Model):
         return "{0} [{1}]".format(self.get_driver(), self.pk)
 
     def clean(self):
-        
-        #Require at least one of supplier_delivers or driver to be set - but not both
+
+        # Require at least one of supplier_delivers or driver to be set - but not both
         if not (self.supplier_delivers or self.driver):
             raise ValidationError(
                 {

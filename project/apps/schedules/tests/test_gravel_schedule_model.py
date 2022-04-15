@@ -19,7 +19,10 @@ class TestGravelDeliverySchedule(TestCase):
             GravelDeliverySchedule, driver=baker.make("accounts.CustomUser"), order=self.order
         )
         self.supplier_delivery = baker.make(
-            GravelDeliverySchedule, supplier_delivers=True, driver=None, order=self.supplier_delivers_order,
+            GravelDeliverySchedule,
+            supplier_delivers=True,
+            driver=None,
+            order=self.supplier_delivers_order,
         )
 
     def test_get_driver_for_supplier_delivers(self):

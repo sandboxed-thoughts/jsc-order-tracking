@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from ..helpers import GarageChoices, OrderStatusChoices, MixChoices, format_lots, check_supplier_po
+from ..helpers import GarageChoices, MixChoices, OrderStatusChoices, check_supplier_po, format_lots
 
 
 class TestGarageChoices(TestCase):
