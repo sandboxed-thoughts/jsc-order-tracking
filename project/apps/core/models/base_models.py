@@ -7,7 +7,7 @@ from localflavor.us.models import USStateField as State, USZipCodeField as Zipco
 from phonenumber_field.modelfields import PhoneNumberField
 from simple_history.models import HistoricalRecords as HR
 
-from ..helpers import get_addr, get_untagged_addr
+from .model_helpers import get_addr, get_untagged_addr
 
 
 class AddressModel(models.Model):
@@ -97,11 +97,7 @@ class NoteModel(models.Model):
     created_on = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True, auto_now_add=False)
 
-    history = HR()
+    history = HR(inherit=True)
 
     class Meta:
-        db_table = "notes"
-        verbose_name = "note"
-        verbose_name_plural = "notes"
-        managed = True
-        ordering = ["author", "-created_on"]
+        abstract = True

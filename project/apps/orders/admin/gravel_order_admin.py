@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 from apps.core.admin import get_change, get_history, save_note_inline
-from apps.schedules.admin import GravelDeliveryInline
+
+# from apps.schedules.admin import GravelDeliveryInline
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
 from ..models import GravelOrder, GravelOrderNote
@@ -28,22 +29,26 @@ class GravelOrderAdmin(SHA):
         css = {"all": ("core/css/base.css",)}
 
     list_select_related = True
-    list_display = (
-        "po",
-        "supplier",
+    list_display = [
+        "pk",
+        "status",
         "builder",
         "site",
         "get_lots",
         "priority",
         "nloads",
         "need_by",
+        "po",
+        "supplier",
         "get_history",
         "get_notes",
-    )
-    list_filter = (
+    ]
+    list_filter = [
+        "status",
         "priority",
-        "need_by",
-    )
+        "builder__name",
+        "site__name",
+    ]
     search_fields = [
         "supplier__name",
         "builder__name",
@@ -51,9 +56,10 @@ class GravelOrderAdmin(SHA):
         "lots",
         "po",
     ]
+    date_hierarchy = 'need_by'
     inlines = [
         GravelOrderNoteInline,
-        GravelDeliveryInline,
+        # GravelDeliveryInline,
     ]
 
     def changes(self, obj):
@@ -84,5 +90,5 @@ class GravelOrderAdmin(SHA):
                 if any([user.is_superuser, user.groups.filter(name__in=("Administrators")), user.pk == obj.author_id]):
                     obj.delete()
 
-            elif any([user.is_superuser, user.groups.filter(name__in=("Administrators"))]):
-                obj.delete()
+                elif any([user.is_superuser, user.groups.filter(name__in=("Administrators"))]):
+                    obj.delete()

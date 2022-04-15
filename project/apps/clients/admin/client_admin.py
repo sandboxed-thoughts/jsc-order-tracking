@@ -3,10 +3,10 @@ from django.contrib import admin
 from apps.core.admin import activate, deactivate, get_change, get_history
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
-from ..models import BuilderModel
+from ..models import Client
 
 
-@admin.register(BuilderModel)
+@admin.register(Client)
 class BuilderAdmin(SHA):
     class Media:
         css = {"all": ("core/css/base.css",)}
@@ -56,6 +56,6 @@ class BuilderAdmin(SHA):
         return get_change(self, obj)
 
     def get_history(self, obj):
-        return get_history(self, "clients", "buildermodel", obj)
+        return get_history(self, "clients", "client", obj)
 
     history_list_display = ["changes"]

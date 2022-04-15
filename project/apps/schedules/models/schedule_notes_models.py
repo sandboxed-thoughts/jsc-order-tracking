@@ -5,15 +5,15 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.core.models import NoteModel
 
-from ..models import GravelDeliverySchedule, PumpSchedule
+from ..models import GravelDeliverySchedule, ConcreteOrderSchedule
 
 User = settings.AUTH_USER_MODEL
 
 
-class PumpScheduleNote(NoteModel):
+class ConcreteOrderScheduleNote(NoteModel):
 
     pump = models.ForeignKey(
-        PumpSchedule, verbose_name=_("pump"), related_name="pump_schedule_notes", on_delete=models.CASCADE
+        ConcreteOrderSchedule, verbose_name=_("pump"), related_name="pump_schedule_notes", on_delete=models.CASCADE
     )
 
     def __str__(self):

@@ -49,11 +49,11 @@ JAZZMIN_SETTINGS = {
     # Whether to display the side menu
     "show_sidebar": True,
     # Whether to aut expand the menu
-    "navigation_expanded": True,
+    "navigation_expanded": False,
     # Hide these apps when generating side menu e.g (auth)
-    "hide_apps": ["core", "schedules", "orders"],
+    "hide_apps": ["core",],
     # Hide these models when generating side menu (e.g auth.user)
-    "hide_models": ["gravel.StoneType", "concrete.ConcreteType"],
+    "hide_models": ["supplies.GravelItem", "concrete.ConcreteType"],
     # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)
     "order_with_respect_to": [
         "concrete",
@@ -62,46 +62,11 @@ JAZZMIN_SETTINGS = {
         "orders",
         "sites",
         "clients",
-        "suppliers",
+        "supplies",
         "accounts",
     ],
     # Custom links to append to app groups, keyed on app name
     "custom_links": {
-        "gravel": [
-            {
-                "name": "Gravel Orders",
-                "url": "/orders/gravelorder/",
-                "icon": "fas fa-receipt",
-                "permissions": ["orders.view_gravelorder"],
-            },
-            {
-                "name": "Delivery Schedule",
-                "url": "/schedules/graveldeliveryschedule/",
-                "icon": "fas fa-truck",
-                "permissions": ["schedules.view_graveldeliveryschedule"],
-            },
-        ],
-        "concrete": [
-            {
-                "name": "Concrete Orders",
-                "url": "/orders/concreteorder/",
-                "icon": "fas fa-receipt",
-                "permissions": ["orders.view_concreteorder"],
-            },
-            {
-                "name": "Pump Schedule",
-                "url": "/schedules/pumpschedule/",
-                "icon": "fas fa-truck",
-                "permissions": ["schedules.view_pumpschedule"],
-            },
-        ],
-        # "suppliers": [
-        #     {
-        #         "name": "Gravel Types",
-        #         "url": "/gravel/stonetype/",
-        #         "icon": "fas fa-bezier-curve",
-        #     }
-        # ],
         # "accounts": [
         #     {
         #         "name": "Notes",
@@ -116,14 +81,18 @@ JAZZMIN_SETTINGS = {
         "accounts": "fas fa-users-cog",
         "accounts.CustomUser": "fas fa-user",
         "accounts.Group": "fas fa-users",
-        "clients.BuilderModel": "fas fa-building",
-        "sites.SiteModel": "fas fa-layer-group",
-        "gravel.StoneType": "fas fa-bezier-curve",
-        "suppliers.Supplier": "fas fa-store-alt",
-        "orders.ConcreteOrder": "fas fa-receipt",
-        "orders.GravelOrder": "fas fa-receipt",
-        "schedules.GravelDeliverySchedule": "fas fa-truck",
-        "schedules.PumpSchedule": "fas fa-truck",
+        "clients": "fas fa-building",
+        "clients.Client": "fas fa-building",
+        "clients.Site": "fas fa-layer-group",
+        "supplies": "fas fa-store-alt",
+        "supplies.StoneType": "fas fa-bezier-curve",
+        "supplies.Supplier": "fas fa-store-alt",
+        "orders": "fas fa-receipt",
+        "orders.ConcreteOrder": "fa fa-window-minimize",
+        "orders.GravelOrder": "fa fa-cubes",
+        "schedules": "fas fa-calendar",
+        "schedules.GravelDeliverySchedule": "fa fa-cubes",
+        "schedules.ConcreteOrderSchedule": "fa fa-window-minimize",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",
