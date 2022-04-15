@@ -138,8 +138,7 @@ class GravelOrder(models.Model):
     def nloads(self) -> int:
         if self.rloads and self.dloads:
             return self.rloads - self.dloads
-        else:
-            return "cannot compute"
+        return "cannot compute"
 
     @admin.display(description="lots")
     def get_lots(self):
