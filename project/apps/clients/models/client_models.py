@@ -6,17 +6,37 @@ from django.utils.translation import gettext_lazy as _
 from apps.core.models import CommunicationsModel
 from simple_history.models import HistoricalRecords as HR
 
-from ..managers import ActiveBuilderManager
+from ..managers import ActiveClientManager
 
 
-class BuilderModel(CommunicationsModel):
+class Client(CommunicationsModel):
+    """Django model for clients
+
+    Args:
+        CommunicationsModel (model):        email, phone, fax, address
+        name                (str):          CharField
+        is_active           (bool):         CharField
+        date_created        (datetime):     CharField
+        date_updated        (datetime):     CharField
+        slug                (str):          CharField
+
+    Manangers:
+        objects             (queryset):     all instances of Client
+        active_builders     (queryset):     all instances of Client where is_active = True
+
+    Methods:
+        __str__             (str):          name.title()
+        get_absolute_url    (str):          /clients/view/slug
+        save                (object):       saved instance with auto-populated slug field from slugifying name
+    """
+
     class Meta:
-        db_table = "clients_builders"
+        db_table = "clients"
         managed = True
-        verbose_name = "Builder"
-        verbose_name_plural = "Builders"
+        verbose_name = _("Builder")
+        verbose_name_plural = _("Builders")
 
-    name = models.CharField(_("name"), max_length=150, unique=True)
+    name = models.CharField(_("builder name"), max_length=150, unique=True)
     is_active = models.BooleanField(
         _("active builder"),
         default=True,
@@ -28,7 +48,7 @@ class BuilderModel(CommunicationsModel):
     history = HR()
 
     objects = models.Manager()
-    active_builders = ActiveBuilderManager()
+    active_clients = ActiveClientManager()
 
     def __str__(self) -> str:
         return self.name.title()
@@ -38,4 +58,4 @@ class BuilderModel(CommunicationsModel):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        return super(BuilderModel, self).save(*args, **kwargs)  # Call the real save() method
+        return super(Client, self).save(*args, **kwargs)  # Call the real save() method

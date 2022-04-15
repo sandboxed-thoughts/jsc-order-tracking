@@ -1,1 +1,0 @@
-from .concrete_type_admin import ConcreteTypeInline

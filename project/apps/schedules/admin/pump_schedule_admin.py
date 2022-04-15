@@ -4,11 +4,11 @@ from apps.core.admin import get_change, get_history, save_note_inline
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
 from ..helpers import mark_pump_complete
-from ..models import InclimateWeather, InclimateWeatherNote, PumpSchedule, PumpScheduleNote
+from ..models import ConcreteOrderSchedule, ConcreteOrderScheduleNote, InclimateWeather, InclimateWeatherNote
 
 
-class PumpScheduleNotesInline(admin.TabularInline):
-    model = PumpScheduleNote
+class ConcreteOrderScheduleNotesInline(admin.TabularInline):
+    model = ConcreteOrderScheduleNote
     extra = 0
 
     fields = ["author", "note", "updated_on"]
@@ -19,7 +19,7 @@ class PumpScheduleNotesInline(admin.TabularInline):
             author_id = request.user.pk
             if author_id:
                 kwargs["initial"] = author_id
-        return super(PumpScheduleNotesInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
+        return super(ConcreteOrderScheduleNotesInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 class InclimateWeatherNoteInline(admin.StackedInline):
@@ -37,18 +37,18 @@ class InclimateWeatherInline(admin.StackedInline):
     min_num = 0
 
 
-class PumpScheduleInline(admin.StackedInline):
+class ConcreteOrderScheduleInline(admin.StackedInline):
     """Stacked Inline View for PumpSchedule"""
 
-    model = PumpSchedule
+    model = ConcreteOrderSchedule
     min_num = 0
     extra = 0
 
 
-@admin.register(PumpSchedule)
-class PumpScheduleAdmin(SHA):
+@admin.register(ConcreteOrderSchedule)
+class ConcreteOrderScheduleAdmin(SHA):
     inlines = [
-        PumpScheduleNotesInline,
+        ConcreteOrderScheduleNotesInline,
         InclimateWeatherInline,
     ]
     list_display = [
@@ -121,13 +121,13 @@ class PumpScheduleAdmin(SHA):
         instances = formset.save(commit=False)
 
         for instance in instances:
-            if isinstance(instance, PumpScheduleNote):  # Check if it is the correct type of inline
+            if isinstance(instance, ConcreteOrderScheduleNote):  # Check if it is the correct type of inline
                 save_note_inline(instance, user)
             else:
                 instance.save()
 
         for obj in formset.deleted_objects:
-            if isinstance(obj, PumpScheduleNote):
+            if isinstance(obj, ConcreteOrderScheduleNote):
                 if any([user.is_superuser, user.groups.filter(name__in=("Administrators")), user.pk == obj.author_id]):
                     obj.delete()
 

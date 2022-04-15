@@ -3,7 +3,7 @@ from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin, UserAdmin
 from django.contrib.auth.models import Group as DjangoGroup
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.admin.admin_helpers import activate, deactivate
+from apps.core.admin import activate, deactivate
 
 from ..models import CustomUser
 

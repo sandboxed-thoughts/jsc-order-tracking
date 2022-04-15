@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from apps.core.models import NoteModel
 from simple_history.models import HistoricalRecords as HR
 
-from ..models import PumpSchedule
+from ..models import ConcreteOrderSchedule
 
 User = settings.AUTH_USER_MODEL
 
@@ -22,7 +22,7 @@ class InclimateWeather(models.Model):
     """
 
     pump = models.ForeignKey(
-        PumpSchedule, verbose_name=_("pump schedule"), related_name="pump_delay", on_delete=models.CASCADE
+        ConcreteOrderSchedule, verbose_name=_("pump schedule"), related_name="pump_delay", on_delete=models.CASCADE
     )
     temp = models.CharField(_("temperature"), max_length=50)
     precip = models.CharField(_("precipitation"), max_length=50)

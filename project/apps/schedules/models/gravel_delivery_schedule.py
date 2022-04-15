@@ -58,7 +58,7 @@ class GravelDeliverySchedule(models.Model):
         """if supplier_delivers return supplier name, otherwise return the driver's full name"""
 
         if self.supplier_delivers:
-            return self.order.supplier.name
+            return self.order.supplier.name.title()
         return self.driver.get_full_name()
 
     @admin.display(description="item", ordering="order__item")
@@ -98,9 +98,8 @@ class GravelDeliverySchedule(models.Model):
         return "{0} [{1}]".format(self.get_driver(), self.pk)
 
     def clean(self):
-        """
-        Require at least one of supplier_delivers or driver to be set - but not both
-        """
+
+        # Require at least one of supplier_delivers or driver to be set - but not both
         if not (self.supplier_delivers or self.driver):
             raise ValidationError(
                 {
@@ -119,15 +118,19 @@ class GravelDeliverySchedule(models.Model):
                 }
             )
 
-    def save(self, *args, **kwargs):
-        order = self.order
-        if self.loads > order.nloads():
-            return ValidationError({"loads": "more loads scheduled than the amount ordered"})
-        if (self.status == StatusChoices.COMPLETE) and (self.loads > 0):
-            order.dloads += self.loads
-            order.save()
-            order.refresh_from_db()
-        super(GravelDeliverySchedule, self).save(*args, **kwargs)  # Call the real save() method
+        # Require supplier before scheduling
+        if not self.supplier:
+            raise ValidationError("this order is missing a supplier and po")
+
+    # def save(self, *args, **kwargs):
+    #     order = self.order
+    #     if self.loads > order.nloads():
+    #         return ValidationError({"loads": "more loads scheduled than the amount ordered"})
+    #     if (self.status == StatusChoices.COMPLETE) and (self.loads > 0):
+    #         order.dloads += self.loads
+    #         order.save()
+    #         order.refresh_from_db()
+    #     super(GravelDeliverySchedule, self).save(*args, **kwargs)  # Call the real save() method
 
     class Meta:
         db_table = "orders_gravel_deliveries"

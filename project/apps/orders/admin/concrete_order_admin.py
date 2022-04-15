@@ -1,11 +1,19 @@
 from django.contrib import admin
 
-from apps.concrete.admin import ConcreteTypeInline
 from apps.core.admin import get_change, get_history, save_note_inline
-from apps.schedules.admin import PumpScheduleInline
+# from apps.schedules.admin import PumpScheduleInline
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
-from ..models import ConcreteInspection, ConcreteOrder, ConcreteOrderNote, FlatworkItem, FootingsItem
+from ..models import ConcreteOrder, ConcreteOrderNote, ConcreteType, FlatworkItem, FootingsItem
+
+
+class ConcreteTypeInline(admin.StackedInline):
+    """Stacked Inline View for ConcreteType"""
+
+    model = ConcreteType
+    min_num = 0
+    max_num = 20
+    extra = 0
 
 
 class ConcreteOrderNoteInline(admin.TabularInline):
@@ -23,26 +31,26 @@ class ConcreteOrderNoteInline(admin.TabularInline):
         return super(ConcreteOrderNoteInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
-class InspectionModelInline(admin.StackedInline):
-    model = ConcreteInspection
-    extra = 0
-    verbose_name = "Inspection"
+# class InspectionModelInline(admin.StackedInline):
+#     model = ConcreteInspection
+#     extra = 0
+#     verbose_name = "Inspection"
 
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": (
-                    "name",
-                    "agent",
-                    ("phone", "fax"),
-                    "email",
-                    "inspection_date",
-                    "note",
-                ),
-            },
-        ),
-    )
+#     fieldsets = (
+#         (
+#             None,
+#             {
+#                 "fields": (
+#                     "name",
+#                     "agent",
+#                     ("phone", "fax"),
+#                     "email",
+#                     "inspection_date",
+#                     "note",
+#                 ),
+#             },
+#         ),
+#     )
 
 
 class FootingsItemInline(admin.StackedInline):
@@ -65,8 +73,8 @@ class ConcreteOrderAdmin(SHA):
         FlatworkItemInline,
         FootingsItemInline,
         ConcreteOrderNoteInline,
-        PumpScheduleInline,
-        InspectionModelInline,
+        # PumpScheduleInline,
+        # InspectionModelInline,
     ]
 
     list_select_related = True
@@ -88,11 +96,14 @@ class ConcreteOrderAdmin(SHA):
     ]
 
     list_filter = [
-        "site",
-        "builder",
+        "site__name",
+        "builder__name",
+        "needs_pump",
         "supplier",
         "dispatcher",
     ]
+
+    date_hierarchy = "date_needed"
 
     fieldsets = (
         (
@@ -103,6 +114,7 @@ class ConcreteOrderAdmin(SHA):
                     "builder",
                     "site",
                     "lots",
+                    "needs_pump",
                     "supplier",
                     "dispatcher",
                     "etotal",
