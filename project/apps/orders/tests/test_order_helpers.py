@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from ..helpers import GarageChoices, MixChoices, OrderStatusChoices, check_supplier_po, format_lots
+from ..helpers import GarageChoices, MixChoices, OrderStatusChoices, check_supplier_po
 
 
 class TestGarageChoices(TestCase):
@@ -45,14 +45,6 @@ class TestOrderStatusChoices(TestCase):
 
     def test_COMPLETED_choice(self):
         self.assertEqual(OrderStatusChoices.COMPLETED, "completed")
-
-
-class TestFormatLots(TestCase):
-    def setUp(self):
-        self.lots = "1234 Test Rd, 1442 Test St, 12358 Test Cir, 1111"
-
-    def test_format_lots_returns_list(self):
-        self.assertEqual(format_lots(self), "1234 Test Rd<br>1442 Test St<br>12358 Test Cir<br>1111")
 
 
 class TestCheckSupplierPO(TestCase):

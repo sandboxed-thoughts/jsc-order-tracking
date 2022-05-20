@@ -28,17 +28,24 @@ class SiteModelAdmin(SHA):
         SiteNoteInline,
     ]
 
-    list_display = (
+    list_display = [
         "name",
         "get_addr",
         "is_active",
         "get_history",
         "get_notes",
-    )
-    list_filter = (
+    ]
+
+    list_filter = [
         "city",
         "is_active",
-    )
+    ]
+
+    actions = [
+        activate,
+        deactivate,
+    ]
+
     fieldsets = (
         (
             None,
@@ -56,10 +63,6 @@ class SiteModelAdmin(SHA):
             },
         ),
     )
-    actions = [
-        activate,
-        deactivate,
-    ]
 
     def changes(self, obj):
         return get_change(self, obj)

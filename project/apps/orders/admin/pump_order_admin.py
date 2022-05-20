@@ -1,14 +1,13 @@
 from django.contrib import admin
 
 from apps.core.admin import get_change, get_history, save_note_inline
-# from apps.schedules.admin import GravelDeliveryInline
 from simple_history.admin import SimpleHistoryAdmin as SHA
 
-from ..models import GravelOrder, GravelOrderNote
+from ..models import PumpOrder, PumpOrderNote
 
 
-class GravelOrderNoteInline(admin.TabularInline):
-    model = GravelOrderNote
+class PumpOrderNoteInline(admin.TabularInline):
+    model = PumpOrderNote
     extra = 0
 
     fields = ["author", "note", "updated_on"]
@@ -19,47 +18,24 @@ class GravelOrderNoteInline(admin.TabularInline):
             author = request.user
             if author:
                 kwargs["initial"] = author
-        return super(GravelOrderNoteInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
+        return super(PumpOrderNoteInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
-@admin.register(GravelOrder)
-class GravelOrderAdmin(SHA):
-    class Media:
-        css = {"all": ("core/css/base.css",)}
+@admin.register(PumpOrder)
+class PumpOrderAdmin(SHA):
+    """Admin for Pump Orders (Pump Rentals)"""
 
-    list_select_related = True
     list_display = [
-        "pk",
-        "created_on",
-        "status",
+        "__str__",
         "builder",
         "site",
-        "get_lots",
-        "priority",
-        "nloads",
-        "need_by",
-        "po",
-        "supplier",
-        "get_history",
-        "get_notes",
+        "concrete_order",
+        "pump_supplier",
+        "created_on",
     ]
-    list_filter = [
-        "status",
-        "priority",
-        "builder__name",
-        "site__name",
-    ]
-    search_fields = [
-        "supplier__name",
-        "builder__name",
-        "site__site_name",
-        "lots",
-        "po",
-    ]
-    date_hierarchy = "need_by"
+
     inlines = [
-        GravelOrderNoteInline,
-        # GravelDeliveryInline,
+        PumpOrderNoteInline,
     ]
 
     def changes(self, obj):
@@ -80,13 +56,13 @@ class GravelOrderAdmin(SHA):
         instances = formset.save(commit=False)
 
         for instance in instances:
-            if isinstance(instance, GravelOrderNote):  # Check if it is the correct type of inline
+            if isinstance(instance, PumpOrderNote):  # Check if it is the correct type of inline
                 save_note_inline(instance, user)
             else:
                 instance.save()
 
         for obj in formset.deleted_objects:
-            if isinstance(obj, GravelOrderNote):
+            if isinstance(obj, PumpOrderNote):
                 if any([user.is_superuser, user.groups.filter(name__in=("Administrators")), user.pk == obj.author_id]):
                     obj.delete()
 

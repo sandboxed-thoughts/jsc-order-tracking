@@ -55,7 +55,7 @@ JAZZMIN_SETTINGS = {
         "core",
     ],
     # Hide these models when generating side menu (e.g auth.user)
-    "hide_models": ["supplies.GravelItem", "concrete.ConcreteType"],
+    # "hide_models": ["supplies.GravelItem", "concrete.ConcreteType"],
     # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)
     "order_with_respect_to": [
         "concrete",
@@ -87,14 +87,16 @@ JAZZMIN_SETTINGS = {
         "clients.Client": "fas fa-building",
         "clients.Site": "fas fa-layer-group",
         "supplies": "fas fa-store-alt",
-        "supplies.StoneType": "fas fa-bezier-curve",
+        "supplies.GravelItem": "fas fa-bezier-curve",
         "supplies.Supplier": "fas fa-store-alt",
         "orders": "fas fa-receipt",
         "orders.ConcreteOrder": "fa fa-window-minimize",
         "orders.GravelOrder": "fa fa-cubes",
+        "orders.PumpOrder": "fa fa-faucet",
         "schedules": "fas fa-calendar",
         "schedules.GravelDeliverySchedule": "fa fa-cubes",
         "schedules.ConcreteOrderSchedule": "fa fa-window-minimize",
+        "schedules.PumpOrder": "fa fa-faucet",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",

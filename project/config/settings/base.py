@@ -35,8 +35,8 @@ INSTALLED_APPS = [
     "jazzmin",
     # project apps
     "config.apps.ProjectAdminConfig",  # replaces django.contrib.admin
-    "apps.accounts",
     "apps.core",
+    "apps.accounts",
     "apps.clients",
     "apps.supplies",
     "apps.orders",

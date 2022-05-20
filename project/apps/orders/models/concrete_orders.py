@@ -5,11 +5,13 @@ from django.db import models
 from django.utils.html import format_html as fh
 from django.utils.translation import gettext_lazy as _
 
+from apps.clients.helpers import get_lots as format_lots
 from apps.core.admin import get_notes
 from apps.core.models import NoteModel
 from simple_history.models import HistoricalRecords as HR
 
-from ..helpers import GarageChoices, MixChoices, check_supplier_po, format_lots
+from ..helpers import GarageChoices, MixChoices, check_supplier_po
+from .pump_orders import PumpOrder
 
 
 class ConcreteOrder(models.Model):
@@ -49,6 +51,14 @@ class ConcreteOrder(models.Model):
         _("lots"), max_length=150, help_text='separate each lot with a comma, ex "15446, 4789, 14,2546"'
     )
     needs_pump = models.BooleanField(_("pump required?"), default=False)
+    pump = models.OneToOneField(
+        "orders.PumpOrder",
+        verbose_name=_(""),
+        related_name="concrete_order",
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
     etotal = models.SmallIntegerField(
         _("estimated total"),
     )
@@ -103,7 +113,7 @@ class ConcreteOrder(models.Model):
 
     @admin.display(description="lots")
     def get_lots(self):
-        return format_lots(self)
+        return format_lots(self.lots)
 
     @admin.display(description="", empty_value="")
     def get_notes(self):
@@ -120,6 +130,11 @@ class ConcreteOrder(models.Model):
     def clean(self):
         check_supplier_po(self)
         super(ConcreteOrder, self).clean()
+
+    def save(self, *args, **kwargs):
+        if self.needs_pump and not self.pump:
+            self.pump = PumpOrder.objects.create(builder=self.builder, site=self.site)
+        super(ConcreteOrder, self).save()
 
     class Meta:
         db_table = "orders_concrete"

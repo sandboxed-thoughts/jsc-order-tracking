@@ -13,17 +13,17 @@ class Supplier(CommunicationsModel):
     """Supplier model
 
     Args:
-        name            (str):          CharField
-        is_active       (bool):         BooleanField
-        website         (str):          URLField
-        created_on      (datetime):     DateTimeField
-        updated_on      (datetime):     DateTimeField
-        has_gravel      (bool):         BooleanField
-        has_pump        (bool):         BooleanField
-        has_concrete    (bool):         BooleanField
-        history         (class):        Historical Record
+        name                (str):          CharField
+        is_active           (bool):         BooleanField
+        website             (str):          URLField
+        created_on          (datetime):     DateTimeField
+        updated_on          (datetime):     DateTimeField
+        has_gravel          (bool):         BooleanField
+        has_pump            (bool):         BooleanField
+        has_concrete        (bool):         BooleanField
+        history             (class):        Historical Record
 
-        get_site        (str):          returns html link to website
+        get_site            (str):          returns html link to website
 
     Managers:
         objects             (queryset):     returns all Supplier objects
@@ -57,7 +57,7 @@ class Supplier(CommunicationsModel):
 
     @admin.display(description="view site")
     def get_site(self) -> str:
-        """returns the formatted anchor to open the listed website"""
+        """returns the formatted anchor to open the listed website in a new browser tab"""
         if self.website is not None:
             return fh('<a href="{0}" target="blank">{0}</a>'.format(self.website))
         return "none provided"

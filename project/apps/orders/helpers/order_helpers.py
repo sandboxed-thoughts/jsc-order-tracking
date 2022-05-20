@@ -1,25 +1,7 @@
-from django.db.models import TextChoices
-from django.utils.html import format_html as fh
-
-
-def format_lots(self):
-    """Formats the string of comma-separated lots into a block of lots
-    separated by the html tag "<br>"
-
-    Returns:
-        str: lots stripped of whitespace and rejoined by <br> tags
-
-    Example:
-        str: "1234 example st, 5678 example cir"
-        returns: "1234 example st<br>5678 example cir"
-    """
-    ll = [x.strip() for x in self.lots.strip(" ").split(",")]
-    pll = "<br>".join(ll)
-    return fh(pll)
-
-
 from django.core.exceptions import ValidationError
 from django.db.models import TextChoices
+from django.utils import timezone
+from django.utils.html import format_html as fh
 from django.utils.translation import gettext_lazy as _
 
 
@@ -33,6 +15,12 @@ def check_supplier_po(self):
 
     if self.supplier and not self.po:
         raise ValidationError({"po": ValidationError("please add the supplier's PO to the order")})
+
+
+def get_po():
+    t = timezone.localtime().now()
+    tl = [t.year, t.month, t.day, t.hour, t.minute, t.second]
+    return int("".join([str(i) for i in tl]))
 
 
 class OrderStatusChoices(TextChoices):

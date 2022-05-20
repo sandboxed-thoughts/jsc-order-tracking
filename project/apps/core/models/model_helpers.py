@@ -28,3 +28,20 @@ def get_untagged_addr(self) -> str:
     if self.zipcode is not None:
         address += "{}".format(self.zipcode)
     return address
+
+
+def format_lots(self):
+    """Formats the string of comma-separated lots into a block of lots
+    separated by the html tag "<br>"
+
+    Returns:
+        str: lots stripped of whitespace and rejoined by <br> tags
+
+    Example:
+        str: "1234 example st, 5678 example cir"
+        returns: "1234 example st<br>5678 example cir"
+    """
+
+    ll = [x.strip() for x in self.lots.strip(" ").split(",")]
+    pll = "<br>".join(ll)
+    return fh(pll)

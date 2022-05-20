@@ -1,6 +1,5 @@
 from django.forms import ValidationError
 from django.test import TestCase
-from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 
 from model_bakery import baker

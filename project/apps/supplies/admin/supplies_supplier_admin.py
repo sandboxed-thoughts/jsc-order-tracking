@@ -9,25 +9,11 @@ from ..models import Supplier
 
 @admin.register(Supplier)
 class SupplierAdmin(SHA):
-    class Media:
-        # extra javascript
-        js = [
-            "admin/js/vendor/jquery/jquery.js",
-            "core/scripts/list_filter_collapse.js",
-        ]
 
-    def has_delete_permission(self, request, obj=None):
-        if request.user.is_superuser:
-            return True
-        return False
-
-    def changes(self, obj):
-        return get_change(self, obj)
-
-    def get_history(self, obj):
-        return get_history(self, "supplies", "supplier", obj)
-
-    actions = [activate, deactivate]
+    actions = [
+        activate,
+        deactivate,
+    ]
 
     list_display = [
         "name",
@@ -93,3 +79,14 @@ class SupplierAdmin(SHA):
             },
         ),
     )
+
+    def has_delete_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
+        return False
+
+    def changes(self, obj):
+        return get_change(self, obj)
+
+    def get_history(self, obj):
+        return get_history(self, "supplies", "supplier", obj)

@@ -1,2 +1,2 @@
 from .gravel_schedule_admin import GravelDeliveryAdmin, GravelDeliveryInline
-from .pump_schedule_admin import ConcreteOrderScheduleAdmin, ConcreteOrderScheduleInline
+from .concrete_schedule_admin import ConcreteOrderScheduleAdmin, ConcreteOrderScheduleInline

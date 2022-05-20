@@ -17,14 +17,14 @@ class Site(AddressModel):
     Customer worksites
 
     Args:
-        name:  CharField,
-        street:     None,
-        city:       CharField,
-        state:      localflavor.us.models.USStateField,
-        zipcode:    localflavor.us.models.USZipCodeField,
-        project_manager:    CustomUser.get_pms
+        name            (str):          CharField
+        street          (str):          None
+        city            (str):          CharField
+        state           (str):          localflavor.us.models.USStateField
+        zipcode         (str):          localflavor.us.models.USZipCodeField
+        project_manager (int):          ForeignKey -> CustomUser.get_pms
 
-        get_addr:   returns the instance's full formatted address as html,
+        get_addr(self) -> str:   returns the instance's full formatted address as html
     """
 
     class Meta:

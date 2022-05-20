@@ -1,3 +1,6 @@
+import datetime
+
+from django.contrib.auth.models import Group
 from django.db.utils import IntegrityError
 from django.forms import ValidationError
 from django.test import TestCase
@@ -8,7 +11,7 @@ from apps.supplies.models import GravelItem, Supplier
 from model_bakery import baker
 
 from ..helpers import MixChoices
-from ..models import ConcreteOrder, ConcreteOrderNote, ConcreteType, GravelOrder, GravelOrderNote
+from ..models import ConcreteOrder, ConcreteOrderNote, ConcreteType, GravelOrder, GravelOrderNote, PumpOrder
 
 
 class TestGravelOrderModel(TestCase):
@@ -94,6 +97,22 @@ class TestGravelOrderNote(TestCase):
             self.assertIsInstance(GravelOrderNote.create(author=self.user, order=self.go))
 
 
+class TestPumpOrderModel(TestCase):
+    def setUp(self):
+        builder = baker.make(Client)
+        site = baker.make(Site)
+        self.pump = PumpOrder.objects.create(
+            builder=builder,
+            site=site,
+        )
+
+    def test_pump_order_is_instance(self):
+        self.assertIsInstance(self.pump, PumpOrder)
+
+    def test_pump_order_has_po(self):
+        self.assertTrue(self.pump.po is not None)
+
+
 class TestConcreteOrderModel(TestCase):
     def setUp(self):
         self.user = baker.make(User)
@@ -124,6 +143,9 @@ class TestConcreteOrderModel(TestCase):
         self.co.po = "Test-1234"
         self.assertRaises(ValidationError, self.co.clean)
 
+    def test_order_passes_with_po_and_supplier(self):
+        self.co.po = "Test-1234"
+
 
 class TestConcreteTypeModel(TestCase):
     def setUp(self):
@@ -150,3 +172,43 @@ class TestConcreteTypeModel(TestCase):
                 ),
                 ConcreteType,
             )
+
+
+class TestConcreteOrderNote(TestCase):
+    def setUp(self):
+        self.user = baker.make(User)
+        self.builder = baker.make(Client)
+        self.site = baker.make(Site)
+        self.corder = ConcreteOrder.objects.create(
+            dispatcher=self.user,
+            builder=self.builder,
+            site=self.site,
+            lots="1234 First St, 5678 First St, 1234 Some Cir, 5678 Some Cir",
+            etotal=15,
+        )
+        self.corder_note = ConcreteOrderNote.objects.create(
+            order=self.corder,
+            author=self.user,
+            note="this is a test note",
+        )
+
+    def test_note_is_note(self):
+        self.assertIsInstance(self.corder_note, ConcreteOrderNote)
+
+    def test_note_references_order(self):
+        self.assertEqual(self.corder_note.order, self.corder)
+
+    def test_note_references_author(self):
+        self.assertEqual(self.corder_note.author, self.user)
+
+    def test_note_fails_without_author(self):
+        with self.assertRaises(AttributeError):
+            self.assertIsInstance(ConcreteOrderNote.create(order=self.corder, note="test"), ConcreteOrderNote)
+
+    def test_note_fails_without_order(self):
+        with self.assertRaises(AttributeError):
+            self.assertIsInstance(ConcreteOrderNote.create(author=self.user, note="Test"), ConcreteOrderNote)
+
+    def test_note_fails_without_note(self):
+        with self.assertRaises(AttributeError):
+            self.assertIsInstance(ConcreteOrderNote.create(author=self.user, order=self.corder))

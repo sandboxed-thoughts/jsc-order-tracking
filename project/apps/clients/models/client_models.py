@@ -26,7 +26,7 @@ class Client(CommunicationsModel):
 
     Methods:
         __str__             (str):          name.title()
-        get_absolute_url    (str):          /clients/view/slug
+        get_absolute_url    (str):          /clients/view/{slug}
         save                (object):       saved instance with auto-populated slug field from slugifying name
     """
 

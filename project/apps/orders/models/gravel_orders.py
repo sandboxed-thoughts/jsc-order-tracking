@@ -3,33 +3,12 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from apps.clients.helpers import get_lots as format_lots
 from apps.core.admin import get_notes
 from apps.core.models import NoteModel
 from simple_history.models import HistoricalRecords as HR
 
-from ..helpers import OrderStatusChoices, check_supplier_po, format_lots
-
-
-class GravelOrderNote(NoteModel):
-    """Notes for gravel orders
-
-    Args:
-        NoteModel   (object):   author, note, created_on, updated_on
-        order       (int):      ForeignKey -> orders.GravelOrder
-    """
-
-    order = models.ForeignKey(
-        "GravelOrder",
-        verbose_name=_("gravel order"),
-        related_name="gravel_order_notes",
-        on_delete=models.CASCADE,
-    )
-
-    class Meta:
-        db_table = "orders_gravel_order_notes"
-        managed = True
-        verbose_name = "order note"
-        verbose_name_plural = "order notes"
+from ..helpers import OrderStatusChoices, check_supplier_po
 
 
 class GravelOrder(models.Model):
@@ -123,6 +102,9 @@ class GravelOrder(models.Model):
         choices=OrderStatusChoices.choices,
         default=OrderStatusChoices.PENDING,
     )
+    created_on = models.DateTimeField(_("created on"), auto_now=False, auto_now_add=True)
+    updated_on = models.DateTimeField(_("updated on"), auto_now=True, auto_now_add=False)
+    ordered_on = models.DateTimeField(_("ordered on"), auto_now=False, auto_now_add=False, blank=True, null=True)
     history = HR()
 
     class Meta:
@@ -142,7 +124,7 @@ class GravelOrder(models.Model):
 
     @admin.display(description="lots")
     def get_lots(self):
-        return format_lots(self)
+        return format_lots(self.lots)
 
     @admin.display(description="", empty_value="")
     def get_notes(self):
@@ -151,3 +133,25 @@ class GravelOrder(models.Model):
     def clean(self):
         check_supplier_po(self)
         super(GravelOrder, self).clean()
+
+
+class GravelOrderNote(NoteModel):
+    """Notes for gravel orders
+
+    Args:
+        NoteModel   (object):   author, note, created_on, updated_on
+        order       (int):      ForeignKey -> orders.GravelOrder
+    """
+
+    order = models.ForeignKey(
+        GravelOrder,
+        verbose_name=_("gravel order"),
+        related_name="gravel_order_notes",
+        on_delete=models.CASCADE,
+    )
+
+    class Meta:
+        db_table = "orders_gravel_order_notes"
+        managed = True
+        verbose_name = "order note"
+        verbose_name_plural = "order notes"

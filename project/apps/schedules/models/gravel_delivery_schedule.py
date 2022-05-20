@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.admin import get_notes
+from apps.core.models import NoteModel
 from apps.orders.models import GravelOrder
 from simple_history.models import HistoricalRecords as HR
 
@@ -99,6 +100,10 @@ class GravelDeliverySchedule(models.Model):
 
     def clean(self):
 
+        # Require supplier before scheduling
+        if not self.order_supplier:
+            raise ValidationError("this order is missing a supplier and po")
+
         # Require at least one of supplier_delivers or driver to be set - but not both
         if not (self.supplier_delivers or self.driver):
             raise ValidationError(
@@ -118,9 +123,14 @@ class GravelDeliverySchedule(models.Model):
                 }
             )
 
-        # Require supplier before scheduling
-        if not self.supplier:
-            raise ValidationError("this order is missing a supplier and po")
+        if self.supplier_delivers and not self.order_supplier:
+            raise ValidationError(
+                {
+                    "supplier_delivers": ValidationError(
+                        _("The supplier is listed to deliver, but no supplier has been assigned to the order")
+                    )
+                }
+            )
 
     # def save(self, *args, **kwargs):
     #     order = self.order
@@ -138,3 +148,19 @@ class GravelDeliverySchedule(models.Model):
         verbose_name = "Gravel Delivery"
         verbose_name_plural = "Gravel Deliveries"
         ordering = ["-sdate", "driver"]
+
+
+class GravelDeliveryScheduleNote(NoteModel):
+
+    delivery = models.ForeignKey(
+        GravelDeliverySchedule, verbose_name=_("pump"), related_name="gravel_delivery_notes", on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return "{0} [{1}]".format(self.delivery.__str__(), self.pk)
+
+    class Meta:
+        db_table = "schedules_gravel_delivery_schedule_notes"
+        managed = True
+        verbose_name = "Gravel Delivery Note"
+        verbose_name_plural = "Gravel Delivery Notes"

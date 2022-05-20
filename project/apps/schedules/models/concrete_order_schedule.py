@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.core.admin import get_notes
 from apps.core.utils import check_delivery_driver
+from apps.core.models import NoteModel
 from apps.orders.models import ConcreteOrder
 from simple_history.models import HistoricalRecords as HR
 
@@ -69,7 +70,7 @@ class ConcreteOrderSchedule(models.Model):
 
     @admin.display(description="", empty_value="")
     def get_notes(self):
-        return get_notes(self.pump_schedule_notes.all())
+        return get_notes(self.concrete_schedule_notes.all())
 
     def clean(self):
         check_delivery_driver(self)
@@ -81,10 +82,26 @@ class ConcreteOrderSchedule(models.Model):
         Returns:
             str: first letter of first name, full last name, instance pk
         """
-        return "{0}".format(self.pk)
+        return "{0} [{1}]".format(self.get_driver(), self.pk)
 
     class Meta:
         db_table = "concrete_delivery_schedule"
         managed = True
         verbose_name = "Concrete Delivery"
         verbose_name_plural = "Concrete Deliveries"
+
+
+class ConcreteOrderScheduleNote(NoteModel):
+
+    concrete_order = models.ForeignKey(
+        ConcreteOrderSchedule, verbose_name=_("pump"), related_name="concrete_schedule_notes", on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return "{0} [{1}]".format(self.pump.__str__(), self.pk)
+
+    class Meta:
+        db_table = "schedules_concrete_schedule_notes"
+        managed = True
+        verbose_name = "Concrete Schedule Note"
+        verbose_name_plural = "Concrete Schedule Notes"

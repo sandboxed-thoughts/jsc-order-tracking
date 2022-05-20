@@ -78,26 +78,30 @@ class NoteModel(models.Model):
     """Standard model for recording notes
 
     fields:
-        author (int):           ForeignKey
-        note (str):             TextField
-        created_on (datetime):  DateTimeField
-        updated_on (datetime):  DateTimeField
-        history (obj):          HistoricalRecords
+        author          (int):          ForeignKey
+        note            (str):          TextField
+        created_on      (datetime):     DateTimeField
+        updated_on      (datetime):     DateTimeField
+        history         (obj):          HistoricalRecords
     """
+
+    class Meta:
+        abstract = True
 
     # user model
     User = settings.AUTH_USER_MODEL
 
     # fields
     author = models.ForeignKey(User, verbose_name=_("submitted by"), on_delete=models.CASCADE)
-    note = models.TextField(
+    note = models.CharField(
         _("Note"),
-        max_length=250,
+        max_length=150,
     )
     created_on = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True, auto_now_add=False)
 
+    # simple history relation field
     history = HR(inherit=True)
 
-    class Meta:
-        abstract = True
+    def __str__(self):
+        return "{0} note {1}".format(self.author, self.pk)
