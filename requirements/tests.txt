@@ -5,4 +5,4 @@ coverage~=6.4
 flake8~=4.0.1
 isort~=5.10.1
 tox~=3.25
-model_bakery~=1.5
+model_bakery~=1.7
