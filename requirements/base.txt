@@ -9,5 +9,5 @@ libsass~=0.21
 django-compressor~=4.0 
 django-sass-processor~=1.2
 django-jazzmin~=2.5.0
-django-debug-toolbar~=3.5.0
+django-debug-toolbar~=3.6.0
 selenium~=4.3.0
