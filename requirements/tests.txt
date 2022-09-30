@@ -4,5 +4,5 @@ black~=22.6
 coverage~=6.4
 flake8~=5.0.4
 isort~=5.10.1
-tox~=3.25
+tox~=3.26
 model_bakery~=1.7
