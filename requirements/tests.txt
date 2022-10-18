@@ -1,6 +1,6 @@
 -r base.txt
 
-black~=22.8
+black~=22.10
 coverage~=6.5
 flake8~=5.0.4
 isort~=5.10.1
